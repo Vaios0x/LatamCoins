@@ -6,7 +6,12 @@
 /**
  * Formatea un número como precio en USD
  */
-export const formatPrice = (price: number): string => {
+export const formatPrice = (price: number | undefined | null): string => {
+  // Manejar valores undefined, null o NaN
+  if (price === undefined || price === null || isNaN(price)) {
+    return '$0.00';
+  }
+  
   if (price === 0) return '$0.00';
   
   // Para precios muy pequeños, mostrar más decimales
@@ -34,7 +39,12 @@ export const formatPrice = (price: number): string => {
 /**
  * Formatea un número como porcentaje
  */
-export const formatPercentage = (percentage: number, decimals: number = 2): string => {
+export const formatPercentage = (percentage: number | undefined | null, decimals: number = 2): string => {
+  // Manejar valores undefined, null o NaN
+  if (percentage === undefined || percentage === null || isNaN(percentage)) {
+    return '+0.00%';
+  }
+  
   const sign = percentage >= 0 ? '+' : '';
   return `${sign}${percentage.toFixed(decimals)}%`;
 };
@@ -42,7 +52,12 @@ export const formatPercentage = (percentage: number, decimals: number = 2): stri
 /**
  * Formatea un número como volumen o market cap
  */
-export const formatLargeNumber = (num: number): string => {
+export const formatLargeNumber = (num: number | undefined | null): string => {
+  // Manejar valores undefined, null o NaN
+  if (num === undefined || num === null || isNaN(num)) {
+    return '$0';
+  }
+  
   if (num === 0) return '$0';
   
   const absNum = Math.abs(num);
@@ -65,7 +80,12 @@ export const formatLargeNumber = (num: number): string => {
 /**
  * Formatea un número con separadores de miles
  */
-export const formatNumber = (num: number, decimals: number = 0): string => {
+export const formatNumber = (num: number | undefined | null, decimals: number = 0): string => {
+  // Manejar valores undefined, null o NaN
+  if (num === undefined || num === null || isNaN(num)) {
+    return '0';
+  }
+  
   return num.toLocaleString('en-US', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
@@ -120,11 +140,20 @@ export const formatRank = (rank: number): string => {
 /**
  * Formatea un cambio de precio con color
  */
-export const formatPriceChange = (change: number): {
+export const formatPriceChange = (change: number | undefined | null): {
   formatted: string;
   isPositive: boolean;
   color: string;
 } => {
+  // Manejar valores undefined, null o NaN
+  if (change === undefined || change === null || isNaN(change)) {
+    return {
+      formatted: '+0.00%',
+      isPositive: true,
+      color: '#00ff41',
+    };
+  }
+  
   const isPositive = change >= 0;
   const formatted = formatPercentage(change);
   const color = isPositive ? '#00ff41' : '#ff0040';
@@ -139,21 +168,26 @@ export const formatPriceChange = (change: number): {
 /**
  * Formatea un volumen con unidad apropiada
  */
-export const formatVolume = (volume: number): string => {
+export const formatVolume = (volume: number | undefined | null): string => {
   return formatLargeNumber(volume);
 };
 
 /**
  * Formatea un market cap
  */
-export const formatMarketCap = (marketCap: number): string => {
+export const formatMarketCap = (marketCap: number | undefined | null): string => {
   return formatLargeNumber(marketCap);
 };
 
 /**
  * Formatea un supply de tokens
  */
-export const formatSupply = (supply: number): string => {
+export const formatSupply = (supply: number | undefined | null): string => {
+  // Manejar valores undefined, null o NaN
+  if (supply === undefined || supply === null || isNaN(supply)) {
+    return '0';
+  }
+  
   if (supply >= 1e9) {
     return `${(supply / 1e9).toFixed(2)}B`;
   }
@@ -172,7 +206,12 @@ export const formatSupply = (supply: number): string => {
 /**
  * Formatea un precio para mostrar en ticker
  */
-export const formatTickerPrice = (price: number): string => {
+export const formatTickerPrice = (price: number | undefined | null): string => {
+  // Manejar valores undefined, null o NaN
+  if (price === undefined || price === null || isNaN(price)) {
+    return '$0.00';
+  }
+  
   if (price < 0.000001) {
     return `$${price.toExponential(2)}`;
   }
@@ -187,7 +226,12 @@ export const formatTickerPrice = (price: number): string => {
 /**
  * Formatea un porcentaje para mostrar en ticker
  */
-export const formatTickerPercentage = (percentage: number): string => {
+export const formatTickerPercentage = (percentage: number | undefined | null): string => {
+  // Manejar valores undefined, null o NaN
+  if (percentage === undefined || percentage === null || isNaN(percentage)) {
+    return '+0.00%';
+  }
+  
   const sign = percentage >= 0 ? '+' : '';
   return `${sign}${percentage.toFixed(2)}%`;
 };

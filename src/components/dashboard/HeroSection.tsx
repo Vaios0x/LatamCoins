@@ -3,26 +3,34 @@
 import { GLOBAL_STATS } from '@/lib/constants/tokens';
 import { formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { useRealPrices } from '@/lib/hooks/useRealPrices';
+import { ApiStatusNotification } from '@/components/ui/ApiStatusNotification';
 
 /**
  * Sección hero del dashboard
  * Estadísticas globales y título principal
  */
 export function HeroSection() {
+  const { 
+    globalStats, 
+    isLoading, 
+    hasError
+  } = useRealPrices();
+  
   const stats = [
     {
       label: 'Total Market Cap',
-      value: formatLargeNumber(GLOBAL_STATS.totalMarketCap),
-      change: GLOBAL_STATS.averageChange24h,
+      value: formatLargeNumber(globalStats.totalMarketCap),
+      change: globalStats.averageChange24h,
     },
     {
       label: '24h Volume',
-      value: formatLargeNumber(GLOBAL_STATS.totalVolume24h),
+      value: formatLargeNumber(globalStats.totalVolume24h),
       change: 0, // No hay cambio para volumen
     },
     {
       label: 'Tokens Tracked',
-      value: GLOBAL_STATS.tokensTracked.toString(),
+      value: globalStats.tokensTracked.toString(),
       change: 0, // No hay cambio para cantidad
     },
   ];
@@ -39,9 +47,20 @@ export function HeroSection() {
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/80 max-w-4xl mx-auto mb-4">
             El futuro de las crypto latinas en tiempo real
           </p>
-          <p className="text-base sm:text-lg md:text-xl text-white/60 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-white/60 max-w-3xl mx-auto mb-4">
             Tracking exclusivo de tokens latinoamericanos en Solana y Pump.fun
           </p>
+          
+          {/* Indicador de estado de datos */}
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <div className={`w-2 h-2 rounded-full ${
+              hasError ? 'bg-[#ff0040]' : 'bg-[#00ff41]'
+            } ${isLoading ? 'animate-pulse' : ''}`} />
+            <span className="text-sm text-white/60">
+              {isLoading ? 'Cargando datos de DexScreener...' : 
+               hasError ? 'Error cargando datos' : 'Datos en tiempo real desde DexScreener'}
+            </span>
+          </div>
         </div>
 
         {/* Estadísticas globales */}
@@ -76,6 +95,21 @@ export function HeroSection() {
         <div className="absolute bottom-32 right-1/3 w-1 h-1 bg-[#00ff41]/35 rounded-full animate-float delay-3000" />
         <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-[#00ff41]/20 rounded-full animate-float delay-4000" />
       </div>
+
+      {/* Notificación de error si hay problemas */}
+      {hasError && (
+        <div className="fixed top-4 right-4 z-50 max-w-sm">
+          <div className="bg-[#ff0040]/20 backdrop-blur-xl border border-[#ff0040]/30 rounded-lg p-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-5 h-5 text-[#ff0040]">⚠️</div>
+              <div>
+                <h4 className="text-sm font-medium text-white">Error de Conexión</h4>
+                <p className="text-xs text-white/80">No se pudieron cargar los datos reales</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-10-01T19:34:07.709Z",
+  "results": {
+    "dexScreener": 0,
+    "jupiter": 0,
+    "coinMarketCap": 2,
+    "total": 5
+  },
+  "summary": {
+    "totalWorking": 2,
+    "totalPossible": 15,
+    "successRate": "13.3%"
+  }
+}

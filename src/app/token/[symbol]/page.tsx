@@ -1,199 +1,277 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
-import { getTokenBySymbol } from '@/lib/constants/tokens';
-import { formatPrice, formatLargeNumber, formatPercentage, formatAddress } from '@/lib/utils/formatters';
+import { useRealPrices } from '@/lib/hooks/useRealPrices';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { GlassButton } from '@/components/ui/GlassButton';
+import { formatPrice, formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
 import { PriceChange } from '@/components/ui/PriceChange';
-import { PriceChart } from '@/components/token-detail/PriceChart';
-import { TimeframeSelector } from '@/components/token-detail/TimeframeSelector';
-import { StatsGrid } from '@/components/token-detail/StatsGrid';
+import { Sparkline } from '@/components/dashboard/Sparkline';
+import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart3, Activity } from 'lucide-react';
+import Link from 'next/link';
 
-/**
- * Página de detalle de token
- * Vista completa con gráfico, estadísticas y enlaces
- */
-export default function TokenDetailPage() {
+interface TokenDetailPageProps {}
+
+export default function TokenDetailPage({}: TokenDetailPageProps) {
   const params = useParams();
   const symbol = params.symbol as string;
+  const { tokens, isLoading, hasError } = useRealPrices();
   
-  const token = getTokenBySymbol(symbol);
+  const token = tokens.find(t => t.symbol.toLowerCase() === symbol.toLowerCase());
   
-  if (!token) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#16213e] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Token no encontrado</h1>
-          <p className="text-white/70 mb-8">El token que buscas no existe en nuestra base de datos.</p>
-          <Link href="/">
-            <GlassButton>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Volver al Dashboard
-            </GlassButton>
+          <div className="w-8 h-8 border-2 border-[#00ff41] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white/60">Cargando datos del token...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (hasError || !token) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#16213e] flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">❌</div>
+          <h1 className="text-2xl font-bold text-white mb-2">Token no encontrado</h1>
+          <p className="text-white/60 mb-6">El token {symbol} no está disponible</p>
+          <Link 
+            href="/"
+            className="inline-flex items-center px-6 py-3 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Volver al Dashboard
           </Link>
         </div>
       </div>
     );
   }
 
+  const tokenData = token as any;
+  
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0e27] via-[#000000] to-[#0a0e27]">
-      {/* Header del token */}
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
-        <div className="flex items-center justify-between mb-6 sm:mb-8">
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <Link 
-              href="/"
-              className="flex items-center text-white/70 hover:text-[#00ff41] transition-colors duration-300 text-sm sm:text-base"
-            >
-              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
-              <span className="hidden xs:inline">LATAMCOINS</span>
-              <span className="xs:hidden">LTC</span>
-            </Link>
-            <div className="text-white/40 text-sm sm:text-base">/</div>
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-[#00ff41]/20 rounded-full flex items-center justify-center">
-                <span className="text-sm sm:text-base md:text-lg font-bold text-[#00ff41]">
-                  {token.symbol.charAt(0)}
-                </span>
-              </div>
-              <div>
-                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">{token.name}</h1>
-                <div className="text-white/60 text-sm sm:text-base">{token.symbol}</div>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#16213e]">
+      {/* Header */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <Link 
+            href="/"
+            className="inline-flex items-center px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Volver al Dashboard
+          </Link>
+          
+          <div className="flex items-center space-x-4">
+            {tokenData.dexScreenerUrl && (
+              <a
+                href={tokenData.dexScreenerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 bg-[#ff6b35]/20 hover:bg-[#ff6b35]/30 border border-[#ff6b35]/50 text-[#ff6b35] rounded-lg transition-all duration-300"
+              >
+                <BarChart3 className="w-4 h-4 mr-2" />
+                DexScreener
+                <ExternalLink className="w-3 h-3 ml-2" />
+              </a>
+            )}
+            {tokenData.pumpUrl && (
+              <a
+                href={tokenData.pumpUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 bg-[#8b5cf6]/20 hover:bg-[#8b5cf6]/30 border border-[#8b5cf6]/50 text-[#8b5cf6] rounded-lg transition-all duration-300"
+              >
+                <Activity className="w-4 h-4 mr-2" />
+                Pump.fun
+                <ExternalLink className="w-3 h-3 ml-2" />
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Token Header */}
+        <div className="text-center mb-12">
+          <div className="w-20 h-20 bg-[#00ff41]/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span className="text-3xl font-bold text-[#00ff41]">
+              {token.symbol.charAt(0)}
+            </span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{token.name}</h1>
+          <p className="text-xl text-white/60 mb-6">{token.symbol}</p>
+          
+          {/* Precio Principal */}
+          <div className="text-center mb-8">
+            <div className="text-5xl md:text-7xl font-mono text-white mb-4">
+              {formatPrice(token.price)}
+            </div>
+            <div className="flex items-center justify-center space-x-4">
+              <PriceChange change={token.change24h} size="lg" />
+              <span className="text-lg text-white/60">
+                {formatPercentage(token.change24h)} en 24h
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Información principal del token */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
-          {/* Precio y cambio */}
-          <GlassCard className="lg:col-span-2">
-            <div className="space-y-4 sm:space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-white font-mono">
-                    {formatPrice(token.price)}
-                  </div>
-                  <div className="flex items-center space-x-2 sm:space-x-4 mt-2">
-                    <PriceChange change={token.change24h} size="lg" />
-                    <span className="text-white/60 text-xs sm:text-sm">en 24h</span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-white/60 text-xs sm:text-sm">Ranking</div>
-                  <div className="text-lg sm:text-xl font-bold text-[#00ff41]">#{token.rank}</div>
-                </div>
-              </div>
+        {/* Gráfico Principal */}
+        <GlassCard className="p-8 mb-8">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-white mb-2">Gráfico de Precio</h2>
+            <p className="text-white/60">Datos en tiempo real desde DexScreener</p>
+          </div>
+          
+          <div className="h-64 mb-6">
+            <Sparkline data={token.sparkline || []} />
+          </div>
+          
+          {/* Selectores de tiempo */}
+          <div className="flex justify-center space-x-2">
+            {['1H', '24H', '7D', '30D', '1Y', 'ALL'].map((period) => (
+              <button
+                key={period}
+                className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                  period === 'ALL' 
+                    ? 'bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/50' 
+                    : 'bg-white/10 text-white/60 hover:bg-white/20'
+                }`}
+              >
+                {period}
+              </button>
+            ))}
+          </div>
+        </GlassCard>
 
-              {/* Gráfico de precio */}
-              <div className="h-48 sm:h-56 md:h-64">
-                <PriceChart token={token} />
-              </div>
-
-              {/* Selector de timeframe */}
-              <TimeframeSelector />
+        {/* Métricas Principales */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <GlassCard className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-white">Market Cap</h3>
+              <DollarSign className="w-5 h-5 text-[#00ff41]" />
+            </div>
+            <div className="text-2xl font-mono text-white mb-2">
+              {formatLargeNumber(token.marketCap)}
+            </div>
+            <div className="flex items-center space-x-2">
+              {token.change24h >= 0 ? (
+                <TrendingUp className="w-4 h-4 text-[#00ff41]" />
+              ) : (
+                <TrendingDown className="w-4 h-4 text-[#ff0040]" />
+              )}
+              <span className={`text-sm ${token.change24h >= 0 ? 'text-[#00ff41]' : 'text-[#ff0040]'}`}>
+                {formatPercentage(token.change24h)}
+              </span>
             </div>
           </GlassCard>
 
-          {/* Estadísticas */}
-          <div className="space-y-4 sm:space-y-6">
-            <StatsGrid token={token} />
-            
-            {/* Enlaces externos */}
-            <GlassCard>
-              <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Enlaces</h3>
-              <div className="space-y-2 sm:space-y-3">
-                <a
-                  href={`https://pump.fun/coin/${token.contract}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-2 sm:p-3 bg-[#00ff41]/10 hover:bg-[#00ff41]/20 border border-[#00ff41]/30 hover:border-[#00ff41]/50 rounded-lg transition-all duration-300 group"
-                  aria-label="Ver en Pump.fun"
-                >
-                  <span className="text-white group-hover:text-[#00ff41] transition-colors duration-300 text-sm sm:text-base">
-                    Ver en Pump.fun
-                  </span>
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-white/60 group-hover:text-[#00ff41] transition-colors duration-300" />
-                </a>
-                
-                <a
-                  href={`https://solscan.io/token/${token.contract}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-2 sm:p-3 bg-[#00ff41]/10 hover:bg-[#00ff41]/20 border border-[#00ff41]/30 hover:border-[#00ff41]/50 rounded-lg transition-all duration-300 group"
-                  aria-label="Ver en Solscan"
-                >
-                  <span className="text-white group-hover:text-[#00ff41] transition-colors duration-300 text-sm sm:text-base">
-                    Ver en Solscan
-                  </span>
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-white/60 group-hover:text-[#00ff41] transition-colors duration-300" />
-                </a>
-              </div>
-            </GlassCard>
-          </div>
+          <GlassCard className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-white">Volumen 24h</h3>
+              <BarChart3 className="w-5 h-5 text-[#00ff41]" />
+            </div>
+            <div className="text-2xl font-mono text-white mb-2">
+              {formatLargeNumber(token.volume24h)}
+            </div>
+            <div className="text-sm text-white/60">
+              Últimas 24 horas
+            </div>
+          </GlassCard>
+
+          <GlassCard className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-white">ATH</h3>
+              <TrendingUp className="w-5 h-5 text-[#00ff41]" />
+            </div>
+            <div className="text-2xl font-mono text-white mb-2">
+              {formatPrice(token.ath)}
+            </div>
+            <div className="text-sm text-[#ff0040]">
+              -{formatPercentage(((token.ath - token.price) / token.ath) * 100)} desde ATH
+            </div>
+          </GlassCard>
+
+          <GlassCard className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-white">ATL</h3>
+              <TrendingDown className="w-5 h-5 text-[#ff0040]" />
+            </div>
+            <div className="text-2xl font-mono text-white mb-2">
+              {formatPrice(token.atl)}
+            </div>
+            <div className="text-sm text-[#00ff41]">
+              +{formatPercentage(((token.price - token.atl) / token.atl) * 100)} desde ATL
+            </div>
+          </GlassCard>
         </div>
 
-        {/* Información detallada */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-          {/* Información del contrato */}
-          <GlassCard>
-            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Información del Contrato</h3>
-            <div className="space-y-2 sm:space-y-3">
-              <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
-                <span className="text-white/60 text-sm sm:text-base">Contrato:</span>
-                <span className="text-white font-mono text-xs sm:text-sm">
-                  {formatAddress(token.contract)}
-                </span>
+        {/* Información Adicional */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <GlassCard className="p-6">
+            <h3 className="text-xl font-bold text-white mb-6">Información del Token</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-white/60">Símbolo:</span>
+                <span className="text-white font-mono">{token.symbol}</span>
               </div>
-              <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
-                <span className="text-white/60 text-sm sm:text-base">Plataforma:</span>
-                <span className="text-white text-sm sm:text-base">{token.platform}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-white/60">Nombre:</span>
+                <span className="text-white">{token.name}</span>
               </div>
-              <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
-                <span className="text-white/60 text-sm sm:text-base">Blockchain:</span>
-                <span className="text-white text-sm sm:text-base">{token.chain}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-white/60">Plataforma:</span>
+                <span className="text-white">{token.platform}</span>
               </div>
-              <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
-                <span className="text-white/60 text-sm sm:text-base">Supply Total:</span>
-                <span className="text-white font-mono text-sm sm:text-base">
-                  {formatLargeNumber(token.supply)}
-                </span>
+              <div className="flex justify-between items-center">
+                <span className="text-white/60">Cadena:</span>
+                <span className="text-white">{token.chain}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-white/60">Ranking:</span>
+                <span className="text-white">#{token.rank}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-white/60">Suministro:</span>
+                <span className="text-white">{formatLargeNumber(token.supply)}</span>
               </div>
             </div>
           </GlassCard>
 
-          {/* Estadísticas adicionales */}
-          <GlassCard>
-            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Estadísticas Adicionales</h3>
-            <div className="space-y-2 sm:space-y-3">
-              <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
-                <span className="text-white/60 text-sm sm:text-base">ATH:</span>
-                <span className="text-white font-mono text-sm sm:text-base">
-                  {formatPrice(token.ath)}
-                </span>
-              </div>
-              <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
-                <span className="text-white/60 text-sm sm:text-base">ATL:</span>
-                <span className="text-white font-mono text-sm sm:text-base">
-                  {formatPrice(token.atl)}
-                </span>
-              </div>
-              <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
-                <span className="text-white/60 text-sm sm:text-base">Distancia desde ATH:</span>
-                <span className="text-white font-mono text-sm sm:text-base">
-                  {formatPercentage(((token.price - token.ath) / token.ath) * 100)}
-                </span>
-              </div>
-              <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
-                <span className="text-white/60 text-sm sm:text-base">Distancia desde ATL:</span>
-                <span className="text-white font-mono text-sm sm:text-base">
-                  {formatPercentage(((token.price - token.atl) / token.atl) * 100)}
-                </span>
-              </div>
+          <GlassCard className="p-6">
+            <h3 className="text-xl font-bold text-white mb-6">Datos de DexScreener</h3>
+            <div className="space-y-4">
+              {tokenData.liquidity && (
+                <div className="flex justify-between items-center">
+                  <span className="text-white/60">Liquidez:</span>
+                  <span className="text-white">{formatLargeNumber(tokenData.liquidity)}</span>
+                </div>
+              )}
+              {tokenData.fdv && (
+                <div className="flex justify-between items-center">
+                  <span className="text-white/60">FDV:</span>
+                  <span className="text-white">{formatLargeNumber(tokenData.fdv)}</span>
+                </div>
+              )}
+              {tokenData.source && (
+                <div className="flex justify-between items-center">
+                  <span className="text-white/60">Fuente:</span>
+                  <span className="text-white">{tokenData.source}</span>
+                </div>
+              )}
+              {tokenData.isRealTime && (
+                <div className="flex justify-between items-center">
+                  <span className="text-white/60">Tiempo Real:</span>
+                  <span className="text-[#00ff41]">✅ Activo</span>
+                </div>
+              )}
+              {tokenData.lastUpdated && (
+                <div className="flex justify-between items-center">
+                  <span className="text-white/60">Última Actualización:</span>
+                  <span className="text-white text-sm">
+                    {new Date(tokenData.lastUpdated).toLocaleString()}
+                  </span>
+                </div>
+              )}
             </div>
           </GlassCard>
         </div>

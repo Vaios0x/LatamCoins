@@ -16,19 +16,13 @@ export function Sparkline({ data, className }: SparklineProps) {
   // Procesar datos para el gráfico
   const chartData = useMemo(() => {
     if (!data || data.length === 0) {
-      // Generar datos mock si no hay datos
-      const mockData = [];
-      for (let i = 0; i < 7; i++) {
-        mockData.push({
-          value: Math.random() * 100 + 50,
-          index: i,
-        });
-      }
-      return mockData;
+      // Si no hay datos reales, mostrar línea plana
+      return [{ value: 0, index: 0 }];
     }
     
+    // Usar datos reales de CoinGecko
     return data.map((value, index) => ({
-      value,
+      value: value || 0,
       index,
     }));
   }, [data]);
