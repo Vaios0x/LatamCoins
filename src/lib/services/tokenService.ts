@@ -3,9 +3,9 @@
  * Combina datos de múltiples APIs para obtener información completa
  */
 
-import { getJupiterPrices, getTokenInfo, getTokenData } from '@/lib/api/solana';
+import { getTokenData } from '@/lib/api/solana';
 import { getCMCTokenData, getCMCGlobalMetrics } from '@/lib/api/coinmarketcap';
-import { getPumpFunTokenData, getMultiplePumpFunTokens } from '@/lib/api/pumpfun';
+// import { getPumpFunTokenData, getMultiplePumpFunTokens } from '@/lib/api/pumpfun';
 import { Token } from '@/lib/constants/tokens';
 
 // Tipos para datos combinados
@@ -53,7 +53,7 @@ export async function getRealTokenData(
 
   try {
     let tokenData: RealTokenData | null = null;
-    let apiErrors: string[] = [];
+    const apiErrors: string[] = [];
 
     // Intentar obtener datos de múltiples fuentes
     if (finalConfig.useJupiter) {
@@ -185,7 +185,7 @@ export async function getMultipleRealTokens(
 /**
  * Obtiene métricas globales reales
  */
-export async function getRealGlobalMetrics(): Promise<any> {
+export async function getRealGlobalMetrics(): Promise<{ totalMarketCap: number; totalVolume24h: number; btcDominance: number; ethDominance: number } | null> {
   try {
     const cmcMetrics = await getCMCGlobalMetrics();
     if (cmcMetrics) {

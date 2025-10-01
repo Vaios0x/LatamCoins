@@ -4,7 +4,7 @@
  */
 
 // Configuración de endpoints
-const SOLANA_RPC_URL = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
+// const SOLANA_RPC_URL = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
 const JUPITER_API_URL = 'https://price.jup.ag/v4/price';
 const SOLSCAN_API_URL = 'https://public-api.solscan.io';
 
@@ -80,7 +80,7 @@ export async function getTokenInfo(address: string): Promise<SolanaTokenData | n
 /**
  * Obtiene datos de mercado desde DexScreener
  */
-export async function getDexScreenerData(pairAddress: string): Promise<any> {
+export async function getDexScreenerData(pairAddress: string): Promise<{ priceUsd: string; priceChange: { h24: string }; volume: { h24: string }; marketCap: string; liquidity: { usd: string }; fdv: string } | null> {
   try {
     const response = await fetch(`https://api.dexscreener.com/latest/dex/pairs/solana/${pairAddress}`);
     

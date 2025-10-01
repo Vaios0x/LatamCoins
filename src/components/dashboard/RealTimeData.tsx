@@ -9,7 +9,6 @@ import { Activity, TrendingUp, TrendingDown, DollarSign, BarChart3 } from 'lucid
 interface RealTimeDataProps {
   tokenAddress: string;
   tokenSymbol: string;
-  tokenName: string;
 }
 
 interface DexScreenerData {
@@ -29,7 +28,7 @@ interface DexScreenerData {
   isRealTime: boolean;
 }
 
-export function RealTimeData({ tokenAddress, tokenSymbol, tokenName }: RealTimeDataProps) {
+export function RealTimeData({ tokenAddress, tokenSymbol }: RealTimeDataProps) {
   const [data, setData] = useState<DexScreenerData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -57,7 +56,7 @@ export function RealTimeData({ tokenAddress, tokenSymbol, tokenName }: RealTimeD
       const result = await response.json();
       
       if (result.success && result.data) {
-        const tokenData = result.data.find((t: any) => 
+        const tokenData = result.data.find((t: { contract: string; symbol: string; id: string }) => 
           t.contract === tokenAddress || t.symbol === tokenSymbol || t.id === tokenAddress
         );
         
@@ -104,7 +103,7 @@ export function RealTimeData({ tokenAddress, tokenSymbol, tokenName }: RealTimeD
     const interval = setInterval(fetchRealTimeData, 30000);
     
     return () => clearInterval(interval);
-  }, [tokenAddress, tokenSymbol]);
+  }, [tokenAddress, tokenSymbol, fetchRealTimeData]);
 
   if (isLoading) {
     return (

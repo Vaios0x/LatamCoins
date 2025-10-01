@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowUpDown, ArrowUp, ArrowDown, Search, X } from 'lucide-react';
-import { LATAM_TOKENS, Token } from '@/lib/constants/tokens';
+import { Token } from '@/lib/constants/tokens';
 import { formatPrice, formatLargeNumber } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { PriceChange } from '@/components/ui/PriceChange';
@@ -24,7 +24,7 @@ export function TokenTable() {
   const [searchQuery, setSearchQuery] = useState('');
   
   // Usar el hook de precios reales
-  const { tokens, isLoading, refreshPrices, hasError } = useRealPrices();
+  const { tokens, isLoading, refreshPrices } = useRealPrices();
 
   // Filtrar tokens por búsqueda
   const filteredTokens = useMemo(() => {

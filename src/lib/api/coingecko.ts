@@ -50,7 +50,7 @@ export async function fetchCoinGeckoData(coinIds: string[]): Promise<CoinGeckoRe
     const data = await response.json();
     
     return {
-      data: data.map((coin: any) => ({
+      data: data.map((coin: { id: string; symbol: string; name: string; current_price: number; market_cap: number; total_volume: number; price_change_percentage_24h: number; sparkline_in_7d: { price: number[] } }) => ({
         id: coin.id,
         symbol: coin.symbol.toUpperCase(),
         name: coin.name,
@@ -101,7 +101,7 @@ export async function fetchSolanaTokens(): Promise<CoinGeckoResponse> {
     const data = await response.json();
     
     return {
-      data: data.map((coin: any) => ({
+      data: data.map((coin: { id: string; symbol: string; name: string; current_price: number; market_cap: number; total_volume: number; price_change_percentage_24h: number; sparkline_in_7d: { price: number[] } }) => ({
         id: coin.id,
         symbol: coin.symbol.toUpperCase(),
         name: coin.name,

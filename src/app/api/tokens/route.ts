@@ -140,6 +140,7 @@ async function fetchJupiterData(tokenAddress: string) {
 }
 
 // Función para obtener datos de CoinGecko como fallback
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function fetchCoinGeckoData(coinIds: string[]) {
   try {
     const ids = coinIds.join(',');

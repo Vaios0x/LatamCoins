@@ -47,7 +47,7 @@ export function useRealPrices() {
         
         // Mapear datos de la API a nuestros tokens
         const updatedTokens = LATAM_TOKENS.map((token) => {
-          const apiToken = result.data.find((t: any) => t.id === token.id);
+          const apiToken = result.data.find((t: { id: string }) => t.id === token.id);
           
            if (apiToken) {
              console.log(`🔄 Updating ${token.symbol}: ${token.price} -> ${apiToken.price} (${apiToken.source})`);

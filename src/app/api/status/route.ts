@@ -17,7 +17,7 @@ async function checkDexScreener() {
       message: response.ok ? 'Conectado' : `Error ${response.status}`,
       lastChecked: new Date().toISOString()
     };
-  } catch (error) {
+  } catch {
     return {
       name: 'DexScreener',
       status: 'error',
@@ -55,7 +55,7 @@ async function checkCoinMarketCap() {
         lastChecked: new Date().toISOString()
       };
     }
-  } catch (error) {
+  } catch {
     return {
       name: 'CoinMarketCap',
       status: 'error',
@@ -105,7 +105,7 @@ async function checkJupiter() {
         lastChecked: new Date().toISOString()
       };
     }
-  } catch (error) {
+  } catch {
     return {
       name: 'Jupiter',
       status: 'error',

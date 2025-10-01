@@ -32,7 +32,7 @@ export function TokenChart({
         const result = await response.json();
 
         if (result.success && result.data) {
-          const token = result.data.find((t: any) => t.id === tokenId || t.symbol === tokenSymbol);
+          const token = result.data.find((t: { id: string; symbol: string }) => t.id === tokenId || t.symbol === tokenSymbol);
           
           if (token && token.sparkline && token.sparkline.length > 0) {
             setChartData(token.sparkline);

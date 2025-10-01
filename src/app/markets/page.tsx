@@ -23,7 +23,7 @@ export default function MarketsPage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<FilterType>('all');
-  const [showFilters] = useState(false);
+  // const [showFilters] = useState(false);
 
   // Filtrar tokens
   const filteredTokens = useMemo(() => {

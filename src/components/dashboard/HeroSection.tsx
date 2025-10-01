@@ -1,10 +1,10 @@
 'use client';
 
-import { GLOBAL_STATS } from '@/lib/constants/tokens';
+// import { GLOBAL_STATS } from '@/lib/constants/tokens';
 import { formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useRealPrices } from '@/lib/hooks/useRealPrices';
-import { ApiStatusNotification } from '@/components/ui/ApiStatusNotification';
+// import { ApiStatusNotification } from '@/components/ui/ApiStatusNotification';
 
 /**
  * Sección hero del dashboard

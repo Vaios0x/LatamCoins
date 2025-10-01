@@ -9,14 +9,15 @@ import { Sparkline } from '@/components/dashboard/Sparkline';
 import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart3, Activity } from 'lucide-react';
 import Link from 'next/link';
 
-interface TokenDetailPageProps {}
+interface TokenDetailPageProps {
+  params: Promise<{ symbol: string }>;
+}
 
-export default function TokenDetailPage({}: TokenDetailPageProps) {
-  const params = useParams();
-  const symbol = params.symbol as string;
+export default async function TokenDetailPage({ params }: TokenDetailPageProps) {
+  const { symbol } = await params;
   const { tokens, isLoading, hasError } = useRealPrices();
   
-  const token = tokens.find(t => t.symbol.toLowerCase() === symbol.toLowerCase());
+  const token = tokens.find((t: any) => t.symbol.toLowerCase() === symbol.toLowerCase());
   
   if (isLoading) {
     return (

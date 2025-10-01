@@ -107,7 +107,7 @@ export function RealTimeChart({
         cornerRadius: 8,
         displayColors: false,
         callbacks: {
-          label: function(context: any) {
+          label: function(context: { parsed: { y: number } }) {
             return `Precio: $${context.parsed.y.toFixed(8)}`;
           },
         },
@@ -139,7 +139,7 @@ export function RealTimeChart({
           font: {
             size: 10,
           },
-          callback: function(value: any) {
+          callback: function(value: number) {
             return `$${value.toFixed(8)}`;
           },
         },
