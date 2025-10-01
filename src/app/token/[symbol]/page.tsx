@@ -1,6 +1,5 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { useRealPrices } from '@/lib/hooks/useRealPrices';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { formatPrice, formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
@@ -8,16 +7,16 @@ import { PriceChange } from '@/components/ui/PriceChange';
 import { Sparkline } from '@/components/dashboard/Sparkline';
 import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart3, Activity } from 'lucide-react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
-interface TokenDetailPageProps {
-  params: Promise<{ symbol: string }>;
-}
+interface TokenDetailPageProps {}
 
-export default async function TokenDetailPage({ params }: TokenDetailPageProps) {
-  const { symbol } = await params;
+export default function TokenDetailPage({}: TokenDetailPageProps) {
+  const params = useParams();
+  const symbol = params.symbol as string;
   const { tokens, isLoading, hasError } = useRealPrices();
   
-  const token = tokens.find((t: any) => t.symbol.toLowerCase() === symbol.toLowerCase());
+  const token = tokens.find((t: { symbol: string }) => t.symbol.toLowerCase() === symbol.toLowerCase());
   
   if (isLoading) {
     return (
@@ -49,7 +48,7 @@ export default async function TokenDetailPage({ params }: TokenDetailPageProps) 
     );
   }
 
-  const tokenData = token as any;
+  const tokenData = token;
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#16213e]">

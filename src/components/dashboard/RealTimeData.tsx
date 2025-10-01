@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { formatPrice, formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
 import { PriceChange } from '@/components/ui/PriceChange';
@@ -34,7 +34,7 @@ export function RealTimeData({ tokenAddress, tokenSymbol }: RealTimeDataProps) {
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
 
-  const fetchRealTimeData = async () => {
+  const fetchRealTimeData = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -94,7 +94,7 @@ export function RealTimeData({ tokenAddress, tokenSymbol }: RealTimeDataProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [tokenAddress, tokenSymbol]);
 
   useEffect(() => {
     fetchRealTimeData();
@@ -103,7 +103,7 @@ export function RealTimeData({ tokenAddress, tokenSymbol }: RealTimeDataProps) {
     const interval = setInterval(fetchRealTimeData, 30000);
     
     return () => clearInterval(interval);
-  }, [tokenAddress, tokenSymbol, fetchRealTimeData]);
+  }, [fetchRealTimeData]);
 
   if (isLoading) {
     return (

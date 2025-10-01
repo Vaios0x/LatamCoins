@@ -40,7 +40,6 @@ async function checkCoinMarketCap() {
     });
     
     if (response.ok) {
-      const data = await response.json();
       return {
         name: 'CoinMarketCap',
         status: 'success',

@@ -153,7 +153,7 @@ export async function searchTokens(query: string): Promise<CoinGeckoResponse> {
     
     // Get detailed data for found coins
     if (data.coins && data.coins.length > 0) {
-      const coinIds = data.coins.slice(0, 10).map((coin: any) => coin.id);
+      const coinIds = data.coins.slice(0, 10).map((coin: { id: string }) => coin.id);
       return await fetchCoinGeckoData(coinIds);
     }
     

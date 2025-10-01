@@ -80,7 +80,7 @@ export function usePrices() {
   // Cargar datos reales al montar el componente
   useEffect(() => {
     loadRealData();
-  }, []); // Solo ejecutar una vez al montar
+  }, [loadRealData]); // Incluir loadRealData en dependencias
 
   // Actualizar datos cada 30 segundos si se usan datos reales
   useEffect(() => {
@@ -91,7 +91,7 @@ export function usePrices() {
     }, 30000); // Actualizar cada 30 segundos
 
     return () => clearInterval(interval);
-  }, [useRealData]); // Solo dependencia de useRealData
+  }, [useRealData, loadRealData]); // Incluir loadRealData en dependencias
 
   // Función para actualizar precios manualmente
   const refreshPrices = async () => {
