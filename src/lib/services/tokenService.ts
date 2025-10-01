@@ -185,7 +185,7 @@ export async function getMultipleRealTokens(
 /**
  * Obtiene métricas globales reales
  */
-export async function getRealGlobalMetrics(): Promise<{ totalMarketCap: number; totalVolume24h: number; btcDominance: number; ethDominance: number } | null> {
+export async function getRealGlobalMetrics(): Promise<{ totalMarketCap: number; totalVolume24h: number; btcDominance: number; ethDominance: number; activeCryptocurrencies?: number; lastUpdated: string; source: string } | null> {
   try {
     const cmcMetrics = await getCMCGlobalMetrics();
     if (cmcMetrics) {
