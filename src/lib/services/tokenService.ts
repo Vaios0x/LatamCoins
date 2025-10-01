@@ -192,6 +192,8 @@ export async function getRealGlobalMetrics(): Promise<{ totalMarketCap: number; 
       return {
         totalMarketCap: cmcMetrics.quote.USD.total_market_cap,
         totalVolume24h: cmcMetrics.quote.USD.total_volume_24h,
+        btcDominance: cmcMetrics.quote.USD.btc_dominance,
+        ethDominance: cmcMetrics.quote.USD.eth_dominance,
         activeCryptocurrencies: cmcMetrics.active_cryptocurrencies || 10000,
         lastUpdated: new Date().toISOString(),
         source: 'cmc',
