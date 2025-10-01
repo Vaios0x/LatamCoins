@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { LATAM_TOKENS, Token } from '@/lib/constants/tokens';
-// import { getRealTokenData, getMultipleRealTokens, getRealGlobalMetrics, RealTokenData } from '@/lib/services/tokenService';
+import { getMultipleRealTokens, RealTokenData } from '@/lib/services/tokenService';
 
 /**
  * Hook para manejar precios en tiempo real
@@ -33,7 +33,7 @@ export function usePrices() {
       
       if (realTokens.length > 0) {
         // Convertir datos reales al formato de Token
-        const convertedTokens: Token[] = realTokens.map((realToken) => ({
+        const convertedTokens: Token[] = realTokens.map((realToken: RealTokenData) => ({
           id: realToken.id,
           symbol: realToken.symbol,
           name: realToken.name,
