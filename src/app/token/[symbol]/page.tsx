@@ -9,9 +9,7 @@ import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-interface TokenDetailPageProps {}
-
-export default function TokenDetailPage({}: TokenDetailPageProps) {
+export default function TokenDetailPage() {
   const params = useParams();
   const symbol = params.symbol as string;
   const { tokens, isLoading, hasError } = useRealPrices();
