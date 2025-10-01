@@ -22,6 +22,20 @@ export interface Token {
   sparkline?: number[];
   dexScreenerUrl?: string;
   pumpUrl?: string;
+  jupiterUrl?: string;
+  cmcSymbols?: string[];
+  liquidity?: number;
+  fdv?: number;
+  source?: string;
+  isRealTime?: boolean;
+  pairAddress?: string;
+  priceChange?: {
+    m5: number;
+    h1: number;
+    h6: number;
+    h24: number;
+  };
+  lastUpdated?: string;
 }
 
 export const LATAM_TOKENS: Token[] = [
