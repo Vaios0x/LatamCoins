@@ -192,7 +192,7 @@ export async function getRealGlobalMetrics(): Promise<{ totalMarketCap: number; 
       return {
         totalMarketCap: cmcMetrics.quote.USD.total_market_cap,
         totalVolume24h: cmcMetrics.quote.USD.total_volume_24h,
-        activeCryptocurrencies: cmcMetrics.active_cryptocurrencies,
+        activeCryptocurrencies: cmcMetrics.active_cryptocurrencies || 10000,
         lastUpdated: new Date().toISOString(),
         source: 'cmc',
       };
@@ -205,6 +205,8 @@ export async function getRealGlobalMetrics(): Promise<{ totalMarketCap: number; 
   return {
     totalMarketCap: 2500000000000, // $2.5T
     totalVolume24h: 100000000000, // $100B
+    btcDominance: 45.5,
+    ethDominance: 18.2,
     activeCryptocurrencies: 10000,
     lastUpdated: new Date().toISOString(),
     source: 'mock',

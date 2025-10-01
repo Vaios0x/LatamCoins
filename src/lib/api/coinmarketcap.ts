@@ -81,7 +81,7 @@ export async function getCMCToken(symbol: string): Promise<CMCData | null> {
 /**
  * Obtiene datos de mercado global
  */
-export async function getCMCGlobalMetrics(): Promise<{ quote: { USD: { total_market_cap: number; total_volume_24h: number; btc_dominance: number; eth_dominance: number } } } | null> {
+export async function getCMCGlobalMetrics(): Promise<{ quote: { USD: { total_market_cap: number; total_volume_24h: number; btc_dominance: number; eth_dominance: number } }; active_cryptocurrencies: number } | null> {
   if (!CMC_API_KEY) {
     console.warn('CoinMarketCap API key not found');
     return null;
