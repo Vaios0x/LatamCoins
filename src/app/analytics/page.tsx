@@ -3,10 +3,9 @@
 import { useState, useMemo } from 'react';
 import { TrendingUp, TrendingDown, BarChart3, PieChart, Activity, Target } from 'lucide-react';
 import { LATAM_TOKENS } from '@/lib/constants/tokens';
-import { formatPrice, formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { formatPrice, formatLargeNumber } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { PriceChart } from '@/components/token-detail/PriceChart';
-import { Sparkline } from '@/components/dashboard/Sparkline';
 
 /**
  * Página de análisis con métricas avanzadas
@@ -242,7 +241,7 @@ export default function AnalyticsPage() {
                 <h3 className="text-lg font-semibold text-white">Distribución por Market Cap</h3>
               </div>
               <div className="space-y-4">
-                {LATAM_TOKENS.map((token, index) => {
+                {LATAM_TOKENS.map((token) => {
                   const percentage = (token.marketCap / marketMetrics.totalMarketCap) * 100;
                   return (
                     <div key={token.id} className="space-y-2">

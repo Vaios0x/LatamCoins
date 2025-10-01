@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { GlassButton } from '@/components/ui/GlassButton';
-import { ArrowLeft, HelpCircle, MessageSquare, Mail, Phone, Clock, CheckCircle, AlertCircle, Info, Search, Filter, Send } from 'lucide-react';
+import { ArrowLeft, HelpCircle, MessageSquare, Mail, CheckCircle, AlertCircle, Search, Send } from 'lucide-react';
 import Link from 'next/link';
 
 /**

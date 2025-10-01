@@ -320,7 +320,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">¿Cómo puedo sugerir un token?</h3>
                 <p className="text-white/70 text-sm">
-                  Envía un mensaje con el tipo "Sugerencias" incluyendo información del token y su relevancia para LATAM.
+                  Envía un mensaje con el tipo &quot;Sugerencias&quot; incluyendo información del token y su relevancia para LATAM.
                 </p>
               </div>
               <div>

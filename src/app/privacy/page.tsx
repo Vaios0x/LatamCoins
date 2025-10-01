@@ -276,7 +276,7 @@ export default function PrivacyPage() {
             <p className="text-white/80">
               Podemos actualizar esta política de privacidad ocasionalmente. Le notificaremos 
               sobre cambios significativos publicando la nueva política en esta página y 
-              actualizando la fecha de "última modificación". Le recomendamos revisar esta 
+              actualizando la fecha de &quot;última modificación&quot;. Le recomendamos revisar esta 
               política periódicamente.
             </p>
           </GlassCard>

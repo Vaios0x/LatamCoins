@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Search, Filter, TrendingUp, TrendingDown, Volume2, DollarSign } from 'lucide-react';
 import { LATAM_TOKENS, Token } from '@/lib/constants/tokens';
-import { formatPrice, formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { formatPrice, formatLargeNumber } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { GlassButton } from '@/components/ui/GlassButton';
 import { PriceChange } from '@/components/ui/PriceChange';
@@ -23,7 +23,7 @@ export default function MarketsPage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<FilterType>('all');
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters] = useState(false);
 
   // Filtrar tokens
   const filteredTokens = useMemo(() => {

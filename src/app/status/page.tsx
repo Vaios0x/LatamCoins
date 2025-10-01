@@ -15,7 +15,7 @@ export default function StatusPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Estados del sistema (simulados)
-  const [systemStatus, setSystemStatus] = useState({
+  const [systemStatus] = useState({
     overall: 'operational' as 'operational' | 'degraded' | 'outage',
     uptime: '99.9%',
     responseTime: '45ms',
