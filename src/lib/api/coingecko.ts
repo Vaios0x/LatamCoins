@@ -20,6 +20,23 @@ export interface CoinGeckoToken {
   last_updated: string;
 }
 
+interface CoinGeckoApiResponse {
+  id: string;
+  symbol: string;
+  name: string;
+  current_price: number;
+  market_cap: number;
+  total_volume: number;
+  price_change_percentage_24h: number;
+  price_change_percentage_7d?: number;
+  price_change_percentage_1h?: number;
+  sparkline_in_7d?: {
+    price: number[];
+  };
+  image: string;
+  last_updated: string;
+}
+
 export interface CoinGeckoResponse {
   data: CoinGeckoToken[];
   success: boolean;
@@ -50,7 +67,7 @@ export async function fetchCoinGeckoData(coinIds: string[]): Promise<CoinGeckoRe
     const data = await response.json();
     
     return {
-      data: data.map((coin: { id: string; symbol: string; name: string; current_price: number; market_cap: number; total_volume: number; price_change_percentage_24h: number; sparkline_in_7d: { price: number[] } }) => ({
+      data: data.map((coin: CoinGeckoApiResponse) => ({
         id: coin.id,
         symbol: coin.symbol.toUpperCase(),
         name: coin.name,
@@ -101,7 +118,7 @@ export async function fetchSolanaTokens(): Promise<CoinGeckoResponse> {
     const data = await response.json();
     
     return {
-      data: data.map((coin: { id: string; symbol: string; name: string; current_price: number; market_cap: number; total_volume: number; price_change_percentage_24h: number; sparkline_in_7d: { price: number[] } }) => ({
+      data: data.map((coin: CoinGeckoApiResponse) => ({
         id: coin.id,
         symbol: coin.symbol.toUpperCase(),
         name: coin.name,

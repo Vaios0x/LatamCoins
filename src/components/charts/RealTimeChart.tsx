@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
   Filler,
+  ChartOptions,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
@@ -76,7 +77,7 @@ export function RealTimeChart({
     }));
   }, [data, labels]);
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -118,7 +119,6 @@ export function RealTimeChart({
         display: showGrid,
         grid: {
           color: 'rgba(0, 255, 65, 0.1)',
-          drawBorder: false,
         },
         ticks: {
           color: '#ffffff',
@@ -132,15 +132,15 @@ export function RealTimeChart({
         display: showGrid,
         grid: {
           color: 'rgba(0, 255, 65, 0.1)',
-          drawBorder: false,
         },
         ticks: {
           color: '#ffffff',
           font: {
             size: 10,
           },
-          callback: function(value: number) {
-            return `$${value.toFixed(8)}`;
+          callback: (value: string | number) => {
+            const numValue = typeof value === 'number' ? value : parseFloat(value.toString());
+            return `$${numValue.toFixed(8)}`;
           },
         },
       },
