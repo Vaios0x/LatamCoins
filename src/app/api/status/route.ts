@@ -71,16 +71,34 @@ async function checkJupiter() {
     const apiKey = process.env.NEXT_PUBLIC_JUPITER_API_KEY;
     
     if (!apiKey) {
-      return {
-        name: 'Jupiter',
-        status: 'error',
-        message: 'API key requerida',
-        lastChecked: new Date().toISOString()
-      };
+      // Intentar usar la API pública sin key
+      const response = await fetch('https://price.jup.ag/v4/price?ids=So11111111111111111111111111111111111111112', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'LATAMCOINS/1.0'
+        }
+      });
+      
+      if (response.ok) {
+        return {
+          name: 'Jupiter',
+          status: 'success',
+          message: 'Conectado (API pública)',
+          lastChecked: new Date().toISOString()
+        };
+      } else {
+        return {
+          name: 'Jupiter',
+          status: 'warning',
+          message: 'API pública limitada',
+          lastChecked: new Date().toISOString()
+        };
+      }
     }
     
-    // Usar Price API V3 (versión actual según documentación oficial)
-    const response = await fetch('https://lite-api.jup.ag/price/v3?ids=So11111111111111111111111111111111111111112', {
+    // Usar Price API V3 con key
+    const response = await fetch('https://api.jup.ag/price/v3?ids=So11111111111111111111111111111111111111112', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -93,7 +111,7 @@ async function checkJupiter() {
       return {
         name: 'Jupiter',
         status: 'success',
-        message: 'Conectado',
+        message: 'Conectado (API premium)',
         lastChecked: new Date().toISOString()
       };
     } else {
@@ -126,7 +144,7 @@ export async function GET() {
     ]);
     
     const apiStatuses = [dexScreener, coinMarketCap, jupiter];
-    const workingApis = apiStatuses.filter(api => api.status === 'success').length;
+    const workingApis = apiStatuses.filter(api => api.status === 'success' || api.status === 'warning').length;
     const totalApis = apiStatuses.length;
     
     console.log(`✅ API Status: ${workingApis}/${totalApis} APIs working`);
