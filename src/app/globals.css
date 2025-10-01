@@ -1,26 +1,1367 @@
-@import "tailwindcss";
+/* ============================================
+   LATAMCOINS - Global Styles
+   Tema Cyberpunk/Matrix con Glassmorphism
+   ============================================ */
 
+/* Importaciones */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   VARIABLES CSS
+   ============================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colores Matrix */
+  --matrix-green: #00ff41;
+  --matrix-green-dark: #008f11;
+  --matrix-green-glow: #00ff41;
+  
+  /* Colores Cyberpunk */
+  --cyber-purple: #a855f7;
+  --cyber-purple-bright: #d946ef;
+  --cyber-cyan: #06b6d4;
+  --cyber-cyan-bright: #00ffff;
+  
+  /* Colores Oscuros */
+  --dark-primary: #0a0e27;
+  --dark-secondary: #000000;
+  --dark-glass: rgba(10, 14, 39, 0.7);
+  
+  /* Colores de Estado */
+  --success: #00ff41;
+  --error: #ff0040;
+  --warning: #ffaa00;
+  --info: #00ffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================
+   RESET Y ESTILOS BASE
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  font-size: 16px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0a0e27 0%, #000000 100%);
+  color: #ffffff;
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADO
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 14, 39, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00ff41, #008f11);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #00ff41, #00ff41);
+}
+
+/* ============================================
+   EFECTOS GLASSMORPHISM
+   ============================================ */
+.glass-card {
+  background: rgba(10, 14, 39, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 255, 65, 0.1),
+    inset 0 0 20px rgba(0, 255, 65, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 12px 40px rgba(0, 255, 65, 0.15),
+    inset 0 0 20px rgba(0, 255, 65, 0.1);
+  border-color: rgba(0, 255, 65, 0.4);
+}
+
+/* ============================================
+   EFECTOS NEÓN
+   ============================================ */
+.neon-text {
+  color: #00ff41;
+  text-shadow: 
+    0 0 5px #00ff41,
+    0 0 10px #00ff41,
+    0 0 15px #00ff41,
+    0 0 20px #00ff41;
+  animation: neon-pulse 2s ease-in-out infinite alternate;
+}
+
+.neon-glow {
+  box-shadow: 
+    0 0 5px #00ff41,
+    0 0 10px #00ff41,
+    0 0 15px #00ff41;
+}
+
+@keyframes neon-pulse {
+  0% {
+    text-shadow: 
+      0 0 5px #00ff41,
+      0 0 10px #00ff41,
+      0 0 15px #00ff41;
+  }
+  100% {
+    text-shadow: 
+      0 0 10px #00ff41,
+      0 0 20px #00ff41,
+      0 0 30px #00ff41;
+  }
+}
+
+/* ============================================
+   EFECTOS MATRIX RAIN
+   ============================================ */
+.matrix-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.matrix-char {
+  position: absolute;
+  color: #00ff41;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  opacity: 0.8;
+  animation: matrix-fall linear infinite;
+}
+
+@keyframes matrix-fall {
+  0% {
+    transform: translateY(-100px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   EFECTOS DE PARTÍCULAS
+   ============================================ */
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #00ff41;
+  border-radius: 50%;
+  animation: particle-float 6s ease-in-out infinite;
+}
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   EFECTOS GLITCH
+   ============================================ */
+.glitch {
+  position: relative;
+  animation: glitch 0.3s ease-in-out;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  animation: glitch-1 0.3s ease-in-out;
+  color: #ff0040;
+  z-index: -1;
+}
+
+.glitch::after {
+  animation: glitch-2 0.3s ease-in-out;
+  color: #00ffff;
+  z-index: -2;
+}
+
+@keyframes glitch-1 {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-2 {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(2px, -2px); }
+  40% { transform: translate(2px, 2px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(-2px, 2px); }
+}
+
+/* ============================================
+   BOTONES GLASSMORPHISM
+   ============================================ */
+.glass-button {
+  position: relative;
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: #00ff41;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.glass-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.glass-button:hover::before {
+  left: 100%;
+}
+
+.glass-button:hover {
+  background: rgba(0, 255, 65, 0.2);
+  border-color: rgba(0, 255, 65, 0.6);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   EFECTOS DE PRECIO
+   ============================================ */
+.price-up {
+  color: #00ff41;
+  animation: price-flash-green 0.3s ease-in-out;
+}
+
+.price-down {
+  color: #ff0040;
+  animation: price-flash-red 0.3s ease-in-out;
+}
+
+@keyframes price-flash-green {
+  0% { background-color: rgba(0, 255, 65, 0.2); }
+  100% { background-color: transparent; }
+}
+
+@keyframes price-flash-red {
+  0% { background-color: rgba(255, 0, 64, 0.2); }
+  100% { background-color: transparent; }
+}
+
+/* ============================================
+   LOADING SPINNER
+   ============================================ */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 255, 65, 0.3);
+  border-top: 3px solid #00ff41;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ============================================
+   ANIMACIONES DEL TICKER
+   ============================================ */
+@keyframes ticker-scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-pause {
+  animation-play-state: paused !important;
+}
+
+/* ============================================
+   GRADIENTES ANIMADOS
+   ============================================ */
+.animated-gradient {
+  background: linear-gradient(-45deg, #0a0e27, #000000, #0a0e27, #000000);
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ============================================
+   TRANSICIONES SUAVES
+   ============================================ */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - MOBILE FIRST
+   ============================================ */
+
+/* Extra Small devices (phones, 320px and up) */
+@media (max-width: 320px) {
+  .glass-card {
+    backdrop-filter: blur(6px);
+    padding: 0.75rem;
+  }
+  
+  .matrix-char {
+    font-size: 8px;
+  }
+  
+  .neon-text {
+    text-shadow: 
+      0 0 2px #00ff41,
+      0 0 4px #00ff41,
+      0 0 6px #00ff41;
+  }
+  
+  .text-4xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.25rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.125rem;
+  }
+}
+
+/* Small devices (phones, 480px and up) */
+@media (max-width: 480px) {
+  .glass-card {
+    backdrop-filter: blur(8px);
+    padding: 1rem;
+  }
+  
+  .matrix-char {
+    font-size: 10px;
+  }
+  
+  .neon-text {
+    text-shadow: 
+      0 0 3px #00ff41,
+      0 0 6px #00ff41,
+      0 0 9px #00ff41;
+  }
+  
+  .text-6xl {
+    font-size: 2rem;
+  }
+  
+  .text-5xl {
+    font-size: 1.75rem;
+  }
+  
+  .text-4xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.25rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.125rem;
+  }
+  
+  .text-xl {
+    font-size: 1rem;
+  }
+  
+  .text-lg {
+    font-size: 0.875rem;
+  }
+  
+  .text-sm {
+    font-size: 0.75rem;
+  }
+  
+  .text-xs {
+    font-size: 0.625rem;
+  }
+  
+  /* Ajustes de espaciado para móviles */
+  .space-y-8 > * + * {
+    margin-top: 1rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 0.75rem;
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: 0.5rem;
+  }
+  
+  .py-16 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .py-12 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .py-8 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .px-4 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .px-8 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+  .glass-card {
+    backdrop-filter: blur(10px);
+  }
+  
+  .matrix-char {
+    font-size: 12px;
+  }
+  
+  .neon-text {
+    text-shadow: 
+      0 0 3px #00ff41,
+      0 0 6px #00ff41,
+      0 0 9px #00ff41;
+  }
+  
+  /* Ajustes de grid para tablets */
+  .grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  /* Ajustes de flex para tablets */
+  .flex-row {
+    flex-direction: column;
+  }
+  
+  .flex-col {
+    flex-direction: column;
+  }
+  
+  /* Ajustes de texto para tablets */
+  .text-6xl {
+    font-size: 2.5rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.25rem;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.75rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-xl {
+    font-size: 1.25rem;
+  }
+  
+  .text-lg {
+    font-size: 1.125rem;
+  }
+  
+  /* Ajustes de espaciado para tablets */
+  .py-24 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .py-16 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  
+  .py-12 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .py-8 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  .px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  /* Ajustes de gap para tablets */
+  .gap-8 {
+    gap: 1.5rem;
+  }
+  
+  .gap-6 {
+    gap: 1rem;
+  }
+  
+  .gap-4 {
+    gap: 0.75rem;
+  }
+  
+  /* Ajustes de espacio para tablets */
+  .space-y-8 > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: 0.75rem;
+  }
+  
+  .space-x-6 > * + * {
+    margin-left: 1rem;
+  }
+  
+  .space-x-4 > * + * {
+    margin-left: 0.75rem;
+  }
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (max-width: 1024px) {
+  /* Ajustes de grid para desktop pequeño */
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  /* Ajustes de flex para desktop pequeño */
+  .flex-row {
+    flex-direction: column;
+  }
+  
+  .flex-col {
+    flex-direction: column;
+  }
+  
+  /* Ajustes de texto para desktop pequeño */
+  .text-7xl {
+    font-size: 3rem;
+  }
+  
+  .text-6xl {
+    font-size: 2.5rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.25rem;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.75rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-xl {
+    font-size: 1.25rem;
+  }
+  
+  .text-lg {
+    font-size: 1.125rem;
+  }
+  
+  /* Ajustes de espaciado para desktop pequeño */
+  .py-24 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  .py-16 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .py-12 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  
+  .py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  /* Ajustes de gap para desktop pequeño */
+  .gap-8 {
+    gap: 2rem;
+  }
+  
+  .gap-6 {
+    gap: 1.5rem;
+  }
+  
+  .gap-4 {
+    gap: 1rem;
+  }
+  
+  /* Ajustes de espacio para desktop pequeño */
+  .space-y-8 > * + * {
+    margin-top: 2rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+  
+  .space-x-8 > * + * {
+    margin-left: 1.5rem;
+  }
+  
+  .space-x-6 > * + * {
+    margin-left: 1rem;
+  }
+  
+  .space-x-4 > * + * {
+    margin-left: 0.75rem;
+  }
+}
+
+/* Extra Large devices (large desktops, 1280px and up) */
+@media (min-width: 1280px) {
+  /* Ajustes para pantallas muy grandes */
+  .text-8xl {
+    font-size: 4rem;
+  }
+  
+  .text-7xl {
+    font-size: 3.5rem;
+  }
+  
+  .text-6xl {
+    font-size: 3rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+  
+  .text-4xl {
+    font-size: 2.25rem;
+  }
+  
+  .text-3xl {
+    font-size: 2rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.75rem;
+  }
+  
+  .text-xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-lg {
+    font-size: 1.25rem;
+  }
+  
+  /* Ajustes de espaciado para pantallas muy grandes */
+  .py-32 {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  
+  .py-24 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  
+  .py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  .py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .py-8 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  
+  .px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  
+  .px-8 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+  
+  /* Ajustes de gap para pantallas muy grandes */
+  .gap-12 {
+    gap: 3rem;
+  }
+  
+  .gap-8 {
+    gap: 2.5rem;
+  }
+  
+  .gap-6 {
+    gap: 2rem;
+  }
+  
+  .gap-4 {
+    gap: 1.5rem;
+  }
+  
+  /* Ajustes de espacio para pantallas muy grandes */
+  .space-y-12 > * + * {
+    margin-top: 3rem;
+  }
+  
+  .space-y-8 > * + * {
+    margin-top: 2.5rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 2rem;
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  .space-x-12 > * + * {
+    margin-left: 3rem;
+  }
+  
+  .space-x-8 > * + * {
+    margin-left: 2.5rem;
+  }
+  
+  .space-x-6 > * + * {
+    margin-left: 2rem;
+  }
+  
+  .space-x-4 > * + * {
+    margin-left: 1.5rem;
+  }
+}
+
+/* 2XL devices (extra large desktops, 1536px and up) */
+@media (min-width: 1536px) {
+  /* Ajustes para pantallas ultra grandes */
+  .text-9xl {
+    font-size: 5rem;
+  }
+  
+  .text-8xl {
+    font-size: 4.5rem;
+  }
+  
+  .text-7xl {
+    font-size: 4rem;
+  }
+  
+  .text-6xl {
+    font-size: 3.5rem;
+  }
+  
+  .text-5xl {
+    font-size: 3rem;
+  }
+  
+  .text-4xl {
+    font-size: 2.5rem;
+  }
+  
+  .text-3xl {
+    font-size: 2.25rem;
+  }
+  
+  .text-2xl {
+    font-size: 2rem;
+  }
+  
+  .text-xl {
+    font-size: 1.75rem;
+  }
+  
+  .text-lg {
+    font-size: 1.5rem;
+  }
+  
+  /* Ajustes de espaciado para pantallas ultra grandes */
+  .py-40 {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+  
+  .py-32 {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+  
+  .py-24 {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  
+  .py-16 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  
+  .py-12 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  .py-8 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .px-16 {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  
+  .px-12 {
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+  }
+  
+  .px-8 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  
+  /* Ajustes de gap para pantallas ultra grandes */
+  .gap-16 {
+    gap: 4rem;
+  }
+  
+  .gap-12 {
+    gap: 3.5rem;
+  }
+  
+  .gap-8 {
+    gap: 3rem;
+  }
+  
+  .gap-6 {
+    gap: 2.5rem;
+  }
+  
+  .gap-4 {
+    gap: 2rem;
+  }
+  
+  /* Ajustes de espacio para pantallas ultra grandes */
+  .space-y-16 > * + * {
+    margin-top: 4rem;
+  }
+  
+  .space-y-12 > * + * {
+    margin-top: 3.5rem;
+  }
+  
+  .space-y-8 > * + * {
+    margin-top: 3rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 2.5rem;
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: 2rem;
+  }
+  
+  .space-x-16 > * + * {
+    margin-left: 4rem;
+  }
+  
+  .space-x-12 > * + * {
+    margin-left: 3.5rem;
+  }
+  
+  .space-x-8 > * + * {
+    margin-left: 3rem;
+  }
+  
+  .space-x-6 > * + * {
+    margin-left: 2.5rem;
+  }
+  
+  .space-x-4 > * + * {
+    margin-left: 2rem;
+  }
+}
+
+/* Ajustes específicos para orientación landscape en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+  .glass-card {
+    backdrop-filter: blur(8px);
+  }
+  
+  .matrix-char {
+    font-size: 10px;
+  }
+  
+  .text-6xl {
+    font-size: 1.75rem;
+  }
+  
+  .text-5xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-4xl {
+    font-size: 1.25rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.125rem;
+  }
+  
+  .text-2xl {
+    font-size: 1rem;
+  }
+  
+  .py-16 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .py-12 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  
+  .py-8 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Ajustes para pantallas de alta densidad */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .matrix-char {
+    font-size: 16px;
+  }
+  
+  .neon-text {
+    text-shadow: 
+      0 0 4px #00ff41,
+      0 0 8px #00ff41,
+      0 0 12px #00ff41,
+      0 0 16px #00ff41;
+  }
+}
+
+/* Ajustes para pantallas de muy alta densidad */
+@media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 288dpi) {
+  .matrix-char {
+    font-size: 18px;
+  }
+  
+  .neon-text {
+    text-shadow: 
+      0 0 5px #00ff41,
+      0 0 10px #00ff41,
+      0 0 15px #00ff41,
+      0 0 20px #00ff41;
+  }
+}
+
+/* Ajustes para dispositivos con pantalla táctil */
+@media (hover: none) and (pointer: coarse) {
+  .glass-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .glass-card {
+    min-height: 44px;
+  }
+  
+  /* Aumentar el área de toque para elementos interactivos */
+  button, a, input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Ajustes para dispositivos con hover */
+@media (hover: hover) and (pointer: fine) {
+  .glass-button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .glass-card:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* Ajustes para modo de alto contraste */
+@media (prefers-contrast: high) {
+  .glass-card {
+    border: 2px solid #00ff41;
+  }
+  
+  .neon-text {
+    text-shadow: 
+      0 0 8px #00ff41,
+      0 0 16px #00ff41,
+      0 0 24px #00ff41;
+  }
+}
+
+/* Ajustes para modo de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .matrix-char {
+    animation: none;
+  }
+  
+  .neon-text {
+    animation: none;
+  }
+  
+  .glass-button {
+    transition: none;
+  }
+  
+  .glass-card {
+    transition: none;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Ajustes para modo de color reducido */
+@media (prefers-color-scheme: light) {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+  }
+  
+  .neon-text {
+    color: #00cc33;
+    text-shadow: 
+      0 0 5px #00cc33,
+      0 0 10px #00cc33,
+      0 0 15px #00cc33;
+  }
+}
+
+/* Ajustes para impresión */
+@media print {
+  .matrix-rain {
+    display: none;
+  }
+  
+  .glass-card {
+    background: white;
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+  
+  .neon-text {
+    color: #000;
+    text-shadow: none;
+  }
+  
+  .glass-button {
+    background: #f0f0f0;
+    border: 1px solid #000;
+    color: #000;
+  }
+}
+
+/* ============================================
+   UTILIDADES ADICIONALES
+   ============================================ */
+.text-shadow-matrix {
+  text-shadow: 0 0 10px #00ff41;
+}
+
+.box-shadow-matrix {
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+}
+
+.border-matrix {
+  border: 1px solid rgba(0, 255, 65, 0.3);
+}
+
+.bg-matrix-glass {
+  background: rgba(10, 14, 39, 0.8);
+  backdrop-filter: blur(20px);
+}
+
+/* ============================================
+   ANIMACIONES DE ENTRADA
+   ============================================ */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   ALINEACIÓN Y LAYOUT MEJORADO
+   ============================================ */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 3rem;
+  }
+}
+
+/* Mejoras de alineación para elementos flex */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Mejoras de grid */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* Mejoras de espaciado consistente */
+.space-y-consistent > * + * {
+  margin-top: 1rem;
+}
+
+.space-x-consistent > * + * {
+  margin-left: 1rem;
+}
+
+/* Mejoras de texto */
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Mejoras de contenedores */
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+/* Mejoras de overflow */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
