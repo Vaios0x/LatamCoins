@@ -240,6 +240,9 @@ export function TokenTable() {
 function TokenRow({ token }: { token: Token }) {
   const router = useRouter();
   
+  // Usar el hook de moneda
+  const { formatPrice } = useCurrency();
+  
   const handleRowClick = () => {
     router.push(`/token/${token.symbol.toLowerCase()}`);
   };
@@ -353,6 +356,9 @@ function TokenRow({ token }: { token: Token }) {
  * Card individual de token para vista móvil
  */
 function TokenCard({ token }: { token: Token }) {
+  // Usar el hook de moneda
+  const { formatPrice } = useCurrency();
+
   return (
     <Link href={`/token/${token.symbol.toLowerCase()}`} className="block">
       <GlassCard className="p-4 hover:bg-[#00ff41]/5 transition-all duration-300 cursor-pointer group">

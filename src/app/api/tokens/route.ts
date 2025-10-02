@@ -10,7 +10,6 @@ const LATAM_TOKENS = [
     dexScreenerUrl: 'https://dexscreener.com/solana/b3tr9tdcpqdtkah6hou2ut3u4udv1na75oe6r4femumt',
     pumpUrl: 'https://pump.fun/coin/BS7HxRitaY5ipGfbek1nmatWLbaS9yoWRSEQzCb3pump',
     jupiterUrl: 'https://jup.ag/tokens/BS7HxRitaY5ipGfbek1nmatWLbaS9yoWRSEQzCb3pump',
-    // Símbolos alternativos para CoinMarketCap
     cmcSymbols: ['DOGGY', 'HOLDER']
   },
   {
@@ -55,41 +54,21 @@ const LATAM_TOKENS = [
   }
 ];
 
-// Función para obtener datos de CoinMarketCap
-async function fetchCoinMarketCapData(symbol: string) {
-  try {
-    // Usar la API key proporcionada directamente
-    const apiKey = '191d98e9-46f6-4d78-a2aa-5c5d5382724b';
-    
-    const response = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}`, {
-      headers: {
-        'X-CMC_PRO_API_KEY': apiKey,
-        'Accept': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      console.warn(`CoinMarketCap API error: ${response.status} for ${symbol}`);
-      return null;
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.warn(`Error fetching CoinMarketCap data for ${symbol}:`, error);
-    return null;
-  }
-}
-
-// Función para obtener datos de DexScreener
+// Función para obtener datos de DexScreener (más rápido y confiable)
 async function fetchDexScreenerData(pairAddress: string) {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 segundos timeout
+    
     const response = await fetch(`https://api.dexscreener.com/latest/dex/pairs/solana/${pairAddress}`, {
       headers: {
         'Accept': 'application/json',
         'User-Agent': 'LATAMCOINS/1.0'
-      }
+      },
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.warn(`DexScreener API error: ${response.status} for ${pairAddress}`);
@@ -104,56 +83,55 @@ async function fetchDexScreenerData(pairAddress: string) {
   }
 }
 
-
-// Función para obtener datos de CoinGecko como fallback
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function fetchCoinGeckoData(coinIds: string[]) {
+// Función para obtener datos de CoinMarketCap (solo si es necesario)
+async function fetchCoinMarketCapData(symbol: string) {
   try {
-    const ids = coinIds.join(',');
-    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`;
+    const apiKey = '191d98e9-46f6-4d78-a2aa-5c5d5382724b';
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 segundos timeout
     
-    const response = await fetch(url, {
+    const response = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}`, {
       headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'LATAMCOINS/1.0'
-      }
+        'X-CMC_PRO_API_KEY': apiKey,
+        'Accept': 'application/json'
+      },
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
+      console.warn(`CoinMarketCap API error: ${response.status} for ${symbol}`);
+      return null;
     }
 
     const data = await response.json();
-    return { success: true, data };
+    return data;
   } catch (error) {
-    console.error('Error fetching CoinGecko data:', error);
-    return { success: false, data: [] };
+    console.warn(`Error fetching CoinMarketCap data for ${symbol}:`, error);
+    return null;
   }
 }
 
 export async function GET() {
   try {
-    console.log('🚀 Starting REAL token data fetch from multiple APIs...');
+    console.log('🚀 Starting REAL token data fetch...');
     
     const tokensWithRealData = [];
     let realTimeCount = 0;
-    // const simulatedCount = 0;
     
-    // Obtener datos reales para cada token usando múltiples APIs
-    for (const token of LATAM_TOKENS) {
+    // Procesar tokens en paralelo para mayor velocidad
+    const tokenPromises = LATAM_TOKENS.map(async (token) => {
       try {
         console.log(`Processing token: ${token.symbol} (${token.contract})`);
         let tokenData = null;
-        let dataSource = 'simulated';
+        let dataSource = 'none';
         let isRealTime = false;
 
-        // 1. Intentar DexScreener primero (más confiable para tokens de Solana)
-        console.log(`Trying DexScreener for ${token.symbol}`);
-        // Usar las direcciones correctas de DexScreener
-        const dexScreenerContract = token.contract;
-        const dexScreenerData = await fetchDexScreenerData(dexScreenerContract);
+        // 1. Intentar DexScreener primero (más rápido para tokens de Solana)
+        const dexScreenerData = await fetchDexScreenerData(token.contract);
         
-        if (dexScreenerData) {
+        if (dexScreenerData && dexScreenerData.priceUsd) {
           tokenData = {
             ...token,
             price: parseFloat(dexScreenerData.priceUsd) || 0,
@@ -183,8 +161,6 @@ export async function GET() {
 
         // 2. Si no hay datos de DexScreener, intentar CoinMarketCap
         if (!tokenData && token.cmcSymbols) {
-          console.log(`Trying CoinMarketCap for ${token.symbol} with symbols: ${token.cmcSymbols.join(', ')}`);
-          
           for (const symbol of token.cmcSymbols) {
             const cmcData = await fetchCoinMarketCapData(symbol);
             
@@ -215,41 +191,47 @@ export async function GET() {
               isRealTime = true;
               realTimeCount++;
               console.log(`✅ Got real data from CoinMarketCap for ${token.symbol} using symbol ${symbol}`);
-              break; // Salir del loop si encontramos datos
+              break;
             }
           }
         }
 
-        // 3. Si no hay datos reales, omitir el token
-        if (!tokenData) {
+        // 3. Solo incluir tokens con datos reales
+        if (tokenData) {
+          console.log(`Added ${token.symbol} with source: ${dataSource}, realTime: ${isRealTime}`);
+          return tokenData;
+        } else {
           console.log(`No real data available for ${token.symbol}, skipping...`);
-          continue; // Omitir tokens sin datos reales
+          return null;
         }
-
-        tokensWithRealData.push(tokenData);
-        console.log(`Added ${token.symbol} with source: ${dataSource}, realTime: ${isRealTime}`);
 
       } catch (error) {
         console.warn(`Error processing token ${token.symbol}:`, error);
-        // Continuar con el siguiente token
+        return null;
       }
-    }
+    });
 
+    // Esperar a que todas las promesas se resuelvan
+    const results = await Promise.all(tokenPromises);
+    
+    // Filtrar resultados nulos
+    const validTokens = results.filter(token => token !== null);
+    
     // Ordenar por market cap
-    tokensWithRealData.sort((a, b) => b.marketCap - a.marketCap);
+    validTokens.sort((a, b) => (b?.marketCap || 0) - (a?.marketCap || 0));
 
-    console.log(`Final results: ${realTimeCount} real-time tokens, ${simulatedCount} simulated tokens`);
+    console.log(`Final results: ${realTimeCount} real-time tokens from ${validTokens.length} total tokens`);
 
     return NextResponse.json({
       success: true,
-      data: tokensWithRealData,
+      data: validTokens,
       timestamp: new Date().toISOString(),
-      source: realTimeCount > 0 ? 'mixed' : 'simulated',
-      totalTokens: tokensWithRealData.length,
-      totalMarketCap: tokensWithRealData.reduce((sum, token) => sum + token.marketCap, 0),
-      totalVolume: tokensWithRealData.reduce((sum, token) => sum + token.volume24h, 0),
+      source: realTimeCount > 0 ? 'real' : 'none',
+      totalTokens: validTokens.length,
+      totalMarketCap: validTokens.reduce((sum, token) => sum + (token?.marketCap || 0), 0),
+      totalVolume: validTokens.reduce((sum, token) => sum + (token?.volume24h || 0), 0),
       realTimeTokens: realTimeCount,
-      simulatedTokens: simulatedCount
+      simulatedTokens: 0
     });
 
   } catch (error) {
