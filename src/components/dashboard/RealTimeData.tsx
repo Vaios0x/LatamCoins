@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { formatPrice, formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { Activity, TrendingUp, TrendingDown, DollarSign, BarChart3 } from 'lucide-react';
+import { useCurrency } from '@/components/ui/CurrencySelector';
 
 interface RealTimeDataProps {
   tokenAddress: string;
@@ -34,6 +35,9 @@ export function RealTimeData({ tokenAddress, tokenSymbol, tokenName }: RealTimeD
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  
+  // Usar el hook de moneda
+  const { formatPrice } = useCurrency();
 
   const fetchRealTimeData = useCallback(async () => {
     try {
@@ -207,7 +211,7 @@ export function RealTimeData({ tokenAddress, tokenSymbol, tokenName }: RealTimeD
             <DollarSign className="w-5 h-5 text-[#00ff41]" />
           </div>
           <div className="text-2xl font-mono text-white mb-2">
-            {formatLargeNumber(data.marketCap)}
+            {formatPrice(data.marketCap)}
           </div>
           <div className="flex items-center space-x-2">
             {data.change24h >= 0 ? (
@@ -227,7 +231,7 @@ export function RealTimeData({ tokenAddress, tokenSymbol, tokenName }: RealTimeD
             <BarChart3 className="w-5 h-5 text-[#00ff41]" />
           </div>
           <div className="text-2xl font-mono text-white mb-2">
-            {formatLargeNumber(data.volume24h)}
+            {formatPrice(data.volume24h)}
           </div>
           <div className="text-sm text-white/60">
             Últimas 24 horas
@@ -241,7 +245,7 @@ export function RealTimeData({ tokenAddress, tokenSymbol, tokenName }: RealTimeD
               <Activity className="w-5 h-5 text-[#00ff41]" />
             </div>
             <div className="text-2xl font-mono text-white mb-2">
-              {formatLargeNumber(data.liquidity)}
+              {formatPrice(data.liquidity)}
             </div>
             <div className="text-sm text-white/60">
               Liquidez total
@@ -256,7 +260,7 @@ export function RealTimeData({ tokenAddress, tokenSymbol, tokenName }: RealTimeD
               <TrendingUp className="w-5 h-5 text-[#00ff41]" />
             </div>
             <div className="text-2xl font-mono text-white mb-2">
-              {formatLargeNumber(data.fdv)}
+              {formatPrice(data.fdv)}
             </div>
             <div className="text-sm text-white/60">
               Fully Diluted Valuation

@@ -180,11 +180,11 @@ export function formatPrice(price: number, currency: string, rates: ExchangeRate
 
 /**
  * Obtiene la moneda seleccionada del localStorage
- * Predeterminada: Peso Mexicano (MXN)
+ * Predeterminada: Dólar Estadounidense (USD)
  */
 export function getSelectedCurrency(): string {
-  if (typeof window === 'undefined') return 'MXN';
-  return localStorage.getItem('selectedCurrency') || 'MXN';
+  if (typeof window === 'undefined') return 'USD';
+  return localStorage.getItem('selectedCurrency') || 'USD';
 }
 
 /**

@@ -1,9 +1,10 @@
 'use client';
 
 // import { GLOBAL_STATS } from '@/lib/constants/tokens';
-import { formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { formatPercentage } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useRealPrices } from '@/lib/hooks/useRealPrices';
+import { useCurrency } from '@/components/ui/CurrencySelector';
 // import { ApiStatusNotification } from '@/components/ui/ApiStatusNotification';
 
 /**
@@ -17,15 +18,18 @@ export function HeroSection() {
     hasError
   } = useRealPrices();
   
+  // Usar el hook de moneda
+  const { formatPrice } = useCurrency();
+  
   const stats = [
     {
       label: 'Total Market Cap',
-      value: formatLargeNumber(globalStats.totalMarketCap),
+      value: formatPrice(globalStats.totalMarketCap),
       change: globalStats.averageChange24h,
     },
     {
       label: '24h Volume',
-      value: formatLargeNumber(globalStats.totalVolume24h),
+      value: formatPrice(globalStats.totalVolume24h),
       change: 0, // No hay cambio para volumen
     },
     {

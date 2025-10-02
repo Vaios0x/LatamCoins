@@ -5,6 +5,7 @@ import { HeroSection } from '@/components/dashboard/HeroSection';
 import { TokenTable } from '@/components/dashboard/TokenTable';
 import { RealTimeData } from '@/components/dashboard/RealTimeData';
 import { ApiStatusNotification } from '@/components/ui/ApiStatusNotification';
+import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
 /**
  * Página principal de LATAMCOINS
@@ -29,8 +30,9 @@ export default function HomePage() {
           </p>
         </div>
         
-        {/* Pestañas */}
-        <div className="flex justify-center mb-8">
+        {/* Controles superiores */}
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+          {/* Pestañas */}
           <div className="bg-[#0a0e27]/50 backdrop-blur-lg border border-white/10 rounded-xl p-1 flex">
             <button
               onClick={() => setActiveTab('memecoins')}
@@ -53,6 +55,9 @@ export default function HomePage() {
               💎 Utility Tokens
             </button>
           </div>
+          
+          {/* Selector de moneda */}
+          <CurrencySelector showLabel={true} size="md" />
         </div>
         
         {/* Contenido de las pestañas */}

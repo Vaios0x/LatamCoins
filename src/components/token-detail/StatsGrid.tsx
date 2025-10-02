@@ -1,8 +1,9 @@
 'use client';
 
 import { Token } from '@/lib/constants/tokens';
-import { formatPrice, formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { useCurrency } from '@/components/ui/CurrencySelector';
 
 interface StatsGridProps {
   token: Token;
@@ -13,15 +14,18 @@ interface StatsGridProps {
  * Muestra métricas clave en tarjetas
  */
 export function StatsGrid({ token }: StatsGridProps) {
+  // Usar el hook de moneda
+  const { formatPrice } = useCurrency();
+  
   const stats = [
     {
       label: 'Market Cap',
-      value: formatLargeNumber(token.marketCap),
+      value: formatPrice(token.marketCap),
       change: token.change24h,
     },
     {
       label: 'Volumen 24h',
-      value: formatLargeNumber(token.volume24h),
+      value: formatPrice(token.volume24h),
       change: 0, // No hay cambio para volumen
     },
     {

@@ -3,9 +3,9 @@
 import { useMemo, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Token } from '@/lib/constants/tokens';
-import { formatPrice } from '@/lib/utils/formatters';
 import { defaultChartOptions, latamColors, latamGradients } from '@/lib/chartjs/config';
 import { ChartOptions } from 'chart.js';
+import { useCurrency } from '@/components/ui/CurrencySelector';
 
 interface PriceChartProps {
   token: Token;
@@ -20,6 +20,33 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
   const [chartData, setChartData] = useState<{ data: number[]; labels: string[] }>({ data: [], labels: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSimulated, setIsSimulated] = useState(false);
+  
+  // Usar el hook de moneda
+  const { formatPrice } = useCurrency();
+
+  // Función auxiliar para generar datos simulados
+  const generateSimulatedData = (currentPrice: number) => {
+    const data = Array.from({ length: 7 }, (_, i) => {
+      const variation = (Math.random() - 0.5) * 0.2; // ±10% de variación
+      return currentPrice * (1 + variation * (i / 7));
+    });
+    const labels = data.map((_, index) => {
+      const date = new Date(Date.now() - (data.length - index - 1) * 24 * 60 * 60 * 1000);
+      if (timeframe === '1H') {
+        return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+      } else if (timeframe === '24H') {
+        return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
+      } else if (timeframe === '7D') {
+        return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+      } else if (timeframe === '30D') {
+        return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+      } else {
+        return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+      }
+    });
+    return { data, labels };
+  };
 
   // Obtener datos reales del token
   useEffect(() => {
@@ -56,20 +83,33 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
                 }
               });
               setChartData({ data, labels });
+              setIsSimulated(false); // Datos reales
             } else {
-              // Si no hay sparkline, mostrar error
-              throw new Error('No hay datos históricos disponibles para este token');
+              // Si no hay sparkline, generar datos simulados basados en el precio actual
+              console.warn(`No hay datos históricos para ${token.symbol}, generando datos simulados`);
+              const currentPrice = tokenData.price || token.price;
+              setChartData(generateSimulatedData(currentPrice));
+              setIsSimulated(true); // Datos simulados
             }
           } else {
-            throw new Error('Token no encontrado');
+            // Si no se encuentra el token, generar datos simulados
+            console.warn(`Token ${token.symbol} no encontrado en API, generando datos simulados`);
+            setChartData(generateSimulatedData(token.price));
+            setIsSimulated(true); // Datos simulados
           }
         } else {
-          throw new Error('Error al obtener datos del token');
+          // Si hay error en la API, generar datos simulados
+          console.warn('Error en API, generando datos simulados');
+          setChartData(generateSimulatedData(token.price));
+          setIsSimulated(true); // Datos simulados
         }
       } catch (err) {
         console.error('Error fetching chart data:', err);
-        setError('Error al cargar datos del gráfico - Solo se muestran datos reales');
-        setChartData({ data: [], labels: [] });
+        // En caso de error, generar datos simulados
+        console.warn('Error en fetch, generando datos simulados como fallback');
+        setChartData(generateSimulatedData(token.price));
+        setIsSimulated(true); // Datos simulados
+        setError(null); // Limpiar error ya que tenemos datos simulados
       } finally {
         setIsLoading(false);
       }
@@ -201,7 +241,17 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
   }
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full relative">
+      {/* Indicador de datos simulados */}
+      {isSimulated && (
+        <div className="absolute top-2 right-2 z-10 bg-[#ffaa00]/20 backdrop-blur-sm border border-[#ffaa00]/30 rounded-lg px-2 py-1">
+          <div className="flex items-center space-x-1">
+            <div className="w-2 h-2 bg-[#ffaa00] rounded-full animate-pulse"></div>
+            <span className="text-xs text-[#ffaa00] font-medium">Datos Simulados</span>
+          </div>
+        </div>
+      )}
+      
       <Line data={data} options={options} />
     </div>
   );

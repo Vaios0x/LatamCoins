@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { LATAM_TOKENS } from '@/lib/constants/tokens';
-import { formatTickerPrice } from '@/lib/utils/formatters';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { cn } from '@/lib/utils';
+import { useCurrency } from '@/components/ui/CurrencySelector';
 
 /**
  * Barra de ticker con scroll horizontal infinito
@@ -12,6 +12,9 @@ import { cn } from '@/lib/utils';
  */
 export function TickerBar() {
   const [isPaused, setIsPaused] = useState(false);
+  
+  // Usar el hook de moneda
+  const { formatPrice } = useCurrency();
 
   // Duplicar tokens para scroll infinito
   const tickerData = [...LATAM_TOKENS, ...LATAM_TOKENS];
@@ -45,7 +48,7 @@ export function TickerBar() {
 
             {/* Precio */}
             <span className="text-[#00ff41] font-mono text-xs sm:text-sm">
-              {formatTickerPrice(token.price)}
+              {formatPrice(token.price)}
             </span>
 
             {/* Cambio porcentual */}

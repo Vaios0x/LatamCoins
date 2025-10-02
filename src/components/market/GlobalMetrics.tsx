@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Activity, Users, Zap } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { useCurrency } from '@/components/ui/CurrencySelector';
 
 interface GlobalMetricsData {
   totalMarketCap: number;
@@ -30,6 +31,9 @@ export function GlobalMetrics() {
   const [data, setData] = useState<GlobalMetricsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Usar el hook de moneda
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     // Obtener datos reales de métricas globales
@@ -101,14 +105,14 @@ export function GlobalMetrics() {
   const metrics = [
     {
       label: 'Market Cap Total',
-      value: formatLargeNumber(data.totalMarketCap),
+      value: formatPrice(data.totalMarketCap),
       change: 5.2,
       icon: DollarSign,
       color: 'text-[#00ff41]'
     },
     {
       label: 'Volumen 24h',
-      value: formatLargeNumber(data.totalVolume24h),
+      value: formatPrice(data.totalVolume24h),
       change: -2.1,
       icon: Activity,
       color: 'text-[#ff0040]'
