@@ -2,14 +2,26 @@
 
 import { GlassCard } from '@/components/ui/GlassCard';
 import { GlassButton } from '@/components/ui/GlassButton';
-import { ArrowLeft, Users, Target, Zap, Globe, Shield, Heart } from 'lucide-react';
+import { ArrowLeft, Users, Target, Zap, Globe, Shield, Heart, Copy, Check } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 /**
  * Página Acerca de LATAMCOINS
  * Información sobre la plataforma, misión y equipo
  */
 export default function AboutPage() {
+  const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
+
+  const copyToClipboard = async (address: string, type: string) => {
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopiedAddress(type);
+      setTimeout(() => setCopiedAddress(null), 2000);
+    } catch (err) {
+      console.error('Error copying to clipboard:', err);
+    }
+  };
   const features = [
     {
       icon: Zap,
@@ -203,6 +215,92 @@ export default function AboutPage() {
                   </li>
                 </ul>
               </div>
+            </div>
+          </GlassCard>
+        </div>
+
+        {/* Sección de Donaciones */}
+        <div className="mb-12 sm:mb-16">
+          <GlassCard className="p-6 sm:p-8">
+            <div className="text-center mb-8">
+              <Heart className="w-8 h-8 text-[#00ff41] mx-auto mb-4" />
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                Apoya el Proyecto
+              </h2>
+              <p className="text-white/70 text-sm max-w-2xl mx-auto">
+                Si LATAMCOINS te ha sido útil, considera hacer una donación para ayudar 
+                a mantener y mejorar la plataforma.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {/* Solana */}
+              <div className="bg-gradient-to-br from-[#9945FF]/10 to-[#14F195]/10 border border-[#9945FF]/20 rounded-xl p-6">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#9945FF] to-[#14F195] rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">S</span>
+                  </div>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2 text-center">Solana</h3>
+                <div className="bg-black/20 rounded-lg p-3 mb-4">
+                  <code className="text-[#00ff41] text-xs break-all">
+                    3S8EEWxgFTpoAPip78CBanP7xjNuUQK5Yb3Ezin4pFxF
+                  </code>
+                </div>
+                <button
+                  onClick={() => copyToClipboard('3S8EEWxgFTpoAPip78CBanP7xjNuUQK5Yb3Ezin4pFxF', 'sol')}
+                  className="w-full bg-[#9945FF]/20 hover:bg-[#9945FF]/30 border border-[#9945FF]/30 rounded-lg px-4 py-2 text-white text-sm font-medium transition-all duration-200 flex items-center justify-center space-x-2"
+                >
+                  {copiedAddress === 'sol' ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>Copiado</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      <span>Copiar Dirección</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Ethereum */}
+              <div className="bg-gradient-to-br from-[#627EEA]/10 to-[#F7A8B8]/10 border border-[#627EEA]/20 rounded-xl p-6">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#627EEA] to-[#F7A8B8] rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">Ξ</span>
+                  </div>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2 text-center">Ethereum</h3>
+                <div className="bg-black/20 rounded-lg p-3 mb-4">
+                  <code className="text-[#00ff41] text-xs break-all">
+                    0x5A95812be53A4B0628c69beE7669716Ce8dB7Bd7
+                  </code>
+                </div>
+                <button
+                  onClick={() => copyToClipboard('0x5A95812be53A4B0628c69beE7669716Ce8dB7Bd7', 'eth')}
+                  className="w-full bg-[#627EEA]/20 hover:bg-[#627EEA]/30 border border-[#627EEA]/30 rounded-lg px-4 py-2 text-white text-sm font-medium transition-all duration-200 flex items-center justify-center space-x-2"
+                >
+                  {copiedAddress === 'eth' ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>Copiado</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      <span>Copiar Dirección</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+            
+            <div className="text-center mt-6">
+              <p className="text-white/50 text-xs">
+                Gracias por tu apoyo. Cada donación nos ayuda a mantener LATAMCOINS gratuito y accesible.
+              </p>
             </div>
           </GlassCard>
         </div>

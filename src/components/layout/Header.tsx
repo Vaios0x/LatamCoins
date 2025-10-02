@@ -21,6 +21,7 @@ export function Header() {
     { name: 'Mercados', href: '/markets' },
     { name: 'Análisis', href: '/analytics' },
     { name: 'Status', href: '/status' },
+    { name: 'Acerca de', href: '/about' },
   ];
 
   useEffect(() => {
