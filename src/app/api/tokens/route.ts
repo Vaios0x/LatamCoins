@@ -84,34 +84,47 @@ async function fetchDexScreenerData(pairAddress: string) {
 }
 
 // Función para generar sparkline data desde datos históricos
-function generateSparklineData(priceHistory: any[], currentPrice: number) {
+function generateSparklineData(priceHistory: any[], currentPrice: number, tokenSymbol: string) {
+  console.log(`🔍 Generando sparkline para ${tokenSymbol}:`, {
+    hasHistory: !!priceHistory,
+    historyLength: priceHistory?.length || 0,
+    currentPrice
+  });
+  
   if (!priceHistory || priceHistory.length === 0) {
+    console.log(`⚠️ No hay datos históricos para ${tokenSymbol}, generando datos básicos`);
     // Si no hay datos históricos, generar datos básicos basados en el precio actual
     const data = [];
     const now = Date.now();
     const oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000);
     
-    // Generar 7 puntos de datos para la última semana
+    // Generar 7 puntos de datos para la última semana con variación realista
     for (let i = 0; i < 7; i++) {
       const timestamp = oneWeekAgo + (i * 24 * 60 * 60 * 1000);
-      const variation = (Math.random() - 0.5) * 0.3; // ±15% de variación
+      // Usar una variación más realista basada en el token
+      const baseVariation = (Math.random() - 0.5) * 0.2; // ±10% de variación base
+      const tokenVariation = (tokenSymbol.charCodeAt(0) % 10) / 100; // Variación específica del token
+      const variation = baseVariation + tokenVariation;
       const price = currentPrice * (1 + variation);
-      data.push(price);
+      data.push(Math.max(price, currentPrice * 0.1)); // No permitir precios muy bajos
     }
     
     // Asegurar que el último punto sea el precio actual
     data[data.length - 1] = currentPrice;
     
+    console.log(`📊 Datos básicos generados para ${tokenSymbol}:`, data);
     return data;
   }
   
+  console.log(`✅ Usando datos históricos reales para ${tokenSymbol}`);
   // Usar datos históricos reales
   const sortedHistory = priceHistory
     .filter(p => p.price && p.timestamp)
     .sort((a, b) => a.timestamp - b.timestamp);
   
   if (sortedHistory.length === 0) {
-    return generateSparklineData([], currentPrice);
+    console.log(`⚠️ Datos históricos vacíos para ${tokenSymbol}`);
+    return generateSparklineData([], currentPrice, tokenSymbol);
   }
   
   // Tomar los últimos 7 días de datos
@@ -119,8 +132,11 @@ function generateSparklineData(priceHistory: any[], currentPrice: number) {
   const recentData = sortedHistory.filter(p => p.timestamp >= oneWeekAgo);
   
   if (recentData.length === 0) {
-    return generateSparklineData([], currentPrice);
+    console.log(`⚠️ No hay datos recientes para ${tokenSymbol}`);
+    return generateSparklineData([], currentPrice, tokenSymbol);
   }
+  
+  console.log(`📈 Datos recientes encontrados para ${tokenSymbol}:`, recentData.length, 'puntos');
   
   // Si tenemos menos de 7 puntos, interpolar
   if (recentData.length < 7) {
@@ -136,11 +152,14 @@ function generateSparklineData(priceHistory: any[], currentPrice: number) {
     // Asegurar que el último punto sea el precio actual
     data[data.length - 1] = currentPrice;
     
+    console.log(`📊 Datos interpolados para ${tokenSymbol}:`, data);
     return data;
   }
   
   // Usar los últimos 7 puntos
-  return recentData.slice(-7).map(p => parseFloat(p.price));
+  const realData = recentData.slice(-7).map(p => parseFloat(p.price));
+  console.log(`📈 Datos reales para ${tokenSymbol}:`, realData);
+  return realData;
 }
 
 // Función para obtener datos de CoinMarketCap (solo si es necesario)
@@ -193,7 +212,7 @@ export async function GET() {
         
         if (dexScreenerData && dexScreenerData.priceUsd) {
           const currentPrice = parseFloat(dexScreenerData.priceUsd) || 0;
-          const sparklineData = generateSparklineData(dexScreenerData.priceHistory || [], currentPrice);
+          const sparklineData = generateSparklineData(dexScreenerData.priceHistory || [], currentPrice, token.symbol);
           
           tokenData = {
             ...token,
@@ -231,7 +250,7 @@ export async function GET() {
             if (cmcData && cmcData.data && cmcData.data[symbol]) {
               const quote = cmcData.data[symbol].quote.USD;
               const currentPrice = quote.price;
-              const sparklineData = generateSparklineData([], currentPrice);
+              const sparklineData = generateSparklineData([], currentPrice, token.symbol);
               
               tokenData = {
                 ...token,
