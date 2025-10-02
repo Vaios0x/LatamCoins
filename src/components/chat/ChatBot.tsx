@@ -324,9 +324,7 @@ export function ChatBot({ context }: ChatBotProps) {
 
   const quickActions = [
     { label: 'Analizar HOLDER (DOGGY)', icon: TrendingUp, action: 'analiza HOLDER' },
-    { label: 'DeFi en Solana', icon: BarChart3, action: 'Explica DeFi en Solana' },
-    { label: 'Estrategias Trading', icon: DollarSign, action: 'Recomienda estrategias de trading' },
-    { label: 'Seguridad', icon: Sparkles, action: 'Consejos de seguridad crypto' }
+    { label: 'DeFi en Solana', icon: BarChart3, action: 'Explica DeFi en Solana' }
   ];
 
   return (
@@ -349,7 +347,7 @@ export function ChatBot({ context }: ChatBotProps) {
       {/* Chat modal con glassmorphism */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-end justify-end p-1 sm:p-4">
-          <div className="w-full max-w-[280px] sm:max-w-sm md:max-w-md h-[320px] sm:h-[400px] md:h-[500px] flex flex-col transform transition-all duration-300 ease-out animate-slide-up mb-2 sm:mb-4">
+          <div className="w-full max-w-[300px] sm:max-w-sm md:max-w-md h-[380px] sm:h-[400px] md:h-[500px] flex flex-col transform transition-all duration-300 ease-out animate-slide-up mb-2 sm:mb-4">
             {/* Efecto de fondo neural */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#00ff41]/5 via-transparent to-[#00cc33]/5 rounded-2xl blur-xl"></div>
             
@@ -362,7 +360,7 @@ export function ChatBot({ context }: ChatBotProps) {
               
               <div className="relative flex-1 flex flex-col overflow-hidden">
                 {/* Header compacto para móviles */}
-                <div className="flex items-center justify-between p-1.5 sm:p-2 md:p-3 border-b border-white/10 bg-white/5 backdrop-blur-sm">
+                <div className="flex items-center justify-between p-2.5 sm:p-2 md:p-3 border-b border-white/10 bg-white/5 backdrop-blur-sm">
                   <div className="flex items-center space-x-1.5 sm:space-x-2">
                     {/* Avatar compacto */}
                     <div className="relative">
@@ -380,17 +378,17 @@ export function ChatBot({ context }: ChatBotProps) {
                   </div>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-red-500 hover:bg-red-600 border-2 border-white rounded-full flex items-center justify-center transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-110"
+                    className="w-10 h-10 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-red-500 hover:bg-red-600 border-2 border-white rounded-full flex items-center justify-center transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-110 z-50"
                     aria-label="Cerrar chat"
                   >
-                    <X className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white font-black" />
+                    <X className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white font-black" />
                   </button>
                 </div>
 
                 {/* Botón de cerrar removido del área de mensajes */}
 
-                {/* Messages compactos para móviles */}
-                <div className="flex-1 overflow-y-auto p-1.5 sm:p-2 md:p-3 space-y-2 sm:space-y-3">
+                {/* Messages más grandes para móviles */}
+                <div className="flex-1 overflow-y-auto p-3 sm:p-2 md:p-3 space-y-3 sm:space-y-3">
                   {messages.map((message) => (
                     <div
                       key={message.id}
@@ -457,21 +455,21 @@ export function ChatBot({ context }: ChatBotProps) {
 
               </div>
 
-              {/* Quick actions compactas para móviles */}
+              {/* Quick actions muy compactas para móviles */}
               {messages.length === 1 && (
-                <div className="p-1.5 sm:p-2 md:p-3 border-t border-white/10 bg-white/5 backdrop-blur-sm">
-                  <div className="text-[9px] sm:text-xs text-white/60 mb-1 sm:mb-1.5 md:mb-2 flex items-center space-x-1">
-                    <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-[#00ff41] rounded-full animate-pulse"></div>
-                    <span>Acciones rápidas:</span>
+                <div className="p-1 sm:p-1.5 md:p-2 border-t border-white/10 bg-white/5 backdrop-blur-sm">
+                  <div className="text-[8px] sm:text-[9px] text-white/60 mb-0.5 sm:mb-1 flex items-center space-x-1">
+                    <div className="w-0.5 h-0.5 bg-[#00ff41] rounded-full animate-pulse"></div>
+                    <span>Acciones:</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-0.5 sm:gap-1 md:gap-1.5">
+                  <div className="grid grid-cols-1 gap-0.5 sm:gap-1">
                     {quickActions.map((action, index) => (
                       <button
                         key={index}
                         onClick={() => setInputValue(action.action)}
                         className="flex items-center space-x-0.5 sm:space-x-1 px-1 py-0.5 sm:px-1.5 sm:py-1 md:px-2 md:py-1.5 bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-[#00ff41]/30 rounded-md sm:rounded-lg text-[9px] sm:text-xs text-white/80 hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-[#00ff41]/10"
                       >
-                        <action.icon className="w-2 h-2 sm:w-2.5 sm:h-2.5 flex-shrink-0 text-[#00ff41]" />
+                        <action.icon className="w-1.5 h-1.5 sm:w-2 sm:h-2 flex-shrink-0 text-[#00ff41]" />
                         <span className="truncate text-[9px] sm:text-xs">{action.label}</span>
                       </button>
                     ))}
@@ -480,8 +478,8 @@ export function ChatBot({ context }: ChatBotProps) {
               )}
 
               {/* Input compacto para móviles */}
-              <div className="p-1.5 sm:p-2 md:p-3 border-t border-white/10 bg-white/5 backdrop-blur-sm">
-                <div className="flex items-center space-x-1 sm:space-x-1.5 md:space-x-2">
+              <div className="p-2.5 sm:p-2 md:p-3 border-t border-white/10 bg-white/5 backdrop-blur-sm">
+                <div className="flex items-center space-x-2 sm:space-x-1.5 md:space-x-2">
                   <input
                     ref={inputRef}
                     type="text"
@@ -489,7 +487,7 @@ export function ChatBot({ context }: ChatBotProps) {
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Pregunta sobre tokens..."
-                    className="flex-1 px-1.5 py-1 sm:px-2 sm:py-1.5 md:px-2.5 md:py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/50 transition-all duration-300 text-[10px] sm:text-xs shadow-lg"
+                    className="flex-1 px-3 py-2 sm:px-2 sm:py-1.5 md:px-2.5 md:py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/50 transition-all duration-300 text-sm sm:text-xs shadow-lg"
                     disabled={isTyping}
                   />
                   <button

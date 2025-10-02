@@ -139,12 +139,12 @@ export function TokenTable() {
           ))}
         </div>
         
-        {/* Botón flotante de ayuda para móvil */}
-        <div className="fixed bottom-6 right-6 z-50 lg:hidden">
-          <div className="bg-[#00ff41]/20 backdrop-blur-lg border-2 border-[#00ff41]/50 rounded-full p-3 shadow-lg">
-            <div className="text-center">
-              <div className="text-[#00ff41] text-xs font-semibold mb-1">💡</div>
-              <div className="text-white text-xs">Toca cualquier token para ver detalles</div>
+        {/* Botón flotante de ayuda para móvil - Solo en home */}
+        <div className="fixed bottom-4 left-4 z-50 lg:hidden">
+          <div className="bg-[#00ff41]/15 backdrop-blur-sm border border-[#00ff41]/30 rounded-lg p-2 shadow-md">
+            <div className="flex items-center space-x-1">
+              <div className="text-[#00ff41] text-xs">💡</div>
+              <div className="text-white text-xs">Toca cualquier token</div>
             </div>
           </div>
         </div>
