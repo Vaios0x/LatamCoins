@@ -51,7 +51,7 @@ export default function TermsPage() {
     },
     {
       title: '10. Ley Aplicable',
-      content: 'Estos términos se rigen por las leyes de la República Argentina. Cualquier disputa será resuelta en los tribunales competentes de Buenos Aires, Argentina.'
+      content: 'Estos términos se rigen por las leyes de México. Cualquier disputa será resuelta en los tribunales competentes de Ciudad de México, México.'
     }
   ];
 
