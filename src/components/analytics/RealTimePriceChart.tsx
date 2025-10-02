@@ -21,6 +21,7 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasRealData, setHasRealData] = useState(false);
+  const [dataSource, setDataSource] = useState<string>('dexscreener');
   
   // Usar el hook de moneda
   const { formatPrice } = useCurrency();
@@ -227,9 +228,14 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
         try {
           // Intentar obtener datos históricos reales directamente de DexScreener
           const historicalData = await fetchRealHistoricalData(token.contract, timeframe);
-          setChartData(historicalData);
-          setHasRealData(true);
-          console.log('✅ Datos históricos reales obtenidos exitosamente');
+          if (historicalData && historicalData.data && historicalData.data.length > 0) {
+            setChartData(historicalData);
+            setHasRealData(true);
+            setDataSource('dexscreener');
+            console.log('✅ Datos históricos reales obtenidos exitosamente desde DexScreener');
+          } else {
+            throw new Error('No hay datos históricos disponibles en DexScreener');
+          }
         } catch (dexError) {
           console.warn('❌ Error con DexScreener, intentando con nuestra API...', dexError);
           
@@ -267,10 +273,11 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
                 });
                 setChartData({ data, labels });
                 setHasRealData(true); // Marcar como datos reales
+                setDataSource('api');
                 console.log('📈 Datos reales de sparkline obtenidos exitosamente');
-              } else {
-                // Si no hay sparkline, crear datos realistas basados en el precio actual
-                console.log('📊 Creando datos realistas con precio actual real');
+              } else if (tokenData.isRealTime && tokenData.source) {
+                // Si no hay sparkline pero tenemos datos reales, crear datos realistas basados en el precio actual
+                console.log('📊 Creando datos realistas con precio actual real de', tokenData.source);
                 const currentPrice = tokenData.price || token.price;
                 
                 let data: number[] = [];
@@ -319,6 +326,7 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
                 
                 setChartData({ data, labels });
                 setHasRealData(true); // Marcar como datos reales (basados en precio real)
+                setDataSource(tokenData.source || 'api');
                 console.log('📈 Datos realistas creados con precio actual real');
               }
             } else {
@@ -490,7 +498,9 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
       <div className="absolute bottom-2 left-2 z-10 bg-black/50 backdrop-blur-sm border border-white/20 rounded-lg px-2 py-1">
         <div className="flex items-center space-x-1">
           <span className="text-xs text-white/60">Fuente:</span>
-          <span className="text-xs text-white font-medium">dexscreener</span>
+          <span className="text-xs text-white font-medium">
+            {dataSource}
+          </span>
         </div>
       </div>
       

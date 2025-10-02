@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { HeroSection } from '@/components/dashboard/HeroSection';
 import { TokenTable } from '@/components/dashboard/TokenTable';
 import { RealTimeData } from '@/components/dashboard/RealTimeData';
-import { ApiStatusNotification } from '@/components/ui/ApiStatusNotification';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
 /**
@@ -85,7 +84,6 @@ export default function HomePage() {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <ApiStatusNotification />
           <div className="bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-white mb-4">Control de Datos</h3>
             <div className="space-y-4">
@@ -107,18 +105,10 @@ export default function HomePage() {
                 <span className="text-white/80">DexScreener</span>
                 <span className="text-[#00ff41] text-sm">Datos de Solana DEX</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-white/80">Jupiter</span>
-                <span className="text-[#00ff41] text-sm">Precios de tokens</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-white/80">CoinMarketCap</span>
-                <span className="text-[#ffaa00] text-sm">Datos de mercado</span>
-              </div>
             </div>
             <div className="mt-6 text-sm text-white/60">
-              <p>Las APIs se verifican automáticamente cada 5 minutos.</p>
-              <p>Los datos se actualizan cada 30 segundos cuando están disponibles.</p>
+              <p>DexScreener proporciona datos en tiempo real de tokens de Solana.</p>
+              <p>Los datos se actualizan automáticamente cada 30 segundos.</p>
             </div>
           </div>
         </div>
