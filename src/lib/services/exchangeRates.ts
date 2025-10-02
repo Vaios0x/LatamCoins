@@ -166,7 +166,7 @@ export function formatPrice(price: number, currency: string, rates: ExchangeRate
   const currencyInfo = rates.find(r => r.code === currency);
   if (!currencyInfo) return `$${price.toFixed(8)}`;
   
-  const { symbol, code } = currencyInfo;
+  const { symbol } = currencyInfo;
   
   // Formatear según la moneda
   if (price >= 1) {

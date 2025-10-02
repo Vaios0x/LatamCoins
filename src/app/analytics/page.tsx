@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import { TrendingUp, TrendingDown, BarChart3, PieChart, Activity, Target, Search, Filter } from 'lucide-react';
+import { TrendingUp, TrendingDown, BarChart3, PieChart, Activity, Target, Search } from 'lucide-react';
 import { formatLargeNumber } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
@@ -93,7 +93,7 @@ export default function AnalyticsPage() {
     const interval = setInterval(fetchTokens, 30000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedToken]);
 
   // Calcular métricas del mercado
   const marketMetrics = useMemo(() => {
@@ -326,7 +326,7 @@ export default function AnalyticsPage() {
                 </div>
               ) : (
                 <div className="text-center text-white/60 py-4">
-                  No se encontraron tokens que coincidan con "{searchQuery}"
+                  No se encontraron tokens que coincidan con &quot;{searchQuery}&quot;
                 </div>
               )}
             </div>

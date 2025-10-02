@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User, Loader2, Sparkles, TrendingUp, DollarSign, BarChart3 } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Loader2, TrendingUp, BarChart3 } from 'lucide-react';
 // import { GlassCard } from '@/components/ui/GlassCard'; // Removido - no se usa
 
 interface Message {

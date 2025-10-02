@@ -60,7 +60,7 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
         const result = await response.json();
 
         if (result.success && result.data) {
-          const tokenData = result.data.find((t: any) => 
+          const tokenData = result.data.find((t: { symbol: string; id: string }) => 
             t.symbol === token.symbol || t.id === token.id
           );
 

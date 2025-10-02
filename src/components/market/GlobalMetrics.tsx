@@ -30,7 +30,7 @@ interface GlobalMetricsData {
 export function GlobalMetrics() {
   const [data, setData] = useState<GlobalMetricsData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   
   // Usar el hook de moneda
   const { formatPrice } = useCurrency();
@@ -47,12 +47,12 @@ export function GlobalMetrics() {
 
         if (result.success && result.data) {
           const tokens = result.data;
-          const totalMarketCap = tokens.reduce((sum: number, token: any) => sum + (token.marketCap || 0), 0);
-          const totalVolume24h = tokens.reduce((sum: number, token: any) => sum + (token.volume24h || 0), 0);
+          const totalMarketCap = tokens.reduce((sum: number, token: { marketCap?: number }) => sum + (token.marketCap || 0), 0);
+          const totalVolume24h = tokens.reduce((sum: number, token: { volume24h?: number }) => sum + (token.volume24h || 0), 0);
           const totalTokens = tokens.length;
           
           // Calcular métricas reales
-          const topToken = tokens.reduce((max: any, token: any) => 
+          const topToken = tokens.reduce((max: { marketCap?: number }, token: { marketCap?: number }) => 
             (token.marketCap || 0) > (max.marketCap || 0) ? token : max, tokens[0] || {});
           
           setData({

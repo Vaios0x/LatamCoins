@@ -38,9 +38,9 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
         const result = await response.json();
 
         if (result.success && result.data) {
-          const tokenData = result.data.find((t: any) => 
-            t.symbol === token.symbol || t.id === token.id
-          );
+                 const tokenData = result.data.find((t: { symbol: string; id: string }) =>
+                   t.symbol === token.symbol || t.id === token.id
+                 );
 
           if (tokenData) {
             // SOLO usar datos reales - NO generar datos simulados
@@ -75,10 +75,10 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
                   const pair = dexScreenerData.pairs[0];
                   console.log('📈 Par encontrado:', pair);
                   
-                  if (pair.priceHistory && pair.priceHistory.length > 0) {
-                    console.log('✅ Datos históricos encontrados:', pair.priceHistory.length, 'puntos');
-                    const data = pair.priceHistory.map((p: any) => parseFloat(p.price));
-                    const labels = pair.priceHistory.map((p: any, index: number) => {
+                         if (pair.priceHistory && pair.priceHistory.length > 0) {
+                           console.log('✅ Datos históricos encontrados:', pair.priceHistory.length, 'puntos');
+                           const data = pair.priceHistory.map((p: { price: string }) => parseFloat(p.price));
+                           const labels = pair.priceHistory.map((p: { timestamp: number }) => {
                       const date = new Date(p.timestamp);
                       if (timeframe === '1H') {
                         return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });

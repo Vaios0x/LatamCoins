@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { formatPercentage } from '@/lib/utils/formatters';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { Activity, TrendingUp, TrendingDown, DollarSign, BarChart3 } from 'lucide-react';
 import { useCurrency } from '@/components/ui/CurrencySelector';

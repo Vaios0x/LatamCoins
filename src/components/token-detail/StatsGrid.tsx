@@ -1,7 +1,7 @@
 'use client';
 
 import { Token } from '@/lib/constants/tokens';
-import { formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { formatPercentage } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useCurrency } from '@/components/ui/CurrencySelector';
 

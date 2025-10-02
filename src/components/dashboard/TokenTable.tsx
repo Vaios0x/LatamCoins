@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowUpDown, ArrowUp, ArrowDown, Search, X } from 'lucide-react';
 import { Token } from '@/lib/constants/tokens';
-import { formatPrice, formatLargeNumber } from '@/lib/utils/formatters';
+import { formatLargeNumber } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { Sparkline } from './Sparkline';
