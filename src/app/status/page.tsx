@@ -127,84 +127,84 @@ export default function StatusPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#16213e]">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+        <div className="text-center mb-8 sm:mb-10 lg:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 sm:mb-4">
             Estado del Sistema
           </h1>
-          <p className="text-white/60 text-lg max-w-2xl mx-auto">
+          <p className="text-white/60 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-4">
             Monitoreo en tiempo real de las conexiones y servicios de la plataforma
           </p>
         </div>
 
         {/* Resumen del estado */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <GlassCard className="p-6 text-center">
-            <div className="flex items-center justify-center mb-4">
-              <Activity className="w-8 h-8 text-[#00ff41]" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <GlassCard className="p-4 sm:p-6 text-center">
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <Activity className="w-6 h-6 sm:w-8 sm:h-8 text-[#00ff41]" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">
               {connectedApis}/{totalApis}
             </h3>
-            <p className="text-white/60">APIs Conectadas</p>
+            <p className="text-white/60 text-sm sm:text-base">APIs Conectadas</p>
           </GlassCard>
 
-          <GlassCard className="p-6 text-center">
-            <div className="flex items-center justify-center mb-4">
-              <Wifi className="w-8 h-8 text-[#00ff41]" />
+          <GlassCard className="p-4 sm:p-6 text-center">
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <Wifi className="w-6 h-6 sm:w-8 sm:h-8 text-[#00ff41]" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">
               {connectedApis === totalApis ? '100%' : `${Math.round((connectedApis / totalApis) * 100)}%`}
             </h3>
-            <p className="text-white/60">Disponibilidad</p>
+            <p className="text-white/60 text-sm sm:text-base">Disponibilidad</p>
           </GlassCard>
 
-          <GlassCard className="p-6 text-center">
-            <div className="flex items-center justify-center mb-4">
-              <Clock className="w-8 h-8 text-white/60" />
+          <GlassCard className="p-4 sm:p-6 text-center sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-white/60" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2 break-all">
               {lastUpdate || 'N/A'}
             </h3>
-            <p className="text-white/60">Última Verificación</p>
+            <p className="text-white/60 text-sm sm:text-base">Última Verificación</p>
           </GlassCard>
         </div>
 
         {/* Lista de APIs */}
         <div className="max-w-4xl mx-auto">
-          <GlassCard className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">Estado de Conexiones</h2>
+          <GlassCard className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-white text-center sm:text-left">Estado de Conexiones</h2>
               <button
                 onClick={checkAllApis}
                 disabled={isChecking}
-                className="flex items-center space-x-2 px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300 disabled:opacity-50"
+                className="flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300 disabled:opacity-50 text-sm sm:text-base"
               >
                 <RefreshCw className={`w-4 h-4 ${isChecking ? 'animate-spin' : ''}`} />
                 <span>Verificar</span>
               </button>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {apis.map((api, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-[#0a0e27]/30 rounded-lg border border-white/10">
-                  <div className="flex items-center space-x-4">
+                <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-[#0a0e27]/30 rounded-lg border border-white/10 gap-3 sm:gap-4">
+                  <div className="flex items-center space-x-3 sm:space-x-4">
                     {getStatusIcon(api.status)}
-                    <div>
-                      <h3 className="text-lg font-semibold text-white">{api.name}</h3>
-                      <p className="text-white/60 text-sm">{api.url}</p>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-base sm:text-lg font-semibold text-white truncate">{api.name}</h3>
+                      <p className="text-white/60 text-xs sm:text-sm truncate">{api.url}</p>
                       {api.error && (
-                        <p className="text-[#ff0040] text-xs mt-1">{api.error}</p>
+                        <p className="text-[#ff0040] text-xs mt-1 break-all">{api.error}</p>
                       )}
                     </div>
                   </div>
                   
-                  <div className="text-right">
-                    <div className={`font-medium ${getStatusColor(api.status)}`}>
+                  <div className="text-left sm:text-right">
+                    <div className={`font-medium text-sm sm:text-base ${getStatusColor(api.status)}`}>
                       {getStatusText(api.status)}
                     </div>
-                    <div className="text-white/60 text-sm">
+                    <div className="text-white/60 text-xs sm:text-sm">
                       {api.lastCheck}
                     </div>
                     {api.responseTime && (
