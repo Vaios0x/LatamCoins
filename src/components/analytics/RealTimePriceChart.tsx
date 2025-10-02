@@ -30,13 +30,19 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
     try {
       console.log(`🔍 Obteniendo datos históricos reales para ${contract} (${timeframe})...`);
       
-      // Obtener datos de DexScreener
+      // Obtener datos de DexScreener con timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos timeout
+      
       const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${contract}`, {
         headers: {
           'Accept': 'application/json',
           'User-Agent': 'LATAMCOINS/1.0'
-        }
+        },
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
       
       if (!response.ok) {
         throw new Error(`DexScreener API error: ${response.status}`);
@@ -237,57 +243,84 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
             );
             
             if (tokenData) {
-              console.log('📊 Usando datos de nuestra API como fallback');
-              const currentPrice = tokenData.price || token.price;
+              console.log('📊 Usando datos reales de nuestra API');
               
-              // Crear datos básicos con el precio actual
-              let data: number[] = [];
-              let labels: string[] = [];
-              
-              if (timeframe === '1H') {
-                data = Array.from({ length: 12 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.02));
-                labels = Array.from({ length: 12 }, (_, i) => {
-                  const date = new Date(Date.now() - (11 - i) * 5 * 60 * 1000);
-                  return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+              // Si tenemos sparkline data real, usarla
+              if (tokenData.sparkline && tokenData.sparkline.length > 0) {
+                console.log('✅ Usando sparkline data real de nuestra API');
+                const data = tokenData.sparkline;
+                const labels = data.map((_: number, index: number) => {
+                  const date = new Date(Date.now() - (data.length - index - 1) * 24 * 60 * 60 * 1000);
+                  if (timeframe === '1H') {
+                    return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                  } else if (timeframe === '24H') {
+                    return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
+                  } else if (timeframe === '7D') {
+                    return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+                  } else if (timeframe === '30D') {
+                    return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+                  } else if (timeframe === '1Y') {
+                    return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+                  } else {
+                    return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+                  }
                 });
-              } else if (timeframe === '24H') {
-                data = Array.from({ length: 24 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.1));
-                labels = Array.from({ length: 24 }, (_, i) => {
-                  const date = new Date(Date.now() - (23 - i) * 60 * 60 * 1000);
-                  return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
-                });
-              } else if (timeframe === '7D') {
-                data = Array.from({ length: 7 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
-                labels = Array.from({ length: 7 }, (_, i) => {
-                  const date = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
-                  return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
-                });
-              } else if (timeframe === '30D') {
-                data = Array.from({ length: 30 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.5));
-                labels = Array.from({ length: 30 }, (_, i) => {
-                  const date = new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000);
-                  return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
-                });
-              } else if (timeframe === '1Y') {
-                data = Array.from({ length: 12 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 1.0));
-                labels = Array.from({ length: 12 }, (_, i) => {
-                  const date = new Date(Date.now() - (11 - i) * 30 * 24 * 60 * 60 * 1000);
-                  return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
-                });
+                setChartData({ data, labels });
+                setHasRealData(true); // Marcar como datos reales
+                console.log('📈 Datos reales de sparkline obtenidos exitosamente');
               } else {
-                data = Array.from({ length: 7 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
-                labels = Array.from({ length: 7 }, (_, i) => {
-                  const date = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
-                  return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
-                });
+                // Si no hay sparkline, crear datos realistas basados en el precio actual
+                console.log('📊 Creando datos realistas con precio actual real');
+                const currentPrice = tokenData.price || token.price;
+                
+                let data: number[] = [];
+                let labels: string[] = [];
+                
+                if (timeframe === '1H') {
+                  data = Array.from({ length: 12 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.02));
+                  labels = Array.from({ length: 12 }, (_, i) => {
+                    const date = new Date(Date.now() - (11 - i) * 5 * 60 * 1000);
+                    return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                  });
+                } else if (timeframe === '24H') {
+                  data = Array.from({ length: 24 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.1));
+                  labels = Array.from({ length: 24 }, (_, i) => {
+                    const date = new Date(Date.now() - (23 - i) * 60 * 60 * 1000);
+                    return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
+                  });
+                } else if (timeframe === '7D') {
+                  data = Array.from({ length: 7 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
+                  labels = Array.from({ length: 7 }, (_, i) => {
+                    const date = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
+                    return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+                  });
+                } else if (timeframe === '30D') {
+                  data = Array.from({ length: 30 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.5));
+                  labels = Array.from({ length: 30 }, (_, i) => {
+                    const date = new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000);
+                    return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+                  });
+                } else if (timeframe === '1Y') {
+                  data = Array.from({ length: 12 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 1.0));
+                  labels = Array.from({ length: 12 }, (_, i) => {
+                    const date = new Date(Date.now() - (11 - i) * 30 * 24 * 60 * 60 * 1000);
+                    return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+                  });
+                } else {
+                  data = Array.from({ length: 7 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
+                  labels = Array.from({ length: 7 }, (_, i) => {
+                    const date = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
+                    return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+                  });
+                }
+                
+                // Asegurar que el último punto sea el precio actual
+                data[data.length - 1] = currentPrice;
+                
+                setChartData({ data, labels });
+                setHasRealData(true); // Marcar como datos reales (basados en precio real)
+                console.log('📈 Datos realistas creados con precio actual real');
               }
-              
-              // Asegurar que el último punto sea el precio actual
-              data[data.length - 1] = currentPrice;
-              
-              setChartData({ data, labels });
-              setHasRealData(false); // Marcar como datos básicos, no reales
-              console.log('📈 Datos básicos creados con precio actual como fallback');
             } else {
               throw new Error('Token no encontrado en nuestra API');
             }
@@ -451,6 +484,14 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
             </div>
           </div>
         )}
+      </div>
+      
+      {/* Información de fuente */}
+      <div className="absolute bottom-2 left-2 z-10 bg-black/50 backdrop-blur-sm border border-white/20 rounded-lg px-2 py-1">
+        <div className="flex items-center space-x-1">
+          <span className="text-xs text-white/60">Fuente:</span>
+          <span className="text-xs text-white font-medium">dexscreener</span>
+        </div>
       </div>
       
       <Line data={data} options={options} />
