@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 /**
  * Página de API
- * Información sobre la API de LATAMCOINS y ejemplos de uso
+ * Información sobre la API de CoinLatamCap y ejemplos de uso
  */
 export default function APIPage() {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -30,7 +30,7 @@ export default function APIPage() {
       description: 'Lista completa de tokens latinoamericanos con precios y estadísticas',
       method: 'GET',
       endpoint: '/api/tokens',
-      code: `curl -X GET "https://api.latamcoins.com/tokens" \\
+      code: `curl -X GET "https://api.coinlatamcap.com/tokens" \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json"`,
       response: `{
@@ -57,7 +57,7 @@ export default function APIPage() {
       description: 'Datos detallados de un token incluyendo gráfico y estadísticas',
       method: 'GET',
       endpoint: '/api/tokens/{symbol}',
-      code: `curl -X GET "https://api.latamcoins.com/tokens/DOGGY" \\
+      code: `curl -X GET "https://api.coinlatamcap.com/tokens/DOGGY" \\
   -H "Authorization: Bearer YOUR_API_KEY"`,
       response: `{
   "success": true,
@@ -83,7 +83,7 @@ export default function APIPage() {
       description: 'Métricas globales del mercado crypto latinoamericano',
       method: 'GET',
       endpoint: '/api/market/stats',
-      code: `curl -X GET "https://api.latamcoins.com/market/stats" \\
+      code: `curl -X GET "https://api.coinlatamcap.com/market/stats" \\
   -H "Authorization: Bearer YOUR_API_KEY"`,
       response: `{
   "success": true,
@@ -109,7 +109,7 @@ export default function APIPage() {
       description: 'Crear alertas personalizadas para cambios de precio',
       method: 'POST',
       endpoint: '/api/alerts',
-      code: `curl -X POST "https://api.latamcoins.com/alerts" \\
+      code: `curl -X POST "https://api.coinlatamcap.com/alerts" \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -182,7 +182,7 @@ export default function APIPage() {
           <div className="flex items-center space-x-3 mb-4">
             <Code className="w-8 h-8 text-[#00ff41]" />
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-              API LATAMCOINS
+              API CoinLatamCap
             </h1>
           </div>
           
@@ -307,14 +307,14 @@ export default function APIPage() {
                 <h4 className="text-sm font-medium text-white/80 mb-2">Conexión:</h4>
                 <div className="bg-[#0a0e27]/50 rounded-lg p-4">
                   <code className="text-white/70 text-sm font-mono">
-                    wss://api.latamcoins.com/ws?token=YOUR_API_KEY
+                    wss://api.coinlatamcap.com/ws?token=YOUR_API_KEY
                   </code>
                 </div>
               </div>
               <div>
                 <h4 className="text-sm font-medium text-white/80 mb-2">Ejemplo JavaScript:</h4>
                 <div className="bg-[#0a0e27]/50 rounded-lg p-4">
-                  <code className="text-white/70 text-sm font-mono whitespace-pre">{`const ws = new WebSocket('wss://api.latamcoins.com/ws?token=YOUR_API_KEY');
+                  <code className="text-white/70 text-sm font-mono whitespace-pre">{`const ws = new WebSocket('wss://api.coinlatamcap.com/ws?token=YOUR_API_KEY');
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);

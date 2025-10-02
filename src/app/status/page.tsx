@@ -36,7 +36,7 @@ export default function StatusPage() {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
-          'User-Agent': 'LATAMCOINS/1.0'
+          'User-Agent': 'CoinLatamCap/1.0'
         },
         signal: controller.signal
       });

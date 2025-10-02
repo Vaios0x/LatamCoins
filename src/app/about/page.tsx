@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 /**
- * Página Acerca de LATAMCOINS
+ * Página Acerca de CoinLatamCap
  * Información sobre la plataforma, misión y equipo
  */
 export default function AboutPage() {
@@ -47,7 +47,7 @@ export default function AboutPage() {
 
   const team = [
     {
-      name: 'Equipo LATAMCOINS',
+      name: 'Equipo CoinLatamCap',
       role: 'Fundadores',
       description: 'Apasionados por la tecnología blockchain y el potencial de Latinoamérica en el ecosistema crypto.',
       image: '/team/placeholder.jpg'

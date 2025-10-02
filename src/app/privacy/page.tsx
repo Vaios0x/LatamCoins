@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 /**
  * Página de Política de Privacidad
- * Información sobre cómo LATAMCOINS maneja los datos de los usuarios
+ * Información sobre cómo CoinLatamCap maneja los datos de los usuarios
  */
 export default function PrivacyPage() {
   const lastUpdated = 'Septiembre 2025';

@@ -5,7 +5,7 @@ import { ExternalLink } from 'lucide-react';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
 /**
- * Footer de LATAMCOINS
+ * Footer de CoinLatamCap
  * Enlaces y información de la plataforma
  */
 export function Footer() {
@@ -25,9 +25,9 @@ export function Footer() {
       { name: 'Estado', href: '/status' },
     ],
     social: [
-      { name: 'Twitter', href: 'https://twitter.com/latamcoins', external: true },
-      { name: 'Discord', href: 'https://discord.gg/latamcoins', external: true },
-      { name: 'GitHub', href: 'https://github.com/latamcoins', external: true },
+      { name: 'Twitter', href: 'https://twitter.com/coinlatamcap', external: true },
+      { name: 'Discord', href: 'https://discord.gg/coinlatamcap', external: true },
+      { name: 'GitHub', href: 'https://github.com/coinlatamcap', external: true },
     ]
   };
 
@@ -39,7 +39,7 @@ export function Footer() {
           <div className="md:col-span-2 lg:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <h2 className="text-2xl font-bold text-[#00ff41] neon-text">
-                LATAMCOINS
+                CoinLatamCap
               </h2>
             </div>
             <p className="text-white/70 mb-6 max-w-lg text-sm sm:text-base leading-relaxed">
@@ -80,7 +80,7 @@ export function Footer() {
             
             {/* Fruta Power */}
             <div className="mt-4 flex items-center space-x-2 text-sm text-white/60">
-              <span className="font-medium">Let&apos;s build a fruit</span>
+              <span className="font-medium">Let&apos;s Fruta Build</span>
               <span className="text-[#ff6b35] font-semibold flex items-center space-x-1">
                 <span>🍒</span>
                 <span>Fruta Power</span>
@@ -132,7 +132,7 @@ export function Footer() {
         {/* Copyright y enlaces sociales */}
         <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
           <div className="text-white/60 text-sm text-center lg:text-left">
-            © {currentYear} LATAMCOINS. Todos los derechos reservados.
+            © {currentYear} CoinLatamCap. Todos los derechos reservados.
           </div>
           
           <div className="flex items-center space-x-6">

@@ -1,5 +1,5 @@
 /**
- * Servicio principal de tokens para LATAMCOINS
+ * Servicio principal de tokens para CoinLatamCap
  * Combina datos de múltiples APIs para obtener información completa
  */
 

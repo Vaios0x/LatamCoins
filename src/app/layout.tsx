@@ -19,32 +19,32 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'LATAMCOINS - El pulso de las crypto latinas',
+  title: 'CoinLatamCap - El pulso de las crypto latinas',
   description: 'Tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun. El futuro de las crypto latinas.',
   keywords: 'crypto, latinoamerica, solana, pump.fun, tokens, blockchain, defi',
-  authors: [{ name: 'LATAMCOINS Team' }],
-  creator: 'LATAMCOINS',
-  publisher: 'LATAMCOINS',
+  authors: [{ name: 'CoinLatamCap Team' }],
+  creator: 'CoinLatamCap',
+  publisher: 'CoinLatamCap',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://latamcoins.com'),
+  metadataBase: new URL('https://coinlatamcap.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'LATAMCOINS - El pulso de las crypto latinas',
+    title: 'CoinLatamCap - El pulso de las crypto latinas',
     description: 'Tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun.',
-    url: 'https://latamcoins.com',
-    siteName: 'LATAMCOINS',
+    url: 'https://coinlatamcap.com',
+    siteName: 'CoinLatamCap',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'LATAMCOINS - El pulso de las crypto latinas',
+        alt: 'CoinLatamCap - El pulso de las crypto latinas',
       },
     ],
     locale: 'es_ES',
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'LATAMCOINS - El pulso de las crypto latinas',
+    title: 'CoinLatamCap - El pulso de las crypto latinas',
     description: 'Tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun.',
     images: ['/og-image.png'],
   },
@@ -84,7 +84,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#00ff41" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="LATAMCOINS" />
+        <meta name="apple-mobile-web-app-title" content="CoinLatamCap" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="format-detection" content="telephone=no" />
         <link rel="manifest" href="/manifest.json" />

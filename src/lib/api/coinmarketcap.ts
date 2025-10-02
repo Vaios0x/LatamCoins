@@ -1,5 +1,5 @@
 /**
- * API de CoinMarketCap para LATAMCOINS
+ * API de CoinMarketCap para CoinLatamCap
  * Integración con CoinMarketCap API para datos de mercado
  */
 

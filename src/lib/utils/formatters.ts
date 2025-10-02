@@ -1,5 +1,5 @@
 /**
- * Utilidades de formateo para LATAMCOINS
+ * Utilidades de formateo para CoinLatamCap
  * Formateo de números, precios, porcentajes y fechas
  */
 

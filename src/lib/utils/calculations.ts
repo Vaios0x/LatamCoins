@@ -1,5 +1,5 @@
 /**
- * Utilidades de cálculos para LATAMCOINS
+ * Utilidades de cálculos para CoinLatamCap
  * Cálculos de precios, cambios, estadísticas
  */
 

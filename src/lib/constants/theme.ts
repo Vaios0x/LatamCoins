@@ -1,5 +1,5 @@
 /**
- * Constantes de tema para LATAMCOINS
+ * Constantes de tema para CoinLatamCap
  * Paleta de colores cyberpunk/Matrix
  */
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 LATAMCOINS
+# 🚀 CoinLatamCap
 ### *El Pulso de las Crypto Latinas*
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
@@ -11,19 +11,19 @@
 
 *Una plataforma de tracking de criptomonedas estilo CoinMarketCap, enfocada EXCLUSIVAMENTE en tokens latinoamericanos, con estética cyberpunk/Matrix y efectos glassmorphism premium.*
 
-[🌐 Demo Live](https://latamcoins.vercel.app) • [📱 PWA](https://latamcoins.vercel.app) • [🐛 Report Bug](https://github.com/latamcoins/latamcoins/issues) • [✨ Request Feature](https://github.com/latamcoins/latamcoins/issues)
+[🌐 Demo Live](https://coinlatamcap.vercel.app) • [📱 PWA](https://coinlatamcap.vercel.app) • [🐛 Report Bug](https://github.com/coinlatamcap/coinlatamcap/issues) • [✨ Request Feature](https://github.com/coinlatamcap/coinlatamcap/issues)
 
 </div>
 
 ---
 
-## 🎯 **¿Qué es LATAMCOINS?**
+## 🎯 **¿Qué es CoinLatamCap?**
 
-LATAMCOINS es la **primera plataforma de tracking de criptomonedas** diseñada específicamente para el ecosistema crypto latinoamericano. Nuestra misión es democratizar el acceso a información financiera de alta calidad para la comunidad hispanohablante, combinando tecnología blockchain de vanguardia con una experiencia de usuario inmersiva y futurista.
+CoinLatamCap es la **primera plataforma de tracking de criptomonedas** diseñada específicamente para el ecosistema crypto latinoamericano. Nuestra misión es democratizar el acceso a información financiera de alta calidad para la comunidad hispanohablante, combinando tecnología blockchain de vanguardia con una experiencia de usuario inmersiva y futurista.
 
 ### 🌟 **Nuestra Historia**
 
-En un mundo donde las plataformas de tracking crypto están dominadas por interfaces en inglés y enfoques anglocéntricos, LATAMCOINS nació de una visión simple pero poderosa: **crear un espacio donde la comunidad latinoamericana pudiera sentirse representada y empoderada** en el ecosistema de las criptomonedas.
+En un mundo donde las plataformas de tracking crypto están dominadas por interfaces en inglés y enfoques anglocéntricos, CoinLatamCap nació de una visión simple pero poderosa: **crear un espacio donde la comunidad latinoamericana pudiera sentirse representada y empoderada** en el ecosistema de las criptomonedas.
 
 Desde tokens de memes como **DOGGY** hasta proyectos estratégicos como **Darrkito**, nuestra plataforma rastrea en tiempo real el pulso de la innovación crypto latina, ofreciendo datos precisos, análisis profundos y una experiencia visual que rivaliza con las mejores plataformas del mundo.
 

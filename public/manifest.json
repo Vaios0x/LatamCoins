@@ -1,6 +1,6 @@
 {
-  "name": "LATAMCOINS",
-  "short_name": "LATAMCOINS",
+  "name": "CoinLatamCap",
+  "short_name": "CoinLatamCap",
   "description": "El pulso de las crypto latinas",
   "start_url": "/",
   "display": "standalone",

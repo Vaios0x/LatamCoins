@@ -7,7 +7,7 @@ import { Search, Menu, X } from 'lucide-react';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
 /**
- * Header principal de LATAMCOINS
+ * Header principal de CoinLatamCap
  * Logo con efecto neón y navegación
  */
 export function Header() {
@@ -40,11 +40,11 @@ export function Header() {
     <header className="relative z-50 w-full bg-[#0a0e27]/80 backdrop-blur-xl border-b border-[#00ff41]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-18">
-          {/* Logo LATAMCOINS */}
+          {/* Logo CoinLatamCap */}
           <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group">
             <div className="relative">
               <h1 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold text-[#00ff41] neon-text group-hover:animate-neon-pulse transition-all duration-300">
-                <span className="hidden xs:inline">LATAMCOINS</span>
+                <span className="hidden xs:inline">CoinLatamCap</span>
                 <span className="xs:hidden">LTC</span>
               </h1>
               <div className="absolute -inset-1 bg-[#00ff41]/20 blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300" />

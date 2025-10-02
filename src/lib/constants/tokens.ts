@@ -1,5 +1,5 @@
 /**
- * Lista de tokens latinoamericanos para LATAMCOINS
+ * Lista de tokens latinoamericanos para CoinLatamCap
  * Enfocados en tokens de Pump.fun en Solana
  */
 

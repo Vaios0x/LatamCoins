@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 /**
  * Página de Términos y Condiciones
- * Términos de uso de la plataforma LATAMCOINS
+ * Términos de uso de la plataforma CoinLatamCap
  */
 export default function TermsPage() {
   const lastUpdated = 'Septiembre 2025';
@@ -15,31 +15,31 @@ export default function TermsPage() {
   const sections = [
     {
       title: '1. Aceptación de los Términos',
-      content: 'Al acceder y utilizar LATAMCOINS, usted acepta estar sujeto a estos términos y condiciones de uso. Si no está de acuerdo con alguna parte de estos términos, no debe utilizar nuestro servicio.'
+      content: 'Al acceder y utilizar CoinLatamCap, usted acepta estar sujeto a estos términos y condiciones de uso. Si no está de acuerdo con alguna parte de estos términos, no debe utilizar nuestro servicio.'
     },
     {
       title: '2. Descripción del Servicio',
-      content: 'LATAMCOINS es una plataforma de información que proporciona datos sobre criptomonedas y tokens latinoamericanos. Nuestro servicio incluye, pero no se limita a: precios en tiempo real, gráficos, estadísticas de mercado, y enlaces a plataformas de trading.'
+      content: 'CoinLatamCap es una plataforma de información que proporciona datos sobre criptomonedas y tokens latinoamericanos. Nuestro servicio incluye, pero no se limita a: precios en tiempo real, gráficos, estadísticas de mercado, y enlaces a plataformas de trading.'
     },
     {
       title: '3. Uso Aceptable',
-      content: 'Usted se compromete a utilizar LATAMCOINS únicamente para fines legales y de manera que no infrinja los derechos de terceros. Está prohibido: usar el servicio para actividades ilegales, intentar acceder a sistemas no autorizados, o interferir con el funcionamiento normal del servicio.'
+      content: 'Usted se compromete a utilizar CoinLatamCap únicamente para fines legales y de manera que no infrinja los derechos de terceros. Está prohibido: usar el servicio para actividades ilegales, intentar acceder a sistemas no autorizados, o interferir con el funcionamiento normal del servicio.'
     },
     {
       title: '4. Información Financiera',
-      content: 'La información proporcionada en LATAMCOINS es únicamente para fines informativos y educativos. No constituye asesoramiento financiero, de inversión, legal o fiscal. Siempre consulte con profesionales calificados antes de tomar decisiones de inversión.'
+      content: 'La información proporcionada en CoinLatamCap es únicamente para fines informativos y educativos. No constituye asesoramiento financiero, de inversión, legal o fiscal. Siempre consulte con profesionales calificados antes de tomar decisiones de inversión.'
     },
     {
       title: '5. Limitación de Responsabilidad',
-      content: 'LATAMCOINS no se hace responsable por pérdidas financieras derivadas del uso de la información proporcionada. Los usuarios asumen toda la responsabilidad por sus decisiones de inversión y trading.'
+      content: 'CoinLatamCap no se hace responsable por pérdidas financieras derivadas del uso de la información proporcionada. Los usuarios asumen toda la responsabilidad por sus decisiones de inversión y trading.'
     },
     {
       title: '6. Propiedad Intelectual',
-      content: 'Todo el contenido de LATAMCOINS, incluyendo pero no limitado a textos, gráficos, logos, iconos, imágenes, y software, es propiedad de LATAMCOINS o sus licenciantes y está protegido por leyes de derechos de autor.'
+      content: 'Todo el contenido de CoinLatamCap, incluyendo pero no limitado a textos, gráficos, logos, iconos, imágenes, y software, es propiedad de CoinLatamCap o sus licenciantes y está protegido por leyes de derechos de autor.'
     },
     {
       title: '7. Privacidad',
-      content: 'El uso de LATAMCOINS está sujeto a nuestra Política de Privacidad, que describe cómo recopilamos, usamos y protegemos su información personal.'
+      content: 'El uso de CoinLatamCap está sujeto a nuestra Política de Privacidad, que describe cómo recopilamos, usamos y protegemos su información personal.'
     },
     {
       title: '8. Modificaciones',

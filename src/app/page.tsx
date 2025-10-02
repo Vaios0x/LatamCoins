@@ -7,7 +7,7 @@ import { RealTimeData } from '@/components/dashboard/RealTimeData';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
 /**
- * Página principal de LATAMCOINS
+ * Página principal de CoinLatamCap
  * Dashboard con estadísticas globales y tabla de tokens
  */
 export default function HomePage() {

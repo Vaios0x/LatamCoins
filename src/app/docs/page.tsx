@@ -7,14 +7,14 @@ import Link from 'next/link';
 
 /**
  * Página de Documentación
- * Guía completa para desarrolladores y usuarios de LATAMCOINS
+ * Guía completa para desarrolladores y usuarios de CoinLatamCap
  */
 export default function DocsPage() {
   const quickStart = [
     {
       step: 1,
       title: 'Registro de API',
-      description: 'Obtén tu API key gratuita para acceder a los datos de LATAMCOINS',
+      description: 'Obtén tu API key gratuita para acceder a los datos de CoinLatamCap',
       icon: Key
     },
     {
@@ -36,25 +36,25 @@ export default function DocsPage() {
       method: 'GET',
       endpoint: '/api/tokens',
       description: 'Obtener lista de todos los tokens latinoamericanos',
-      example: 'curl -X GET "https://api.latamcoins.com/tokens"'
+      example: 'curl -X GET "https://api.coinlatamcap.com/tokens"'
     },
     {
       method: 'GET',
       endpoint: '/api/tokens/{symbol}',
       description: 'Obtener información detallada de un token específico',
-      example: 'curl -X GET "https://api.latamcoins.com/tokens/DOGGY"'
+      example: 'curl -X GET "https://api.coinlatamcap.com/tokens/DOGGY"'
     },
     {
       method: 'GET',
       endpoint: '/api/market/stats',
       description: 'Obtener estadísticas globales del mercado LATAM',
-      example: 'curl -X GET "https://api.latamcoins.com/market/stats"'
+      example: 'curl -X GET "https://api.coinlatamcap.com/market/stats"'
     },
     {
       method: 'GET',
       endpoint: '/api/tokens/{symbol}/price',
       description: 'Obtener precio actual de un token',
-      example: 'curl -X GET "https://api.latamcoins.com/tokens/DOGGY/price"'
+      example: 'curl -X GET "https://api.coinlatamcap.com/tokens/DOGGY/price"'
     }
   ];
 
@@ -63,7 +63,7 @@ export default function DocsPage() {
       icon: Database,
       title: 'Datos en Tiempo Real',
       description: 'WebSocket para actualizaciones instantáneas de precios y volúmenes',
-      code: 'const ws = new WebSocket("wss://api.latamcoins.com/ws");'
+      code: 'const ws = new WebSocket("wss://api.coinlatamcap.com/ws");'
     },
     {
       icon: Globe,
@@ -90,29 +90,29 @@ export default function DocsPage() {
       name: 'JavaScript/TypeScript',
       language: 'js',
       description: 'SDK oficial para Node.js y navegadores',
-      install: 'npm install @latamcoins/sdk',
-      example: 'import { LatamCoinsAPI } from "@latamcoins/sdk";'
+      install: 'npm install @coinlatamcap/sdk',
+      example: 'import { CoinLatamCapAPI } from "@coinlatamcap/sdk";'
     },
     {
       name: 'Python',
       language: 'python',
       description: 'SDK para Python con soporte asíncrono',
-      install: 'pip install latamcoins',
-      example: 'from latamcoins import LatamCoinsAPI'
+      install: 'pip install coinlatamcap',
+      example: 'from coinlatamcap import CoinLatamCapAPI'
     },
     {
       name: 'Go',
       language: 'go',
       description: 'SDK para Go con tipos seguros',
-      install: 'go get github.com/latamcoins/go-sdk',
-      example: 'import "github.com/latamcoins/go-sdk"'
+      install: 'go get github.com/coinlatamcap/go-sdk',
+      example: 'import "github.com/coinlatamcap/go-sdk"'
     }
   ];
 
   const tutorials = [
     {
       title: 'Integración Básica',
-      description: 'Aprende a integrar LATAMCOINS en tu aplicación',
+      description: 'Aprende a integrar CoinLatamCap en tu aplicación',
       duration: '5 min',
       level: 'Principiante'
     },
@@ -152,7 +152,7 @@ export default function DocsPage() {
           </div>
           
           <p className="text-white/70 max-w-3xl text-base sm:text-lg">
-            Guía completa para desarrolladores. Integra LATAMCOINS en tu aplicación 
+            Guía completa para desarrolladores. Integra CoinLatamCap en tu aplicación 
             con nuestra API REST, WebSocket y SDKs oficiales.
           </p>
         </div>
@@ -293,7 +293,7 @@ export default function DocsPage() {
             <h3 className="text-xl font-semibold text-white mb-4">Recursos Adicionales</h3>
             <div className="space-y-3">
               <a
-                href="https://github.com/latamcoins/examples"
+                href="https://github.com/coinlatamcap/examples"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"
@@ -302,7 +302,7 @@ export default function DocsPage() {
                 <span>Ejemplos de Código</span>
               </a>
               <a
-                href="https://status.latamcoins.com"
+                href="https://status.coinlatamcap.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"
@@ -324,7 +324,7 @@ export default function DocsPage() {
             <h3 className="text-xl font-semibold text-white mb-4">Comunidad</h3>
             <div className="space-y-3">
               <a
-                href="https://discord.gg/latamcoins"
+                href="https://discord.gg/coinlatamcap"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"
@@ -333,7 +333,7 @@ export default function DocsPage() {
                 <span>Discord</span>
               </a>
               <a
-                href="https://github.com/latamcoins"
+                href="https://github.com/coinlatamcap"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"
@@ -342,7 +342,7 @@ export default function DocsPage() {
                 <span>GitHub</span>
               </a>
               <a
-                href="https://twitter.com/latamcoins"
+                href="https://twitter.com/coinlatamcap"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"

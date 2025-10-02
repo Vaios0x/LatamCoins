@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 /**
  * Página de Contacto
- * Formulario de contacto y información de LATAMCOINS
+ * Formulario de contacto y información de CoinLatamCap
  */
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -33,13 +33,13 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'Email',
-      content: 'hola@latamcoins.com',
+      content: 'hola@coinlatamcap.com',
       description: 'Respuesta en 24 horas'
     },
     {
       icon: MessageSquare,
       title: 'Discord',
-      content: 'discord.gg/latamcoins',
+      content: 'discord.gg/coinlatamcap',
       description: 'Comunidad activa'
     },
     {
@@ -58,7 +58,7 @@ export default function ContactPage() {
 
   const teamMembers = [
     {
-      name: 'Equipo LATAMCOINS',
+      name: 'Equipo CoinLatamCap',
       role: 'Fundadores',
       description: 'Apasionados por blockchain y el potencial de Latinoamérica',
       image: '/team/placeholder.jpg'
@@ -112,7 +112,7 @@ export default function ContactPage() {
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             <span className="text-white">Contacto</span>
-            <span className="text-[#00ff41] neon-text animate-neon-pulse ml-2">LATAMCOINS</span>
+            <span className="text-[#00ff41] neon-text animate-neon-pulse ml-2">CoinLatamCap</span>
           </h1>
           <p className="text-white/70 max-w-3xl text-base sm:text-lg">
             ¿Tienes preguntas, sugerencias o quieres colaborar con nosotros? 
@@ -262,7 +262,7 @@ export default function ContactPage() {
               <h3 className="text-lg font-semibold text-white mb-4">Redes Sociales</h3>
               <div className="space-y-3">
                 <a
-                  href="https://twitter.com/latamcoins"
+                  href="https://twitter.com/coinlatamcap"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"
@@ -271,7 +271,7 @@ export default function ContactPage() {
                   <span>Twitter</span>
                 </a>
                 <a
-                  href="https://discord.gg/latamcoins"
+                  href="https://discord.gg/coinlatamcap"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"
@@ -280,7 +280,7 @@ export default function ContactPage() {
                   <span>Discord</span>
                 </a>
                 <a
-                  href="https://github.com/latamcoins"
+                  href="https://github.com/coinlatamcap"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"

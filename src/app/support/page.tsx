@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 /**
  * Página de Soporte
- * Centro de ayuda y soporte técnico para LATAMCOINS
+ * Centro de ayuda y soporte técnico para CoinLatamCap
  */
 export default function SupportPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,14 +29,14 @@ export default function SupportPage() {
     {
       id: 'what-is-latamcoins',
       category: 'general',
-      question: '¿Qué es LATAMCOINS?',
-      answer: 'LATAMCOINS es una plataforma de tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun. Proporcionamos datos actualizados, gráficos interactivos y análisis del mercado crypto latinoamericano.',
+      question: '¿Qué es CoinLatamCap?',
+      answer: 'CoinLatamCap es una plataforma de tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun. Proporcionamos datos actualizados, gráficos interactivos y análisis del mercado crypto latinoamericano.',
       tags: ['general', 'plataforma']
     },
     {
       id: 'how-to-use-api',
       category: 'api',
-      question: '¿Cómo usar la API de LATAMCOINS?',
+      question: '¿Cómo usar la API de CoinLatamCap?',
       answer: 'Estamos desarrollando una API REST que te permitirá acceder a datos de tokens, precios, volúmenes y estadísticas. Incluirá autenticación JWT, rate limiting y soporte WebSocket para datos en tiempo real. La documentación estará disponible próximamente.',
       tags: ['api', 'desarrollo']
     },
@@ -58,7 +58,7 @@ export default function SupportPage() {
       id: 'account-creation',
       category: 'account',
       question: '¿Cómo crear una cuenta?',
-      answer: 'Actualmente LATAMCOINS es de acceso público. Para funciones avanzadas como API keys personalizadas, contacta a nuestro equipo a través de /contact.',
+      answer: 'Actualmente CoinLatamCap es de acceso público. Para funciones avanzadas como API keys personalizadas, contacta a nuestro equipo a través de /contact.',
       tags: ['cuenta', 'registro']
     },
     {
@@ -72,7 +72,7 @@ export default function SupportPage() {
       id: 'mobile-app',
       category: 'general',
       question: '¿Hay una aplicación móvil?',
-      answer: 'LATAMCOINS es una PWA (Progressive Web App) que puedes instalar en tu dispositivo móvil. Funciona como una app nativa con notificaciones push y funcionamiento offline.',
+      answer: 'CoinLatamCap es una PWA (Progressive Web App) que puedes instalar en tu dispositivo móvil. Funciona como una app nativa con notificaciones push y funcionamiento offline.',
       tags: ['móvil', 'pwa']
     },
     {
@@ -89,7 +89,7 @@ export default function SupportPage() {
       icon: MessageSquare,
       title: 'Discord',
       description: 'Comunidad activa 24/7',
-      link: 'https://discord.gg/latamcoins',
+      link: 'https://discord.gg/coinlatamcap',
       responseTime: 'Inmediato',
       color: 'text-[#00ff41]'
     },
@@ -97,7 +97,7 @@ export default function SupportPage() {
       icon: Mail,
       title: 'Email',
       description: 'Soporte técnico profesional',
-      link: 'mailto:support@latamcoins.com',
+      link: 'mailto:support@coinlatamcap.com',
       responseTime: '24 horas',
       color: 'text-[#00ff41]'
     },

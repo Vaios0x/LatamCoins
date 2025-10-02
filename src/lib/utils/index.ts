@@ -1,5 +1,5 @@
 /**
- * Utilidades generales para LATAMCOINS
+ * Utilidades generales para CoinLatamCap
  * Funciones de ayuda y utilidades comunes
  */
 

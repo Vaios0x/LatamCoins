@@ -45,8 +45,8 @@ export function HeroSection() {
         {/* Título principal */}
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold mb-6 sm:mb-8">
-            <span className="text-white">LATAM</span>
-            <span className="text-[#00ff41] neon-text animate-neon-pulse">COINS</span>
+            <span className="text-white">Coin</span>
+            <span className="text-[#00ff41] neon-text animate-neon-pulse">LatamCap</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/80 max-w-4xl mx-auto mb-4">
             El futuro de las crypto latinas en tiempo real
