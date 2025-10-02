@@ -50,15 +50,8 @@ export function TokenChart({
             }
             setLabels(dayLabels);
           } else {
-            // Si no hay datos de sparkline, generar datos de ejemplo basados en el precio actual
-            const currentPrice = token?.price || 0;
-            const mockData = [];
-            for (let i = 0; i < 7; i++) {
-              const variation = (Math.random() - 0.5) * 0.1; // ±5% variación
-              mockData.push(currentPrice * (1 + variation));
-            }
-            setChartData(mockData);
-            setLabels(['7d', '6d', '5d', '4d', '3d', '2d', '1d']);
+            // Si no hay datos de sparkline, mostrar error
+            throw new Error('No hay datos históricos disponibles para este token');
           }
         } else {
           throw new Error('No se pudieron obtener datos del token');

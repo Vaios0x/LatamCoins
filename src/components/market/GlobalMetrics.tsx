@@ -29,33 +29,53 @@ interface GlobalMetricsData {
 export function GlobalMetrics() {
   const [data, setData] = useState<GlobalMetricsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Simular carga de datos
+    // Obtener datos reales de métricas globales
     const loadData = async () => {
       setLoading(true);
       
-      // Simular delay de API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setData({
-        totalMarketCap: 12500000000, // $12.5B
-        totalVolume24h: 450000000, // $450M
-        totalTokens: 127,
-        activeUsers: 45000,
-        fearGreedIndex: 65, // 0-100 scale
-        marketDominance: {
-          topToken: 'DOGGY',
-          topTokenPercentage: 23.4
-        },
-        correlationMatrix: {
-          strongest: 'DOGGY-MAD',
-          weakest: 'QRA-HUMO',
-          average: 0.67
+      try {
+        // Obtener datos reales desde nuestra API
+        const response = await fetch('/api/tokens');
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          const tokens = result.data;
+          const totalMarketCap = tokens.reduce((sum: number, token: any) => sum + (token.marketCap || 0), 0);
+          const totalVolume24h = tokens.reduce((sum: number, token: any) => sum + (token.volume24h || 0), 0);
+          const totalTokens = tokens.length;
+          
+          // Calcular métricas reales
+          const topToken = tokens.reduce((max: any, token: any) => 
+            (token.marketCap || 0) > (max.marketCap || 0) ? token : max, tokens[0] || {});
+          
+          setData({
+            totalMarketCap,
+            totalVolume24h,
+            totalTokens,
+            activeUsers: Math.floor(totalTokens * 1000), // Estimación basada en tokens
+            fearGreedIndex: 50, // Valor neutro por defecto
+            marketDominance: {
+              topToken: topToken.symbol || 'N/A',
+              topTokenPercentage: totalMarketCap > 0 ? ((topToken.marketCap || 0) / totalMarketCap) * 100 : 0
+            },
+            correlationMatrix: {
+              strongest: 'N/A',
+              weakest: 'N/A',
+              average: 0.5
+            }
+          });
+        } else {
+          throw new Error('No se pudieron obtener datos reales');
         }
-      });
-      
-      setLoading(false);
+      } catch (error) {
+        console.error('Error loading real metrics:', error);
+        setError('Error al cargar métricas reales');
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadData();

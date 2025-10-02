@@ -57,31 +57,8 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
               });
               setChartData({ data, labels });
             } else {
-              // Si no hay sparkline, generar datos basados en el precio actual
-              const currentPrice = tokenData.price || token.price;
-              const data = [];
-              const labels = [];
-              const points = timeframe === '1H' ? 24 : timeframe === '24H' ? 24 : 50;
-              
-              for (let i = 0; i < points; i++) {
-                const variation = (Math.random() - 0.5) * 0.2; // ±10% variación
-                const price = currentPrice * (1 + variation);
-                data.push(Math.max(price, token.atl));
-                
-                const date = new Date(Date.now() - (points - i - 1) * 24 * 60 * 60 * 1000);
-                if (timeframe === '1H') {
-                  labels.push(date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }));
-                } else if (timeframe === '24H') {
-                  labels.push(date.toLocaleTimeString('es-ES', { hour: '2-digit' }));
-                } else if (timeframe === '7D') {
-                  labels.push(date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' }));
-                } else if (timeframe === '30D') {
-                  labels.push(date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }));
-                } else {
-                  labels.push(date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' }));
-                }
-              }
-              setChartData({ data, labels });
+              // Si no hay sparkline, mostrar error
+              throw new Error('No hay datos históricos disponibles para este token');
             }
           } else {
             throw new Error('Token no encontrado');
@@ -91,31 +68,8 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
         }
       } catch (err) {
         console.error('Error fetching chart data:', err);
-        setError('Error al cargar datos del gráfico');
-        // Fallback a datos simulados
-        const data = [];
-        const labels = [];
-        const points = timeframe === '1H' ? 24 : timeframe === '24H' ? 24 : 50;
-        
-        for (let i = 0; i < points; i++) {
-          const variation = (Math.random() - 0.5) * 0.2;
-          const price = token.price * (1 + variation);
-          data.push(Math.max(price, token.atl));
-          
-          const date = new Date(Date.now() - (points - i - 1) * 24 * 60 * 60 * 1000);
-          if (timeframe === '1H') {
-            labels.push(date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }));
-          } else if (timeframe === '24H') {
-            labels.push(date.toLocaleTimeString('es-ES', { hour: '2-digit' }));
-          } else if (timeframe === '7D') {
-            labels.push(date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' }));
-          } else if (timeframe === '30D') {
-            labels.push(date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }));
-          } else {
-            labels.push(date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' }));
-          }
-        }
-        setChartData({ data, labels });
+        setError('Error al cargar datos del gráfico - Solo se muestran datos reales');
+        setChartData({ data: [], labels: [] });
       } finally {
         setIsLoading(false);
       }

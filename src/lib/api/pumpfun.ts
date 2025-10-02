@@ -25,31 +25,14 @@ export interface PumpFunTokenData {
 
 /**
  * Obtiene datos de un token de Pump.fun
- * Nota: Pump.fun no tiene API pública oficial, 
- * esta es una implementación simulada que debería
- * ser reemplazada por scraping o API no oficial
+ * NOTA: Pump.fun no tiene API pública oficial
+ * Esta función retorna null para forzar el uso de datos reales
  */
 export async function getPumpFunTokenData(address: string): Promise<PumpFunTokenData | null> {
   try {
-    // Simulación de datos de Pump.fun
-    // En producción, esto debería hacer scraping o usar API no oficial
-    const mockData: PumpFunTokenData = {
-      address,
-      name: 'Token Name',
-      symbol: 'SYMBOL',
-      description: 'Token description',
-      image: '/tokens/default.svg',
-      marketCap: Math.random() * 1000000,
-      price: Math.random() * 0.001,
-      volume24h: Math.random() * 100000,
-      change24h: (Math.random() - 0.5) * 100,
-      holders: Math.floor(Math.random() * 1000),
-      transactions: Math.floor(Math.random() * 10000),
-      createdAt: new Date().toISOString(),
-      isComplete: Math.random() > 0.5,
-    };
-
-    return mockData;
+    // Pump.fun no tiene API pública, retornar null para usar solo datos reales
+    console.log(`Pump.fun API not available for ${address}, using real data only`);
+    return null;
   } catch (error) {
     console.error('Error fetching Pump.fun token data:', error);
     return null;

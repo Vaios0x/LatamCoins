@@ -220,43 +220,10 @@ export async function GET() {
           }
         }
 
-        // 3. Si aún no hay datos reales, usar datos simulados realistas
+        // 3. Si no hay datos reales, omitir el token
         if (!tokenData) {
-          console.log(`Using simulated data for ${token.symbol}`);
-          const basePrice: number = 0.000001 + (tokensWithRealData.length * 0.0000005);
-          const volatility: number = 0.1 + (tokensWithRealData.length * 0.05);
-          const currentPrice: number = basePrice * (1 + (Math.random() - 0.5) * volatility);
-          
-          // Crear algunos ganadores para mostrar en el filtro
-          const isGainer: boolean = tokensWithRealData.length % 3 === 0; // Cada 3er token es ganador
-          const change24h: number = isGainer ? 
-            Math.random() * 30 + 5 : // Ganadores: +5% a +35%
-            -(Math.random() * 25 + 5); // Perdedores: -5% a -30%
-          
-          tokenData = {
-            ...token,
-            price: currentPrice,
-            change24h: change24h,
-            volume24h: Math.random() * 100000 + 10000,
-            marketCap: currentPrice * (1000000000 - tokensWithRealData.length * 100000000),
-            liquidity: Math.random() * 50000 + 10000,
-            fdv: currentPrice * 1000000000,
-            rank: tokensWithRealData.length + 1,
-            lastUpdated: new Date().toISOString(),
-            source: 'simulated',
-            isRealTime: false,
-            dexScreenerUrl: token.dexScreenerUrl,
-            pumpUrl: token.pumpUrl,
-            priceChange: {
-              m5: (Math.random() - 0.5) * 10,
-              h1: (Math.random() - 0.5) * 20,
-              h6: (Math.random() - 0.5) * 30,
-              h24: change24h
-            }
-          };
-          dataSource = 'simulated';
-          isRealTime = false;
-          simulatedCount++;
+          console.log(`No real data available for ${token.symbol}, skipping...`);
+          continue; // Omitir tokens sin datos reales
         }
 
         tokensWithRealData.push(tokenData);
