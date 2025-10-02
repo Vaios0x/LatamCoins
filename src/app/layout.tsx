@@ -88,9 +88,10 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="format-detection" content="telephone=no" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/icon-192x192.svg" />
-        <link rel="icon" type="image/svg+xml" sizes="32x32" href="/icon-192x192.svg" />
-        <link rel="icon" type="image/svg+xml" sizes="16x16" href="/icon-192x192.svg" />
+        <link rel="apple-touch-icon" href="/images/logo/CLCl.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/logo/CLCl.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/logo/CLCl.png" />
+        <link rel="shortcut icon" href="/favicon.ico" />
       </head>
       <body className={`${inter.className} bg-[#0a0e27] text-white antialiased`}>
         {/* Efecto de lluvia Matrix de fondo */}

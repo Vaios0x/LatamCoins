@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 // import { GLOBAL_STATS } from '@/lib/constants/tokens';
 import { formatPercentage } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -44,9 +45,23 @@ export function HeroSection() {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         {/* Título principal */}
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
+          {/* Logo principal */}
+          <div className="flex justify-center mb-8">
+            <div className="relative group">
+              <Image
+                src="/images/logo/CLCl.png"
+                alt="CoinLatamCap Logo"
+                width={120}
+                height={120}
+                className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32"
+                priority
+              />
+            </div>
+          </div>
+          
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold mb-6 sm:mb-8">
             <span className="text-white">Coin</span>
-            <span className="text-[#00ff41] neon-text animate-neon-pulse">LatamCap</span>
+            <span className="text-white">LatamCap</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/80 max-w-4xl mx-auto mb-4">
             El futuro de las crypto latinas en tiempo real

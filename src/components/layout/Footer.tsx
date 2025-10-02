@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { ExternalLink } from 'lucide-react';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
@@ -37,8 +38,16 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Logo y descripción */}
           <div className="md:col-span-2 lg:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <h2 className="text-2xl font-bold text-[#00ff41] neon-text">
+            <div className="flex items-center space-x-3 mb-4">
+              <Image
+                src="/images/logo/CLCl.png"
+                alt="CoinLatamCap Logo"
+                width={40}
+                height={40}
+                className="w-8 h-8 sm:w-10 sm:h-10"
+                priority
+              />
+              <h2 className="text-2xl font-bold text-white">
                 CoinLatamCap
               </h2>
             </div>

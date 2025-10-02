@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Search, Menu, X } from 'lucide-react';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
@@ -41,13 +42,21 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-18">
           {/* Logo CoinLatamCap */}
-          <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group">
+          <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
             <div className="relative">
-              <h1 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold text-[#00ff41] neon-text group-hover:animate-neon-pulse transition-all duration-300">
-                <span className="hidden xs:inline">CoinLatamCap</span>
-                <span className="xs:hidden">LTC</span>
+              <Image
+                src="/images/logo/CLCl.png"
+                alt="CoinLatamCap Logo"
+                width={32}
+                height={32}
+                className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"
+                priority
+              />
+            </div>
+            <div className="relative">
+              <h1 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold text-white">
+                CoinLatamCap
               </h1>
-              <div className="absolute -inset-1 bg-[#00ff41]/20 blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
           </Link>
 
