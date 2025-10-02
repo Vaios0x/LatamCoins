@@ -1,7 +1,7 @@
 {
-  "name": "CoinLatamCap",
+  "name": "CoinLatamCap - El pulso de las crypto latinas",
   "short_name": "CoinLatamCap",
-  "description": "El pulso de las crypto latinas",
+  "description": "Tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0e27",

@@ -20,8 +20,8 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'CoinLatamCap - El pulso de las crypto latinas',
-  description: 'Tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun. El futuro de las crypto latinas.',
-  keywords: 'crypto, latinoamerica, solana, pump.fun, tokens, blockchain, defi',
+  description: 'Tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun.',
+  keywords: 'crypto, latinoamerica, solana, pump.fun, tokens, blockchain, defi, coinlatamcap',
   authors: [{ name: 'CoinLatamCap Team' }],
   creator: 'CoinLatamCap',
   publisher: 'CoinLatamCap',
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     siteName: 'CoinLatamCap',
     images: [
       {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
+        url: '/images/logo/CLCl.png',
+        width: 512,
+        height: 512,
         alt: 'CoinLatamCap - El pulso de las crypto latinas',
       },
     ],
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'CoinLatamCap - El pulso de las crypto latinas',
     description: 'Tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun.',
-    images: ['/og-image.png'],
+    images: ['/images/logo/CLCl.png'],
   },
   robots: {
     index: true,
@@ -91,6 +91,8 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/images/logo/CLCl.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/images/logo/CLCl.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/images/logo/CLCl.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/images/logo/CLCl.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/images/logo/CLCl.png" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </head>
       <body className={`${inter.className} bg-[#0a0e27] text-white antialiased`}>
