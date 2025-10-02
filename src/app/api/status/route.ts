@@ -71,8 +71,8 @@ async function checkJupiter() {
     const apiKey = process.env.NEXT_PUBLIC_JUPITER_API_KEY;
     
     if (!apiKey) {
-      // Usar CoinGecko como fallback para verificar conectividad
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd', {
+      // Usar la API pública de Jupiter con un token específico de nuestros tokens LATAM
+      const response = await fetch('https://price.jup.ag/v4/price?ids=BS7HxRitaY5ipGfbek1nmatWLbaS9yoWRSEQzCb3pump', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -84,21 +84,39 @@ async function checkJupiter() {
         return {
           name: 'Jupiter',
           status: 'success',
-          message: 'Conectado (fallback CoinGecko)',
+          message: 'Conectado (API pública)',
           lastChecked: new Date().toISOString()
         };
       } else {
-        return {
-          name: 'Jupiter',
-          status: 'warning',
-          message: 'API limitada - usando fallback',
-          lastChecked: new Date().toISOString()
-        };
+        // Fallback a CoinGecko si Jupiter falla
+        const fallbackResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'LATAMCOINS/1.0'
+          }
+        });
+        
+        if (fallbackResponse.ok) {
+          return {
+            name: 'Jupiter',
+            status: 'warning',
+            message: 'Conectado (fallback CoinGecko)',
+            lastChecked: new Date().toISOString()
+          };
+        } else {
+          return {
+            name: 'Jupiter',
+            status: 'error',
+            message: 'Sin conexión',
+            lastChecked: new Date().toISOString()
+          };
+        }
       }
     }
     
-    // Usar Price API V4 con key (más estable)
-    const response = await fetch('https://price.jup.ag/v4/price?ids=So11111111111111111111111111111111111111112', {
+    // Usar Price API V4 con key usando token específico de nuestros tokens LATAM
+    const response = await fetch('https://price.jup.ag/v4/price?ids=BS7HxRitaY5ipGfbek1nmatWLbaS9yoWRSEQzCb3pump', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
