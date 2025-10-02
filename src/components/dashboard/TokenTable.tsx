@@ -20,8 +20,8 @@ type SortDirection = 'asc' | 'desc';
  * Muestra todos los tokens con sorting y filtros
  */
 export function TokenTable() {
-  const [sortField, setSortField] = useState<SortField>('rank');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [sortField, setSortField] = useState<SortField>('price');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [searchQuery, setSearchQuery] = useState('');
   
   // Usar el hook de precios reales
@@ -48,18 +48,49 @@ export function TokenTable() {
   // Ordenar tokens
   const sortedTokens = useMemo(() => {
     return [...filteredTokens].sort((a, b) => {
-      let aValue: string | number = a[sortField];
-      let bValue: string | number = b[sortField];
+      let aValue: number;
+      let bValue: number;
 
-      if (sortField === 'name') {
-        aValue = a.name.toLowerCase();
-        bValue = b.name.toLowerCase();
+      // Manejar diferentes tipos de campos
+      switch (sortField) {
+        case 'name':
+          const aName = a.name.toLowerCase();
+          const bName = b.name.toLowerCase();
+          if (sortDirection === 'asc') {
+            return aName > bName ? 1 : -1;
+          } else {
+            return aName < bName ? 1 : -1;
+          }
+        case 'price':
+          aValue = a.price || 0;
+          bValue = b.price || 0;
+          break;
+        case 'change24h':
+          aValue = a.change24h || 0;
+          bValue = b.change24h || 0;
+          break;
+        case 'volume24h':
+          aValue = a.volume24h || 0;
+          bValue = b.volume24h || 0;
+          break;
+        case 'marketCap':
+          aValue = a.marketCap || 0;
+          bValue = b.marketCap || 0;
+          break;
+        case 'rank':
+          aValue = a.rank || 0;
+          bValue = b.rank || 0;
+          break;
+        default:
+          aValue = 0;
+          bValue = 0;
       }
 
+      // Ordenar valores numéricos
       if (sortDirection === 'asc') {
-        return aValue > bValue ? 1 : -1;
+        return aValue - bValue;
       } else {
-        return aValue < bValue ? 1 : -1;
+        return bValue - aValue;
       }
     });
   }, [filteredTokens, sortField, sortDirection]);
