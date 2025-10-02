@@ -71,30 +71,14 @@ async function checkJupiter() {
     const apiKey = process.env.NEXT_PUBLIC_JUPITER_API_KEY;
     
     if (!apiKey) {
-      // Usar el plan gratuito de Jupiter (1 RPS, sin API key)
-      const response = await fetch('https://lite-api.jup.ag/price/v2?ids=So11111111111111111111111111111111111111112', {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'User-Agent': 'LATAMCOINS/1.0'
-        }
-      });
-      
-      if (response.ok) {
-        return {
-          name: 'Jupiter',
-          status: 'success',
-          message: 'Conectado (Plan gratuito)',
-          lastChecked: new Date().toISOString()
-        };
-      } else {
-        return {
-          name: 'Jupiter',
-          status: 'error',
-          message: `Error ${response.status}`,
-          lastChecked: new Date().toISOString()
-        };
-      }
+      // Jupiter requiere API key incluso para el plan gratuito en producción
+      // Mostrar como disponible pero requiere configuración
+      return {
+        name: 'Jupiter',
+        status: 'warning',
+        message: 'Disponible (configurar API key)',
+        lastChecked: new Date().toISOString()
+      };
     }
     
     // Usar el endpoint api.jup.ag para usuarios con API key (según docs oficiales)
