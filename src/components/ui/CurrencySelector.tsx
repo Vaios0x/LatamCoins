@@ -104,14 +104,14 @@ export function CurrencySelector({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-[#0a0e27]/95 backdrop-blur-xl border border-white/20 rounded-lg shadow-2xl z-50 max-h-80 overflow-y-auto min-w-full sm:min-w-[300px] lg:min-w-[350px]">
-          <div className="p-1">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-[#0a0e27]/95 backdrop-blur-xl border border-white/20 rounded-lg shadow-2xl z-50 max-h-80 overflow-y-auto min-w-full sm:min-w-[250px]">
+          <div className="p-2">
             {exchangeRates.map((currency) => (
               <button
                 key={currency.code}
                 onClick={() => handleCurrencyChange(currency.code)}
                 className={`
-                  w-full flex items-center justify-between p-2 rounded-lg transition-all duration-200
+                  w-full flex items-center p-3 rounded-lg transition-all duration-200
                   ${selectedCurrency === currency.code 
                     ? 'bg-[#00ff41]/20 text-[#00ff41]' 
                     : 'hover:bg-white/10 text-white/80 hover:text-white'
@@ -119,15 +119,10 @@ export function CurrencySelector({
                 `}
               >
                 <div className="flex items-center space-x-3 min-w-0 flex-1">
-                  <span className="text-lg flex-shrink-0">{currency.flag}</span>
+                  <span className="text-xl flex-shrink-0">{currency.flag}</span>
                   <div className="text-left min-w-0 flex-1">
                     <div className="font-medium truncate">{currency.code}</div>
-                    <div className="text-xs text-white/60 truncate hidden sm:block">{currency.name}</div>
-                  </div>
-                </div>
-                <div className="text-right flex-shrink-0 ml-2 hidden lg:block">
-                  <div className="text-xs font-mono text-white/70">
-                    {currency.symbol}1 = ${(1 / currency.rate).toFixed(4)}
+                    <div className="text-xs text-white/60 truncate">{currency.name}</div>
                   </div>
                 </div>
               </button>
