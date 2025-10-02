@@ -20,6 +20,7 @@ export function Header() {
     { name: 'Inicio', href: '/' },
     { name: 'Mercados', href: '/markets' },
     { name: 'Análisis', href: '/analytics' },
+    { name: 'Status', href: '/status' },
   ];
 
   useEffect(() => {
