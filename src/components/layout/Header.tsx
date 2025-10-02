@@ -76,7 +76,7 @@ export function Header() {
           </div>
 
           {/* Selector de Moneda - Desktop */}
-          <div className="hidden lg:flex">
+          <div className="hidden lg:flex mr-6">
             <CurrencySelector size="sm" showLabel={false} />
           </div>
 

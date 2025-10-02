@@ -3,15 +3,15 @@
 # 🚀 CoinLatamCap
 ### *El Pulso de las Crypto Latinas*
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4.17-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![Solana](https://img.shields.io/badge/Solana-Web3-9945FF?style=for-the-badge&logo=solana)](https://solana.com/)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel)](https://vercel.com/)
 
 *Una plataforma de tracking de criptomonedas estilo CoinMarketCap, enfocada EXCLUSIVAMENTE en tokens latinoamericanos, con estética cyberpunk/Matrix y efectos glassmorphism premium.*
 
-[🌐 Demo Live](https://coinlatamcap.vercel.app) • [📱 PWA](https://coinlatamcap.vercel.app) • [🐛 Report Bug](https://github.com/coinlatamcap/coinlatamcap/issues) • [✨ Request Feature](https://github.com/coinlatamcap/coinlatamcap/issues)
+[🌐 Demo Live](https://coinlatamcap.vercel.app) • [📱 PWA](https://coinlatamcap.vercel.app) • [🐛 Report Bug](https://github.com/Vaios0x/LatamCoins/issues) • [✨ Request Feature](https://github.com/Vaios0x/LatamCoins/issues)
 
 </div>
 
@@ -32,30 +32,30 @@ Desde tokens de memes como **DOGGY** hasta proyectos estratégicos como **Darrki
 ## 🚀 **Características Principales**
 
 ### 📊 **Datos en Tiempo Real**
-- **5 APIs integradas**: DexScreener, Jupiter, CoinMarketCap, Pump.fun
+- **API DexScreener integrada** para datos precisos y actualizados
 - **Actualización cada 60 segundos** con datos frescos
-- **Fallback inteligente** entre múltiples fuentes
-- **0% datos simulados** - 100% información real
+- **Sparklines generados dinámicamente** basados en datos históricos
+- **100% datos reales** - 0% simulados
 
 ### 🎨 **Experiencia Visual Inmersiva**
 - **Efectos Matrix Rain** con lluvia de código de fondo
 - **Glassmorphism premium** con transparencias y blur
 - **Animaciones fluidas** con Framer Motion
 - **Partículas 3D** con Three.js
-- **Neon glow effects** y efectos de brillo
+- **Logo integrado** con identidad visual única
 
 ### 📱 **Progressive Web App (PWA)**
 - **Instalable en dispositivos móviles**
 - **Funciona offline** con cache inteligente
-- **Push notifications** para alertas de precio
 - **Responsive design** optimizado para todos los dispositivos
+- **Manifest.json** configurado con iconos personalizados
 
 ### 🔥 **Tecnologías de Vanguardia**
-- **Next.js 14** con App Router
-- **TypeScript** para código type-safe
-- **TailwindCSS** para estilos modernos
+- **Next.js 15.5.4** con App Router
+- **React 19.1.0** con TypeScript
+- **TailwindCSS 3.4.17** para estilos modernos
 - **Solana Web3.js** para blockchain
-- **WebSocket** para datos en tiempo real
+- **Chart.js** para gráficos interactivos
 
 ---
 
@@ -64,11 +64,11 @@ Desde tokens de memes como **DOGGY** hasta proyectos estratégicos como **Darrki
 ### 🎯 **Frontend & UI**
 <div align="center">
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-15.5.4-black?style=flat-square&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
-![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.0-0055FF?style=flat-square&logo=framer&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4.17-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
+![React](https://img.shields.io/badge/React-19.1.0-61DAFB?style=flat-square&logo=react&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-12.23.22-0055FF?style=flat-square&logo=framer&logoColor=white)
 
 </div>
 
@@ -78,7 +78,6 @@ Desde tokens de memes como **DOGGY** hasta proyectos estratégicos como **Darrki
 ![Solana](https://img.shields.io/badge/Solana-Web3-9945FF?style=flat-square&logo=solana&logoColor=white)
 ![DexScreener](https://img.shields.io/badge/DexScreener-API-00D4AA?style=flat-square&logo=dexscreener&logoColor=white)
 ![Jupiter](https://img.shields.io/badge/Jupiter-API-FF6B35?style=flat-square&logo=jupiter&logoColor=white)
-![CoinMarketCap](https://img.shields.io/badge/CoinMarketCap-API-FF6B35?style=flat-square&logo=coinmarketcap&logoColor=white)
 ![WebSocket](https://img.shields.io/badge/WebSocket-Real--Time-010101?style=flat-square&logo=socket.io&logoColor=white)
 
 </div>
@@ -86,10 +85,10 @@ Desde tokens de memes como **DOGGY** hasta proyectos estratégicos como **Darrki
 ### 🎨 **Efectos Visuales & Animaciones**
 <div align="center">
 
-![Three.js](https://img.shields.io/badge/Three.js-3D-000000?style=flat-square&logo=three.js&logoColor=white)
-![Canvas API](https://img.shields.io/badge/Canvas_API-2D-FF6B35?style=flat-square&logo=html5&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-0.180.0-000000?style=flat-square&logo=three.js&logoColor=white)
+![Chart.js](https://img.shields.io/badge/Chart.js-4.5.0-FF6B35?style=flat-square&logo=chart.js&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-3.2.1-FF6B35?style=flat-square&logo=chart.js&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-Advanced-1572B6?style=flat-square&logo=css3&logoColor=white)
-![Recharts](https://img.shields.io/badge/Recharts-Charts-FF6B35?style=flat-square&logo=chart.js&logoColor=white)
 
 </div>
 
@@ -108,39 +107,34 @@ Desde tokens de memes como **DOGGY** hasta proyectos estratégicos como **Darrki
 ## 📊 **Tokens Soportados**
 
 ### 🐕 **HOLDER (DOGGY)**
-- **Precio actual**: $0.0004157
-- **Cambio 24h**: +69.89% 📈
-- **Market Cap**: $415,767
-- **Fuente**: DexScreener
 - **Contract**: `b3tr9tdcpqdtkah6hou2ut3u4udv1na75oe6r4femumt`
+- **Plataforma**: Pump.fun
+- **Chain**: Solana
+- **Fuente**: DexScreener API
 
 ### 😤 **MAD COIN (MAD)**
-- **Precio actual**: $0.00008744
-- **Cambio 24h**: +3.51% 📈
-- **Market Cap**: $87,430
-- **Fuente**: DexScreener
 - **Contract**: `6pwwjc9t5vmlqiswr4h7ux6il1eixmjfjhe1ekwsa7df`
+- **Plataforma**: Pump.fun
+- **Chain**: Solana
+- **Fuente**: DexScreener API
 
 ### 🌟 **Quira (QRA)**
-- **Precio actual**: $0.0002278
-- **Cambio 24h**: -56.89% 📉
-- **Market Cap**: $227,118
-- **Fuente**: DexScreener
 - **Contract**: `3wmgnvepzkptlxldyej4epzib2xsvbq8twbpicgzkfxr`
+- **Plataforma**: Pump.fun
+- **Chain**: Solana
+- **Fuente**: DexScreener API
 
 ### 💨 **HUMO (HUMO)**
-- **Precio actual**: $0.0000525
-- **Cambio 24h**: -21.32% 📉
-- **Market Cap**: $52,505
-- **Fuente**: DexScreener
 - **Contract**: `cb4plxp969uyqrzlk8zwpbbxmhqybhwgzofzjozfghy`
+- **Plataforma**: Pump.fun
+- **Chain**: Solana
+- **Fuente**: DexScreener API
 
 ### 🎯 **Darrkito Strategic Reserve**
-- **Precio actual**: $0.00001771
-- **Cambio 24h**: -37.97% 📉
-- **Market Cap**: $17,719
-- **Fuente**: DexScreener
 - **Contract**: `3al1hm9mcktrv8vkztvmaxnhtvqzhmmqfxhx9k7daeru`
+- **Plataforma**: Pump.fun
+- **Chain**: Solana
+- **Fuente**: DexScreener API
 
 ---
 
@@ -187,9 +181,61 @@ Desde tokens de memes como **DOGGY** hasta proyectos estratégicos como **Darrki
 
 #### 📊 **Gráficos Interactivos**
 - Sparklines en tiempo real
-- Gráficos de velas con Recharts
+- Gráficos de velas con Chart.js
 - Indicadores de volumen
 - Comparadores de precios
+
+---
+
+## 🏗️ **Arquitectura del Proyecto**
+
+```
+latamcoins/
+├── 📁 src/
+│   ├── 📁 app/                    # Next.js App Router
+│   │   ├── 📄 layout.tsx         # Layout principal con Matrix Rain
+│   │   ├── 📄 page.tsx           # Dashboard principal
+│   │   ├── 📁 token/[symbol]/    # Páginas dinámicas de tokens
+│   │   ├── 📁 api/               # API Routes
+│   │   │   ├── 📁 tokens/        # Endpoint de tokens
+│   │   │   └── 📁 status/        # Status de APIs
+│   │   └── 📄 globals.css        # Estilos globales
+│   ├── 📁 components/            # Componentes React
+│   │   ├── 📁 layout/            # Header, Footer, Navigation
+│   │   ├── 📁 dashboard/         # TokenTable, RealTimeData
+│   │   ├── 📁 token-detail/      # PriceChart, StatsGrid
+│   │   ├── 📁 effects/           # MatrixRain, Partículas
+│   │   ├── 📁 ui/                # GlassCard, LoadingSpinner
+│   │   ├── 📁 chat/              # ChatBot, TokenChatBot
+│   │   └── 📁 analytics/         # RealTimePriceChart
+│   ├── 📁 lib/                   # Utilidades y configuraciones
+│   │   ├── 📁 constants/         # Tokens, temas
+│   │   ├── 📁 utils/             # Formatters, cálculos
+│   │   ├── 📁 hooks/             # useRealPrices, useWebSocket
+│   │   ├── 📁 api/               # Clientes de APIs
+│   │   ├── 📁 services/          # exchangeRates, tokenService
+│   │   └── 📁 chartjs/           # Configuración Chart.js
+│   └── 📁 hooks/                 # useChatContext
+├── 📁 public/                    # Archivos estáticos
+│   ├── 📁 images/                # Logo y assets visuales
+│   │   ├── 📁 logo/              # Logo principal
+│   │   ├── 📁 backgrounds/       # Fondos y texturas
+│   │   ├── 📁 icons/             # Iconos de la app
+│   │   └── 📁 screenshots/       # Capturas de pantalla
+│   ├── 📁 tokens/                # Logos de tokens
+│   ├── 📄 manifest.json          # PWA manifest
+│   ├── 📄 favicon.ico            # Favicon personalizado
+│   └── 📄 robots.txt             # SEO
+├── 📁 scripts/                   # Scripts de utilidad
+│   ├── 📄 test-real-apis.js      # Test de APIs
+│   ├── 📄 setup-real-data.js     # Setup de datos
+│   └── 📄 api-test-results.json  # Resultados de tests
+├── 📄 next.config.js             # Configuración Next.js
+├── 📄 tailwind.config.js         # Configuración Tailwind
+├── 📄 tsconfig.json            # Configuración TypeScript
+├── 📄 vercel.json               # Configuración Vercel
+└── 📄 package.json              # Dependencias y scripts
+```
 
 ---
 
@@ -204,8 +250,8 @@ Desde tokens de memes como **DOGGY** hasta proyectos estratégicos como **Darrki
 
 ```bash
 # 1. Clona el repositorio
-git clone https://github.com/latamcoins/latamcoins.git
-cd latamcoins
+git clone https://github.com/Vaios0x/LatamCoins.git
+cd LatamCoins/latamcoins
 
 # 2. Instala las dependencias
 npm install
@@ -213,15 +259,12 @@ npm install
 pnpm install
 
 # 3. Configura las variables de entorno
-cp .env.example .env.local
+cp env.example .env.local
 
-# 4. Edita .env.local con tus API keys
-nano .env.local
-
-# 5. Ejecuta en modo desarrollo
+# 4. Ejecuta en modo desarrollo
 npm run dev
 
-# 6. Abre en el navegador
+# 5. Abre en el navegador
 open http://localhost:3000
 ```
 
@@ -242,29 +285,83 @@ NEXT_PUBLIC_JUPITER_API_URL=https://lite-api.jup.ag/price/v3
 ### 🎯 **Características PWA**
 - ✅ **Instalable** en dispositivos móviles
 - ✅ **Funciona offline** con cache inteligente
-- ✅ **Push notifications** para alertas de precio
 - ✅ **Responsive design** optimizado
 - ✅ **Fast loading** con service workers
+- ✅ **Logo personalizado** integrado
 
 ### 📲 **Cómo Instalar**
-1. Abre [latamcoins.vercel.app](https://latamcoins.vercel.app) en tu móvil
+1. Abre [coinlatamcap.vercel.app](https://coinlatamcap.vercel.app) en tu móvil
 2. Toca el botón "Instalar" en la barra de direcciones
 3. Confirma la instalación
 4. ¡Disfruta de la app nativa!
 
 ---
 
+## 🔧 **Scripts Disponibles**
+
+```bash
+# 🚀 Desarrollo
+npm run dev          # Servidor de desarrollo con Turbopack
+npm run build        # Build para producción con Turbopack
+npm run start        # Servidor de producción
+npm run lint         # ESLint
+
+# 🧪 Testing
+npm run test-apis    # Test de APIs reales
+npm run setup-real-data # Setup de datos reales
+
+# 📦 PWA
+npm run build        # Build optimizado para PWA
+```
+
+---
+
+## 🌐 **Deployment**
+
+### 🚀 **Vercel (Recomendado)**
+
+```bash
+# Instala Vercel CLI
+npm i -g vercel
+
+# Deploy automático
+vercel --prod
+
+# Configuración automática
+# - Framework: Next.js
+# - Build Command: pnpm run build
+# - Output Directory: .next
+# - Install Command: pnpm install
+```
+
+### 🐳 **Docker**
+
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+---
+
 ## 🎯 **Roadmap & Futuro**
 
 ### ✅ **Fase 1 - MVP Completado**
-- [x] Setup Next.js + TypeScript + TailwindCSS
+- [x] Setup Next.js 15 + TypeScript + TailwindCSS
 - [x] MatrixRain background component
 - [x] Dashboard con tabla de 5 tokens
-- [x] Datos reales de APIs (DexScreener, Jupiter, CMC)
+- [x] Datos reales de DexScreener API
 - [x] Glassmorphism styling
 - [x] Responsive mobile
 - [x] Deploy en Vercel
 - [x] PWA configurado
+- [x] Logo integrado
+- [x] ChatBot implementado
 
 ### 🚀 **Fase 2 - En Desarrollo**
 - [ ] **WebSocket real-time** para actualizaciones instantáneas
@@ -288,106 +385,6 @@ NEXT_PUBLIC_JUPITER_API_URL=https://lite-api.jup.ag/price/v3
 - [ ] **NFT marketplace** para tokens latinos
 - [ ] **Community features** (foros, chat)
 - [ ] **Mobile app** nativa (React Native)
-
----
-
-## 🏗️ **Arquitectura del Proyecto**
-
-```
-latamcoins/
-├── 📁 src/
-│   ├── 📁 app/                    # Next.js App Router
-│   │   ├── 📄 layout.tsx         # Layout principal con Matrix Rain
-│   │   ├── 📄 page.tsx           # Dashboard principal
-│   │   ├── 📁 token/[symbol]/    # Páginas dinámicas de tokens
-│   │   ├── 📁 api/               # API Routes
-│   │   │   ├── 📁 tokens/        # Endpoint de tokens
-│   │   │   └── 📁 status/        # Status de APIs
-│   │   └── 📄 globals.css        # Estilos globales
-│   ├── 📁 components/            # Componentes React
-│   │   ├── 📁 layout/            # Header, Footer, Navigation
-│   │   ├── 📁 dashboard/         # TokenTable, RealTimeData
-│   │   ├── 📁 token-detail/      # PriceChart, StatsGrid
-│   │   ├── 📁 effects/           # MatrixRain, Partículas
-│   │   └── 📁 ui/                # GlassCard, LoadingSpinner
-│   ├── 📁 lib/                   # Utilidades y configuraciones
-│   │   ├── 📁 constants/         # Tokens, temas
-│   │   ├── 📁 utils/             # Formatters, cálculos
-│   │   ├── 📁 hooks/             # useRealPrices, useWebSocket
-│   │   └── 📁 api/               # Clientes de APIs
-│   └── 📁 types/                 # Tipos de TypeScript
-├── 📁 public/                    # Archivos estáticos
-│   ├── 📁 tokens/                # Logos de tokens
-│   ├── 📄 manifest.json          # PWA manifest
-│   └── 📄 robots.txt             # SEO
-├── 📁 scripts/                   # Scripts de utilidad
-│   ├── 📄 test-real-apis.js      # Test de APIs
-│   └── 📄 setup-real-data.js     # Setup de datos
-├── 📄 next.config.js             # Configuración Next.js
-├── 📄 tailwind.config.js         # Configuración Tailwind
-├── 📄 tsconfig.json            # Configuración TypeScript
-└── 📄 package.json              # Dependencias y scripts
-```
-
----
-
-## 🔧 **Scripts Disponibles**
-
-```bash
-# 🚀 Desarrollo
-npm run dev          # Servidor de desarrollo
-npm run build        # Build para producción
-npm run start        # Servidor de producción
-npm run lint         # ESLint
-npm run type-check   # TypeScript check
-
-# 🧪 Testing
-npm run test-apis    # Test de APIs reales
-npm run test-latam   # Test de tokens LATAM
-
-# 📦 PWA
-npm run build:pwa    # Build optimizado para PWA
-npm run analyze      # Análisis del bundle
-```
-
----
-
-## 🌐 **Deployment**
-
-### 🚀 **Vercel (Recomendado)**
-
-```bash
-# Instala Vercel CLI
-npm i -g vercel
-
-# Deploy automático
-vercel --prod
-
-# Configuración automática
-# - Framework: Next.js
-# - Build Command: npm run build
-# - Output Directory: .next
-# - Install Command: npm install
-```
-
-### 🐳 **Docker**
-
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-### ☁️ **Otros Proveedores**
-- **Netlify**: Compatible con Next.js
-- **Railway**: Deploy automático
-- **DigitalOcean**: App Platform
-- **AWS**: Amplify o EC2
 
 ---
 
@@ -446,15 +443,12 @@ copies or substantial portions of the Software.
 <div align="center">
 
 ### 🌐 **Enlaces Oficiales**
-[![Website](https://img.shields.io/badge/Website-latamcoins.com-00ff41?style=for-the-badge&logo=vercel&logoColor=white)](https://latamcoins.vercel.app)
-[![Twitter](https://img.shields.io/badge/Twitter-@latamcoins-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/latamcoins)
-[![Discord](https://img.shields.io/badge/Discord-Community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/latamcoins)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/latamcoins/latamcoins)
+[![Website](https://img.shields.io/badge/Website-coinlatamcap.vercel.app-00ff41?style=for-the-badge&logo=vercel&logoColor=white)](https://coinlatamcap.vercel.app)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Vaios0x/LatamCoins)
 
 ### 📧 **Contacto Directo**
-- **Email**: hello@latamcoins.com
-- **Telegram**: @latamcoins
-- **LinkedIn**: LATAMCOINS
+- **GitHub**: [@Vaios0x](https://github.com/Vaios0x)
+- **Twitter**: [@vaiossx](https://x.com/vaiossx)
 
 </div>
 
@@ -468,8 +462,8 @@ copies or substantial portions of the Software.
 
 **⭐ Si te gusta el proyecto, ¡dale una estrella en GitHub!**
 
-[![GitHub stars](https://img.shields.io/github/stars/latamcoins/latamcoins?style=social)](https://github.com/latamcoins/latamcoins)
-[![GitHub forks](https://img.shields.io/github/forks/latamcoins/latamcoins?style=social)](https://github.com/latamcoins/latamcoins)
+[![GitHub stars](https://img.shields.io/github/stars/Vaios0x/LatamCoins?style=social)](https://github.com/Vaios0x/LatamCoins)
+[![GitHub forks](https://img.shields.io/github/forks/Vaios0x/LatamCoins?style=social)](https://github.com/Vaios0x/LatamCoins)
 
 ---
 
