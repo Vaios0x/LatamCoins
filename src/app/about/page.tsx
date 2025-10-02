@@ -233,9 +233,9 @@ export default function AboutPage() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="flex justify-center max-w-2xl mx-auto">
               {/* Solana */}
-              <div className="bg-gradient-to-br from-[#9945FF]/10 to-[#14F195]/10 border border-[#9945FF]/20 rounded-xl p-6">
+              <div className="bg-gradient-to-br from-[#9945FF]/10 to-[#14F195]/10 border border-[#9945FF]/20 rounded-xl p-6 w-full max-w-md">
                 <div className="flex items-center justify-center mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-[#9945FF] to-[#14F195] rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-lg">S</span>
@@ -252,37 +252,6 @@ export default function AboutPage() {
                   className="w-full bg-[#9945FF]/20 hover:bg-[#9945FF]/30 border border-[#9945FF]/30 rounded-lg px-4 py-2 text-white text-sm font-medium transition-all duration-200 flex items-center justify-center space-x-2"
                 >
                   {copiedAddress === 'sol' ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      <span>Copiado</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      <span>Copiar Dirección</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Ethereum */}
-              <div className="bg-gradient-to-br from-[#627EEA]/10 to-[#F7A8B8]/10 border border-[#627EEA]/20 rounded-xl p-6">
-                <div className="flex items-center justify-center mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#627EEA] to-[#F7A8B8] rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">Ξ</span>
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2 text-center">Ethereum</h3>
-                <div className="bg-black/20 rounded-lg p-3 mb-4">
-                  <code className="text-[#00ff41] text-xs break-all">
-                    0x5A95812be53A4B0628c69beE7669716Ce8dB7Bd7
-                  </code>
-                </div>
-                <button
-                  onClick={() => copyToClipboard('0x5A95812be53A4B0628c69beE7669716Ce8dB7Bd7', 'eth')}
-                  className="w-full bg-[#627EEA]/20 hover:bg-[#627EEA]/30 border border-[#627EEA]/30 rounded-lg px-4 py-2 text-white text-sm font-medium transition-all duration-200 flex items-center justify-center space-x-2"
-                >
-                  {copiedAddress === 'eth' ? (
                     <>
                       <Check className="w-4 h-4" />
                       <span>Copiado</span>
