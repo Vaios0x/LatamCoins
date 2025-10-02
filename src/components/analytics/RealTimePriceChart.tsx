@@ -12,83 +12,184 @@ interface RealTimePriceChartProps {
   timeframe?: string;
 }
 
-// Función para generar datos históricos desde septiembre 2025
-function generateHistoricalData(currentPrice: number, timeframe: string): { data: number[]; labels: string[] } {
-  const now = new Date();
-  const september2025 = new Date('2025-09-01');
-  const data: number[] = [];
-  const labels: string[] = [];
+// Función para obtener datos históricos reales de DexScreener
+async function fetchRealHistoricalData(tokenContract: string, timeframe: string): Promise<{ data: number[]; labels: string[] }> {
+  try {
+    console.log(`🔍 Obteniendo datos históricos reales para ${tokenContract} desde septiembre 2025...`);
+    
+    // Obtener datos históricos de DexScreener
+    const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${tokenContract}`, {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'LATAMCOINS/1.0'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`DexScreener API error: ${response.status}`);
+    }
+    
+    const dexData = await response.json();
+    
+    if (dexData.pairs && dexData.pairs.length > 0) {
+      const pair = dexData.pairs[0];
+      console.log('📊 Par encontrado en DexScreener:', pair);
+      
+      // Si hay datos de precio histórico, usarlos
+      if (pair.priceHistory && pair.priceHistory.length > 0) {
+        console.log(`✅ Datos históricos reales encontrados: ${pair.priceHistory.length} puntos`);
+        
+        // Filtrar datos según el timeframe
+        let filteredData = pair.priceHistory;
+        const now = Date.now();
+        
+        switch (timeframe) {
+          case '1H':
+            // Última hora
+            filteredData = pair.priceHistory.filter((p: { timestamp: number }) => 
+              now - p.timestamp <= 60 * 60 * 1000
+            );
+            break;
+          case '24H':
+            // Últimas 24 horas
+            filteredData = pair.priceHistory.filter((p: { timestamp: number }) => 
+              now - p.timestamp <= 24 * 60 * 60 * 1000
+            );
+            break;
+          case '7D':
+            // Últimos 7 días
+            filteredData = pair.priceHistory.filter((p: { timestamp: number }) => 
+              now - p.timestamp <= 7 * 24 * 60 * 60 * 1000
+            );
+            break;
+          case '30D':
+            // Últimos 30 días
+            filteredData = pair.priceHistory.filter((p: { timestamp: number }) => 
+              now - p.timestamp <= 30 * 24 * 60 * 60 * 1000
+            );
+            break;
+          case '1Y':
+            // Último año
+            filteredData = pair.priceHistory.filter((p: { timestamp: number }) => 
+              now - p.timestamp <= 365 * 24 * 60 * 60 * 1000
+            );
+            break;
+        }
+        
+        if (filteredData.length > 0) {
+          const data = filteredData.map((p: { price: string }) => parseFloat(p.price));
+          const labels = filteredData.map((p: { timestamp: number }) => {
+            const date = new Date(p.timestamp);
+            if (timeframe === '1H') {
+              return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            } else if (timeframe === '24H') {
+              return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
+            } else if (timeframe === '7D') {
+              return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+            } else if (timeframe === '30D') {
+              return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+            } else if (timeframe === '1Y') {
+              return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+            } else {
+              return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+            }
+          });
+          
+          console.log(`📈 Datos históricos reales procesados: ${data.length} puntos`);
+          return { data, labels };
+        }
+      }
+      
+      // Si no hay datos históricos, intentar obtener datos de CoinGecko como fallback
+      console.log('🔄 No hay datos históricos en DexScreener, intentando CoinGecko...');
+      return await fetchCoinGeckoHistoricalData(tokenContract, timeframe);
+    }
+    
+    throw new Error('No se encontraron pares en DexScreener');
+  } catch (error) {
+    console.warn('❌ Error obteniendo datos históricos reales:', error);
+    throw error;
+  }
+}
+
+// Función para obtener datos históricos de CoinGecko como fallback
+async function fetchCoinGeckoHistoricalData(tokenContract: string, timeframe: string): Promise<{ data: number[]; labels: string[] }> {
+  try {
+    console.log(`🔍 Intentando obtener datos históricos de CoinGecko para ${tokenContract}...`);
+    
+    // Mapear contratos a IDs de CoinGecko si es necesario
+    const coinGeckoId = getCoinGeckoId(tokenContract);
+    
+    if (!coinGeckoId) {
+      throw new Error('Token no soportado en CoinGecko');
+    }
+    
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinGeckoId}/market_chart?vs_currency=usd&days=${getCoinGeckoDays(timeframe)}`, {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'LATAMCOINS/1.0'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.prices && data.prices.length > 0) {
+      const prices = data.prices.map((p: [number, number]) => p[1]);
+      const labels = data.prices.map((p: [number, number]) => {
+        const date = new Date(p[0]);
+        if (timeframe === '1H') {
+          return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        } else if (timeframe === '24H') {
+          return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
+        } else if (timeframe === '7D') {
+          return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+        } else if (timeframe === '30D') {
+          return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+        } else if (timeframe === '1Y') {
+          return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+        } else {
+          return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+        }
+      });
+      
+      console.log(`📈 Datos históricos de CoinGecko obtenidos: ${prices.length} puntos`);
+      return { data: prices, labels };
+    }
+    
+    throw new Error('No hay datos históricos en CoinGecko');
+  } catch (error) {
+    console.warn('❌ Error obteniendo datos de CoinGecko:', error);
+    throw error;
+  }
+}
+
+// Función para mapear contratos a IDs de CoinGecko
+function getCoinGeckoId(contract: string): string | null {
+  const contractMap: { [key: string]: string } = {
+    'b3tr9tdcpqdtkah6hou2ut3u4udv1na75oe6r4femumt': 'holder-doggy', // DOGGY
+    '6pwwjc9t5vmlqiswr4h7ux6il1eixmjfjhe1ekwsa7df': 'mad-coin', // MAD
+    '3wmgnvepzkptlxldyej4epzib2xsvbq8twbpicgzkfxr': 'quira', // QRA
+    'cb4plxp969uyqrzlk8zwpbbxmhqybhwgzofzjozfghy': 'humo', // HUMO
+    '3al1hm9mcktrv8vkztvmaxnhtvqzhmmqfxhx9k7daeru': 'darrkito' // Darrkito
+  };
   
-  let points: number;
-  let interval: number;
-  
+  return contractMap[contract] || null;
+}
+
+// Función para obtener días de CoinGecko según timeframe
+function getCoinGeckoDays(timeframe: string): string {
   switch (timeframe) {
-    case '1H':
-      points = 12; // 12 puntos en 1 hora (cada 5 minutos)
-      interval = 5 * 60 * 1000; // 5 minutos en ms
-      break;
-    case '24H':
-      points = 24; // 24 puntos en 24 horas (cada hora)
-      interval = 60 * 60 * 1000; // 1 hora en ms
-      break;
-    case '7D':
-      points = 7; // 7 puntos en 7 días (cada día)
-      interval = 24 * 60 * 60 * 1000; // 1 día en ms
-      break;
-    case '30D':
-      points = 30; // 30 puntos en 30 días (cada día)
-      interval = 24 * 60 * 60 * 1000; // 1 día en ms
-      break;
-    case '1Y':
-      points = 12; // 12 puntos en 1 año (cada mes)
-      interval = 30 * 24 * 60 * 60 * 1000; // 30 días en ms
-      break;
-    default:
-      points = 7;
-      interval = 24 * 60 * 60 * 1000;
+    case '1H': return '1';
+    case '24H': return '1';
+    case '7D': return '7';
+    case '30D': return '30';
+    case '1Y': return '365';
+    default: return '7';
   }
-  
-  // Generar datos históricos con variación realista
-  for (let i = 0; i < points; i++) {
-    const timeOffset = (points - i - 1) * interval;
-    const date = new Date(now.getTime() - timeOffset);
-    
-    // Crear variación de precio realista basada en el timeframe
-    let priceVariation: number;
-    if (timeframe === '1H') {
-      priceVariation = (Math.random() - 0.5) * 0.02; // ±1% en 1 hora
-    } else if (timeframe === '24H') {
-      priceVariation = (Math.random() - 0.5) * 0.1; // ±5% en 24 horas
-    } else if (timeframe === '7D') {
-      priceVariation = (Math.random() - 0.5) * 0.3; // ±15% en 7 días
-    } else if (timeframe === '30D') {
-      priceVariation = (Math.random() - 0.5) * 0.5; // ±25% en 30 días
-    } else if (timeframe === '1Y') {
-      priceVariation = (Math.random() - 0.5) * 1.0; // ±50% en 1 año
-    } else {
-      priceVariation = (Math.random() - 0.5) * 0.3;
-    }
-    
-    const historicalPrice = currentPrice * (1 + priceVariation);
-    data.push(Math.max(historicalPrice, currentPrice * 0.1)); // Precio mínimo del 10% del actual
-    
-    // Generar etiquetas de tiempo apropiadas
-    if (timeframe === '1H') {
-      labels.push(date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }));
-    } else if (timeframe === '24H') {
-      labels.push(date.toLocaleTimeString('es-ES', { hour: '2-digit' }));
-    } else if (timeframe === '7D') {
-      labels.push(date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' }));
-    } else if (timeframe === '30D') {
-      labels.push(date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }));
-    } else if (timeframe === '1Y') {
-      labels.push(date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' }));
-    } else {
-      labels.push(date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }));
-    }
-  }
-  
-  return { data, labels };
 }
 
 /**
@@ -175,56 +276,80 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
                     setHasRealData(true);
                   } else {
                     console.log('❌ No hay priceHistory en el par');
-                    // Crear datos históricos desde septiembre 2025
-                    console.log('📊 Creando datos históricos desde septiembre 2025 con precio actual:', pair.priceUsd);
-                    const currentPrice = parseFloat(pair.priceUsd);
-                    const historicalData = generateHistoricalData(currentPrice, timeframe);
-                    setChartData(historicalData);
-                    setHasRealData(true);
+                    // Intentar obtener datos históricos reales de CoinGecko
+                    console.log('📊 Intentando obtener datos históricos reales de CoinGecko...');
+                    try {
+                      const historicalData = await fetchCoinGeckoHistoricalData(token.contract, timeframe);
+                      setChartData(historicalData);
+                      setHasRealData(true);
+                    } catch (coinGeckoError) {
+                      console.warn('❌ Error obteniendo datos de CoinGecko:', coinGeckoError);
+                      setError('No hay datos históricos reales disponibles para este token');
+                    }
                   }
                 } else {
                   console.log('❌ No se encontraron pares en DexScreener');
-                  // Crear datos históricos desde septiembre 2025
-                  console.log('📊 Creando datos históricos desde septiembre 2025 con precio actual:', token.price);
-                  const currentPrice = token.price;
-                  const historicalData = generateHistoricalData(currentPrice, timeframe);
-                  setChartData(historicalData);
-                  setHasRealData(true);
+                  // Intentar obtener datos históricos reales de CoinGecko
+                  console.log('📊 Intentando obtener datos históricos reales de CoinGecko...');
+                  try {
+                    const historicalData = await fetchCoinGeckoHistoricalData(token.contract, timeframe);
+                    setChartData(historicalData);
+                    setHasRealData(true);
+                  } catch (coinGeckoError) {
+                    console.warn('❌ Error obteniendo datos de CoinGecko:', coinGeckoError);
+                    setError('No hay datos históricos reales disponibles para este token');
+                  }
                 }
               } catch (dexError) {
                 console.warn('❌ Error fetching DexScreener data:', dexError);
-                // Como último recurso, crear datos históricos desde septiembre 2025
-                console.log('📊 Creando datos históricos desde septiembre 2025 como último recurso:', token.price);
-                const currentPrice = token.price;
-                const historicalData = generateHistoricalData(currentPrice, timeframe);
-                setChartData(historicalData);
-                setHasRealData(true);
+                // Como último recurso, intentar CoinGecko
+                console.log('📊 Intentando CoinGecko como último recurso...');
+                try {
+                  const historicalData = await fetchCoinGeckoHistoricalData(token.contract, timeframe);
+                  setChartData(historicalData);
+                  setHasRealData(true);
+                } catch (coinGeckoError) {
+                  console.warn('❌ Error obteniendo datos de CoinGecko:', coinGeckoError);
+                  setError('No hay datos históricos reales disponibles para este token');
+                }
               }
             }
           } else {
-            console.log('❌ Token no encontrado en nuestra API, creando datos históricos desde septiembre 2025');
-            // Crear datos históricos desde septiembre 2025
-            const currentPrice = token.price;
-            const historicalData = generateHistoricalData(currentPrice, timeframe);
-            setChartData(historicalData);
-            setHasRealData(true);
+            console.log('❌ Token no encontrado en nuestra API, intentando obtener datos históricos reales...');
+            // Intentar obtener datos históricos reales
+            try {
+              const historicalData = await fetchRealHistoricalData(token.contract, timeframe);
+              setChartData(historicalData);
+              setHasRealData(true);
+            } catch (historicalError) {
+              console.warn('❌ Error obteniendo datos históricos reales:', historicalError);
+              setError('No hay datos históricos reales disponibles para este token');
+            }
           }
         } else {
-          console.log('❌ Error en nuestra API, creando datos históricos desde septiembre 2025');
-          // Crear datos históricos desde septiembre 2025
-          const currentPrice = token.price;
-          const historicalData = generateHistoricalData(currentPrice, timeframe);
-          setChartData(historicalData);
-          setHasRealData(true);
+          console.log('❌ Error en nuestra API, intentando obtener datos históricos reales...');
+          // Intentar obtener datos históricos reales
+          try {
+            const historicalData = await fetchRealHistoricalData(token.contract, timeframe);
+            setChartData(historicalData);
+            setHasRealData(true);
+          } catch (historicalError) {
+            console.warn('❌ Error obteniendo datos históricos reales:', historicalError);
+            setError('No hay datos históricos reales disponibles para este token');
+          }
         }
       } catch (err) {
         console.error('Error fetching chart data:', err);
-        // Como último recurso absoluto, crear datos históricos desde septiembre 2025
-        console.log('📊 Último recurso: creando datos históricos desde septiembre 2025');
-        const currentPrice = token.price;
-        const historicalData = generateHistoricalData(currentPrice, timeframe);
-        setChartData(historicalData);
-        setHasRealData(true);
+        // Como último recurso absoluto, intentar obtener datos históricos reales
+        console.log('📊 Último recurso: intentando obtener datos históricos reales...');
+        try {
+          const historicalData = await fetchRealHistoricalData(token.contract, timeframe);
+          setChartData(historicalData);
+          setHasRealData(true);
+        } catch (finalError) {
+          console.warn('❌ Error final obteniendo datos históricos reales:', finalError);
+          setError('No hay datos históricos reales disponibles para este token');
+        }
       } finally {
         setIsLoading(false);
       }
