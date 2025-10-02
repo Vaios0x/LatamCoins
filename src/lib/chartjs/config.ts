@@ -49,30 +49,47 @@ export const defaultChartOptions = {
       displayColors: false,
     },
   },
-  scales: {
-    x: {
-      grid: {
-        color: 'rgba(0, 255, 65, 0.1)',
+    scales: {
+      x: {
+        display: true,
+        grid: {
+          color: 'rgba(0, 255, 65, 0.1)',
+          drawBorder: true,
+          borderColor: 'rgba(0, 255, 65, 0.3)',
+        },
+        ticks: {
+          color: '#ffffff',
+          font: {
+            size: 10,
+          },
+          maxTicksLimit: 8,
+        },
       },
-      ticks: {
-        color: '#ffffff',
-        font: {
-          size: 10,
+      y: {
+        display: true,
+        grid: {
+          color: 'rgba(0, 255, 65, 0.1)',
+          drawBorder: true,
+          borderColor: 'rgba(0, 255, 65, 0.3)',
+        },
+        ticks: {
+          color: '#ffffff',
+          font: {
+            size: 10,
+          },
+          callback: (value: string | number) => {
+            const numValue = typeof value === 'number' ? value : parseFloat(value.toString());
+            if (numValue >= 1) {
+              return `$${numValue.toFixed(2)}`;
+            } else if (numValue >= 0.01) {
+              return `$${numValue.toFixed(4)}`;
+            } else {
+              return `$${numValue.toFixed(8)}`;
+            }
+          },
         },
       },
     },
-    y: {
-      grid: {
-        color: 'rgba(0, 255, 65, 0.1)',
-      },
-      ticks: {
-        color: '#ffffff',
-        font: {
-          size: 10,
-        },
-      },
-    },
-  },
   interaction: {
     intersect: false,
     mode: 'index' as const,

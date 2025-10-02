@@ -88,6 +88,13 @@ export function RealTimeChart({
         ticks: {
           ...defaultChartOptions.scales?.x?.ticks,
           maxTicksLimit: 8,
+          callback: function(value: string | number, index: number) {
+            // Mostrar solo algunos labels para evitar saturación
+            if (index % Math.ceil(chartData.labels.length / 6) === 0) {
+              return chartData.labels[index] || '';
+            }
+            return '';
+          },
         },
       },
       y: {

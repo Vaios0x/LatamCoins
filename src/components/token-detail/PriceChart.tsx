@@ -37,10 +37,16 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
       
       // Generar labels para el eje X
       const date = new Date(timestamp);
-      if (timeframe === '1H' || timeframe === '24H') {
+      if (timeframe === '1H') {
         labels.push(date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }));
-      } else {
+      } else if (timeframe === '24H') {
+        labels.push(date.toLocaleTimeString('es-ES', { hour: '2-digit' }));
+      } else if (timeframe === '7D') {
+        labels.push(date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' }));
+      } else if (timeframe === '30D') {
         labels.push(date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }));
+      } else {
+        labels.push(date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' }));
       }
     }
     
@@ -74,10 +80,33 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
     },
     scales: {
       x: {
-        display: false,
+        display: true,
+        grid: {
+          color: 'rgba(0, 255, 65, 0.1)',
+        },
+        ticks: {
+          color: '#ffffff',
+          font: {
+            size: 10,
+          },
+          maxTicksLimit: 6,
+        },
       },
       y: {
-        display: false,
+        display: true,
+        grid: {
+          color: 'rgba(0, 255, 65, 0.1)',
+        },
+        ticks: {
+          color: '#ffffff',
+          font: {
+            size: 10,
+          },
+          callback: (value: string | number) => {
+            const numValue = typeof value === 'number' ? value : parseFloat(value.toString());
+            return `$${numValue.toFixed(6)}`;
+          },
+        },
       },
     },
     elements: {

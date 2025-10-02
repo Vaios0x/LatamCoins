@@ -52,9 +52,15 @@ export function Sparkline({ data, className }: SparklineProps) {
     scales: {
       x: {
         display: false,
+        grid: {
+          display: false,
+        },
       },
       y: {
         display: false,
+        grid: {
+          display: false,
+        },
       },
     },
     elements: {
