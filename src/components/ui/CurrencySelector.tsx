@@ -145,12 +145,7 @@ export function CurrencySelector({
 /**
  * Hook para usar la moneda seleccionada
  */
-export function useCurrency(): {
-  selectedCurrency: string;
-  exchangeRates: ExchangeRate[];
-  convertPrice: (priceUSD: number) => number;
-  formatPrice: (priceUSD: number) => string;
-} {
+export function useCurrency() {
   const [selectedCurrency, setSelectedCurrencyState] = useState('USD');
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
 
