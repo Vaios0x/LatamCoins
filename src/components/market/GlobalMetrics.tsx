@@ -30,7 +30,7 @@ interface GlobalMetricsData {
 export function GlobalMetrics() {
   const [data, setData] = useState<GlobalMetricsData | null>(null);
   const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   
   // Usar el hook de moneda
   const { formatPrice } = useCurrency();
@@ -96,6 +96,26 @@ export function GlobalMetrics() {
             </div>
           </GlassCard>
         ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6">
+        <GlassCard className="p-4 sm:p-6 col-span-full">
+          <div className="text-center">
+            <div className="text-4xl mb-4">⚠️</div>
+            <h3 className="text-lg font-semibold text-white mb-2">Error de Datos</h3>
+            <p className="text-white/60 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
+            >
+              Reintentar
+            </button>
+          </div>
+        </GlassCard>
       </div>
     );
   }
