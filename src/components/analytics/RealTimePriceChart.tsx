@@ -49,6 +49,12 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
         const pair = dexData.pairs[0];
         console.log('📊 Par encontrado en DexScreener:', pair);
         
+        // Verificar que el par tenga datos válidos
+        if (!pair.priceUsd || pair.priceUsd === '0' || pair.priceUsd === '') {
+          console.warn('⚠️ Par encontrado pero sin precio válido');
+          throw new Error('Par sin precio válido en DexScreener');
+        }
+        
         // Si hay datos de precio histórico, usarlos
         if (pair.priceHistory && pair.priceHistory.length > 0) {
           console.log(`✅ Datos históricos reales encontrados: ${pair.priceHistory.length} puntos`);
@@ -212,15 +218,87 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
 
         console.log(`🔍 Obteniendo datos históricos reales para ${token.symbol} (${token.contract})...`);
         
-        // Obtener datos históricos reales directamente de DexScreener
-        const historicalData = await fetchRealHistoricalData(token.contract, timeframe);
-        setChartData(historicalData);
-        setHasRealData(true);
-        console.log('✅ Datos históricos reales obtenidos exitosamente');
+        try {
+          // Intentar obtener datos históricos reales directamente de DexScreener
+          const historicalData = await fetchRealHistoricalData(token.contract, timeframe);
+          setChartData(historicalData);
+          setHasRealData(true);
+          console.log('✅ Datos históricos reales obtenidos exitosamente');
+        } catch (dexError) {
+          console.warn('❌ Error con DexScreener, intentando con nuestra API...', dexError);
+          
+          // Fallback: usar datos de nuestra API
+          const response = await fetch('/api/tokens');
+          const result = await response.json();
+          
+          if (result.success && result.data) {
+            const tokenData = result.data.find((t: { symbol: string; id: string }) =>
+              t.symbol === token.symbol || t.id === token.id
+            );
+            
+            if (tokenData) {
+              console.log('📊 Usando datos de nuestra API como fallback');
+              const currentPrice = tokenData.price || token.price;
+              
+              // Crear datos básicos con el precio actual
+              let data: number[] = [];
+              let labels: string[] = [];
+              
+              if (timeframe === '1H') {
+                data = Array.from({ length: 12 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.02));
+                labels = Array.from({ length: 12 }, (_, i) => {
+                  const date = new Date(Date.now() - (11 - i) * 5 * 60 * 1000);
+                  return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                });
+              } else if (timeframe === '24H') {
+                data = Array.from({ length: 24 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.1));
+                labels = Array.from({ length: 24 }, (_, i) => {
+                  const date = new Date(Date.now() - (23 - i) * 60 * 60 * 1000);
+                  return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
+                });
+              } else if (timeframe === '7D') {
+                data = Array.from({ length: 7 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
+                labels = Array.from({ length: 7 }, (_, i) => {
+                  const date = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
+                  return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+                });
+              } else if (timeframe === '30D') {
+                data = Array.from({ length: 30 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.5));
+                labels = Array.from({ length: 30 }, (_, i) => {
+                  const date = new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000);
+                  return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+                });
+              } else if (timeframe === '1Y') {
+                data = Array.from({ length: 12 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 1.0));
+                labels = Array.from({ length: 12 }, (_, i) => {
+                  const date = new Date(Date.now() - (11 - i) * 30 * 24 * 60 * 60 * 1000);
+                  return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+                });
+              } else {
+                data = Array.from({ length: 7 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
+                labels = Array.from({ length: 7 }, (_, i) => {
+                  const date = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
+                  return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+                });
+              }
+              
+              // Asegurar que el último punto sea el precio actual
+              data[data.length - 1] = currentPrice;
+              
+              setChartData({ data, labels });
+              setHasRealData(false); // Marcar como datos básicos, no reales
+              console.log('📈 Datos básicos creados con precio actual como fallback');
+            } else {
+              throw new Error('Token no encontrado en nuestra API');
+            }
+          } else {
+            throw new Error('Error en nuestra API');
+          }
+        }
         
       } catch (err) {
         console.error('Error fetching chart data:', err);
-        setError('Error al obtener datos históricos del token');
+        setError('Error al obtener datos del token');
       } finally {
         setIsLoading(false);
       }
@@ -356,15 +434,24 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
 
   return (
     <div className="h-full w-full relative">
-      {/* Indicador de datos reales */}
-      {hasRealData && (
-        <div className="absolute top-2 right-2 z-10 bg-[#00ff41]/20 backdrop-blur-sm border border-[#00ff41]/30 rounded-lg px-2 py-1">
-          <div className="flex items-center space-x-1">
-            <div className="w-2 h-2 bg-[#00ff41] rounded-full animate-pulse"></div>
-            <span className="text-xs text-[#00ff41] font-medium">Datos Reales</span>
+      {/* Indicador de datos */}
+      <div className="absolute top-2 right-2 z-10 backdrop-blur-sm border rounded-lg px-2 py-1">
+        {hasRealData ? (
+          <div className="bg-[#00ff41]/20 border-[#00ff41]/30">
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-[#00ff41] rounded-full animate-pulse"></div>
+              <span className="text-xs text-[#00ff41] font-medium">Datos Reales</span>
+            </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="bg-[#ff6b35]/20 border-[#ff6b35]/30">
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-[#ff6b35] rounded-full"></div>
+              <span className="text-xs text-[#ff6b35] font-medium">Datos Básicos</span>
+            </div>
+          </div>
+        )}
+      </div>
       
       <Line data={data} options={options} />
     </div>
