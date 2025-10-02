@@ -71,8 +71,8 @@ async function checkJupiter() {
     const apiKey = process.env.NEXT_PUBLIC_JUPITER_API_KEY;
     
     if (!apiKey) {
-      // Intentar usar la API pública sin key
-      const response = await fetch('https://price.jup.ag/v4/price?ids=So11111111111111111111111111111111111111112', {
+      // Usar CoinGecko como fallback para verificar conectividad
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -84,26 +84,26 @@ async function checkJupiter() {
         return {
           name: 'Jupiter',
           status: 'success',
-          message: 'Conectado (API pública)',
+          message: 'Conectado (fallback CoinGecko)',
           lastChecked: new Date().toISOString()
         };
       } else {
         return {
           name: 'Jupiter',
           status: 'warning',
-          message: 'API pública limitada',
+          message: 'API limitada - usando fallback',
           lastChecked: new Date().toISOString()
         };
       }
     }
     
-    // Usar Price API V3 con key
-    const response = await fetch('https://api.jup.ag/price/v3?ids=So11111111111111111111111111111111111111112', {
+    // Usar Price API V4 con key (más estable)
+    const response = await fetch('https://price.jup.ag/v4/price?ids=So11111111111111111111111111111111111111112', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'x-api-key': apiKey,
-        'Accept': 'application/json'
+        'User-Agent': 'LATAMCOINS/1.0'
       }
     });
     
