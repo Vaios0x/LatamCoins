@@ -4,16 +4,18 @@ import { useRealPrices } from '@/lib/hooks/useRealPrices';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { formatPrice, formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
 import { PriceChange } from '@/components/ui/PriceChange';
-import { Sparkline } from '@/components/dashboard/Sparkline';
+import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
 import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart3, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { TokenChatBot } from '@/components/chat/TokenChatBot';
+import { useState } from 'react';
 
 export default function TokenDetailPage() {
   const params = useParams();
   const symbol = params.symbol as string;
   const { tokens, isLoading, hasError } = useRealPrices();
+  const [selectedTimeframe, setSelectedTimeframe] = useState('7D');
   
   const token = tokens.find((t: { symbol: string }) => t.symbol.toLowerCase() === symbol.toLowerCase());
   
@@ -121,8 +123,8 @@ export default function TokenDetailPage() {
             <p className="text-white/60">Datos en tiempo real desde DexScreener</p>
           </div>
           
-          <div className="h-64 mb-6">
-            <Sparkline data={token.sparkline || []} />
+          <div className="h-96 mb-6">
+            <RealTimePriceChart token={token} timeframe={selectedTimeframe} />
           </div>
           
           {/* Selectores de tiempo */}
@@ -130,8 +132,9 @@ export default function TokenDetailPage() {
             {['1H', '24H', '7D', '30D', '1Y', 'ALL'].map((period) => (
               <button
                 key={period}
+                onClick={() => setSelectedTimeframe(period)}
                 className={`px-4 py-2 rounded-lg transition-all duration-300 ${
-                  period === 'ALL' 
+                  period === selectedTimeframe
                     ? 'bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/50' 
                     : 'bg-white/10 text-white/60 hover:bg-white/20'
                 }`}
