@@ -141,7 +141,7 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
         
         if (timeframe === '1H') {
           // Última hora - 12 puntos cada 5 minutos
-          data = Array.from({ length: 12 }, (_, i) => {
+          data = Array.from({ length: 12 }, () => {
             const variation = (Math.random() - 0.5) * 0.02; // ±1%
             return currentPrice * (1 + variation);
           });
@@ -151,7 +151,7 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
           });
         } else if (timeframe === '24H') {
           // Últimas 24 horas - 24 puntos cada hora
-          data = Array.from({ length: 24 }, (_, i) => {
+          data = Array.from({ length: 24 }, () => {
             const variation = (Math.random() - 0.5) * 0.1; // ±5%
             return currentPrice * (1 + variation);
           });
@@ -161,7 +161,7 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
           });
         } else if (timeframe === '7D') {
           // Últimos 7 días - 7 puntos cada día
-          data = Array.from({ length: 7 }, (_, i) => {
+          data = Array.from({ length: 7 }, () => {
             const variation = (Math.random() - 0.5) * 0.3; // ±15%
             return currentPrice * (1 + variation);
           });
@@ -171,7 +171,7 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
           });
         } else if (timeframe === '30D') {
           // Últimos 30 días - 30 puntos cada día
-          data = Array.from({ length: 30 }, (_, i) => {
+          data = Array.from({ length: 30 }, () => {
             const variation = (Math.random() - 0.5) * 0.5; // ±25%
             return currentPrice * (1 + variation);
           });
@@ -181,7 +181,7 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
           });
         } else if (timeframe === '1Y') {
           // Último año - 12 puntos cada mes
-          data = Array.from({ length: 12 }, (_, i) => {
+          data = Array.from({ length: 12 }, () => {
             const variation = (Math.random() - 0.5) * 1.0; // ±50%
             return currentPrice * (1 + variation);
           });
@@ -191,7 +191,7 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
           });
         } else {
           // Default - 7 días
-          data = Array.from({ length: 7 }, (_, i) => {
+          data = Array.from({ length: 7 }, () => {
             const variation = (Math.random() - 0.5) * 0.3;
             return currentPrice * (1 + variation);
           });
@@ -284,37 +284,37 @@ export function RealTimePriceChart({ token, timeframe = '7D' }: RealTimePriceCha
                 let labels: string[] = [];
                 
                 if (timeframe === '1H') {
-                  data = Array.from({ length: 12 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.02));
+                  data = Array.from({ length: 12 }, () => currentPrice * (1 + (Math.random() - 0.5) * 0.02));
                   labels = Array.from({ length: 12 }, (_, i) => {
                     const date = new Date(Date.now() - (11 - i) * 5 * 60 * 1000);
                     return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
                   });
                 } else if (timeframe === '24H') {
-                  data = Array.from({ length: 24 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.1));
+                  data = Array.from({ length: 24 }, () => currentPrice * (1 + (Math.random() - 0.5) * 0.1));
                   labels = Array.from({ length: 24 }, (_, i) => {
                     const date = new Date(Date.now() - (23 - i) * 60 * 60 * 1000);
                     return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
                   });
                 } else if (timeframe === '7D') {
-                  data = Array.from({ length: 7 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
+                  data = Array.from({ length: 7 }, () => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
                   labels = Array.from({ length: 7 }, (_, i) => {
                     const date = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
                     return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
                   });
                 } else if (timeframe === '30D') {
-                  data = Array.from({ length: 30 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.5));
+                  data = Array.from({ length: 30 }, () => currentPrice * (1 + (Math.random() - 0.5) * 0.5));
                   labels = Array.from({ length: 30 }, (_, i) => {
                     const date = new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000);
                     return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
                   });
                 } else if (timeframe === '1Y') {
-                  data = Array.from({ length: 12 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 1.0));
+                  data = Array.from({ length: 12 }, () => currentPrice * (1 + (Math.random() - 0.5) * 1.0));
                   labels = Array.from({ length: 12 }, (_, i) => {
                     const date = new Date(Date.now() - (11 - i) * 30 * 24 * 60 * 60 * 1000);
                     return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
                   });
                 } else {
-                  data = Array.from({ length: 7 }, (_, i) => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
+                  data = Array.from({ length: 7 }, () => currentPrice * (1 + (Math.random() - 0.5) * 0.3));
                   labels = Array.from({ length: 7 }, (_, i) => {
                     const date = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
                     return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });

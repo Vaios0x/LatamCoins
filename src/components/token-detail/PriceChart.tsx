@@ -116,7 +116,7 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
     };
 
     fetchRealChartData();
-  }, [token, timeframe]);
+  }, [token, timeframe, generateSimulatedData]);
 
   const isPositive = useMemo(() => {
     if (chartData.data.length < 2) return true;

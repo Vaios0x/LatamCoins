@@ -79,7 +79,7 @@ async function fetchDexScreenerData(pairAddress: string) {
 }
 
 // Función para generar sparkline data desde datos históricos
-function generateSparklineData(priceHistory: any[], currentPrice: number, tokenSymbol: string) {
+function generateSparklineData(priceHistory: { price: string; timestamp: number }[], currentPrice: number, tokenSymbol: string) {
   console.log(`🔍 Generando sparkline para ${tokenSymbol}:`, {
     hasHistory: !!priceHistory,
     historyLength: priceHistory?.length || 0,
@@ -95,7 +95,7 @@ function generateSparklineData(priceHistory: any[], currentPrice: number, tokenS
     
     // Generar 7 puntos de datos para la última semana con variación realista
     for (let i = 0; i < 7; i++) {
-      const timestamp = oneWeekAgo + (i * 24 * 60 * 60 * 1000);
+      // const timestamp = oneWeekAgo + (i * 24 * 60 * 60 * 1000);
       // Usar una variación más realista basada en el token
       const baseVariation = (Math.random() - 0.5) * 0.2; // ±10% de variación base
       const tokenVariation = (tokenSymbol.charCodeAt(0) % 10) / 100; // Variación específica del token

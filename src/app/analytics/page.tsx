@@ -93,7 +93,7 @@ export default function AnalyticsPage() {
     const interval = setInterval(fetchTokens, 30000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedToken]);
 
   // Calcular métricas del mercado
   const marketMetrics = useMemo(() => {

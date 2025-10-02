@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { Activity, Wifi, WifiOff, RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Activity, Wifi, RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-react';
 
 interface ApiStatus {
   name: string;
@@ -51,7 +51,7 @@ export default function StatusPage() {
         responseTime,
         error: response.ok ? undefined : `HTTP ${response.status}`
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       const responseTime = Date.now() - startTime;
       return {
         ...api,
@@ -81,7 +81,7 @@ export default function StatusPage() {
     // Verificar cada 5 minutos
     const interval = setInterval(checkAllApis, 5 * 60 * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [checkAllApis]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
