@@ -57,7 +57,7 @@ export default function TokenDetailPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#16213e]">
       {/* Header */}
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <Link 
             href="/"
             className="inline-flex items-center px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
@@ -66,13 +66,13 @@ export default function TokenDetailPage() {
             Volver al Dashboard
           </Link>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-6">
             {tokenData.dexScreenerUrl && (
               <a
                 href={tokenData.dexScreenerUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-[#ff6b35]/20 hover:bg-[#ff6b35]/30 border border-[#ff6b35]/50 text-[#ff6b35] rounded-lg transition-all duration-300"
+                className="inline-flex items-center px-5 py-3 bg-[#ff6b35]/20 hover:bg-[#ff6b35]/30 border border-[#ff6b35]/50 text-[#ff6b35] rounded-lg transition-all duration-300 min-w-[140px] justify-center"
               >
                 <BarChart3 className="w-4 h-4 mr-2" />
                 DexScreener
@@ -84,7 +84,7 @@ export default function TokenDetailPage() {
                 href={tokenData.pumpUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-[#8b5cf6]/20 hover:bg-[#8b5cf6]/30 border border-[#8b5cf6]/50 text-[#8b5cf6] rounded-lg transition-all duration-300"
+                className="inline-flex items-center px-5 py-3 bg-[#8b5cf6]/20 hover:bg-[#8b5cf6]/30 border border-[#8b5cf6]/50 text-[#8b5cf6] rounded-lg transition-all duration-300 min-w-[140px] justify-center"
               >
                 <Activity className="w-4 h-4 mr-2" />
                 Pump.fun
