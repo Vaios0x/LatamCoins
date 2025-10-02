@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
+import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
 /**
  * Footer de LATAMCOINS
@@ -45,6 +46,11 @@ export function Footer() {
               El pulso de las crypto latinas. Tracking en tiempo real de tokens 
               latinoamericanos en Solana y Pump.fun.
             </p>
+            
+            {/* Selector de Moneda */}
+            <div className="mb-6">
+              <CurrencySelector size="md" showLabel={true} />
+            </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-6 text-sm text-white/60">
               <span className="font-medium">Powered by</span>
               <div className="flex items-center space-x-4">

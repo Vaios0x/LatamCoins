@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Menu, X } from 'lucide-react';
+import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
 /**
  * Header principal de LATAMCOINS
@@ -63,6 +64,11 @@ export function Header() {
             </form>
           </div>
 
+          {/* Selector de Moneda - Desktop */}
+          <div className="hidden lg:flex">
+            <CurrencySelector size="sm" showLabel={false} />
+          </div>
+
           {/* Navegación - Desktop */}
           <nav className="hidden md:flex items-center space-x-3 lg:space-x-6">
             {isClient && navigation.map((item) => (
@@ -103,6 +109,11 @@ export function Header() {
                   aria-label="Buscar tokens"
                 />
               </form>
+
+              {/* Selector de Moneda - Móvil */}
+              <div className="mb-3 sm:mb-4">
+                <CurrencySelector size="sm" showLabel={true} />
+              </div>
 
               {/* Navegación móvil */}
               {isClient && navigation.map((item) => (

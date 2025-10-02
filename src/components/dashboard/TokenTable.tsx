@@ -10,6 +10,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { Sparkline } from './Sparkline';
 import { useRealPrices } from '@/lib/hooks/useRealPrices';
+import { useCurrency } from '@/components/ui/CurrencySelector';
 
 type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'volume24h' | 'marketCap';
 type SortDirection = 'asc' | 'desc';
@@ -25,6 +26,9 @@ export function TokenTable() {
   
   // Usar el hook de precios reales
   const { tokens, isLoading, refreshPrices } = useRealPrices();
+  
+  // Usar el hook de moneda
+  const { formatPrice } = useCurrency();
 
   // Filtrar tokens por búsqueda
   const filteredTokens = useMemo(() => {
