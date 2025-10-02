@@ -22,7 +22,7 @@ export function CurrencySelector({
   size = 'md'
 }: CurrencySelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrencyState] = useState('USD');
+  const [selectedCurrency, setSelectedCurrencyState] = useState('MXN');
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -146,7 +146,7 @@ export function CurrencySelector({
  * Hook para usar la moneda seleccionada
  */
 export function useCurrency() {
-  const [selectedCurrency, setSelectedCurrencyState] = useState('USD');
+  const [selectedCurrency, setSelectedCurrencyState] = useState('MXN');
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
 
   useEffect(() => {
