@@ -359,8 +359,8 @@ export function ChatBot({ context }: ChatBotProps) {
               {/* Botón flotante removido - solo el del header */}
               
               <div className="relative flex-1 flex flex-col overflow-hidden">
-                {/* Header compacto para móviles */}
-                <div className="flex items-center justify-between p-2.5 sm:p-2 md:p-3 border-b border-white/10 bg-white/5 backdrop-blur-sm">
+                {/* Header fijo para móviles - siempre visible */}
+                <div className="sticky top-0 flex items-center justify-between p-2.5 sm:p-2 md:p-3 border-b border-white/10 bg-white/10 backdrop-blur-md z-50 flex-shrink-0">
                   <div className="flex items-center space-x-1.5 sm:space-x-2">
                     {/* Avatar compacto */}
                     <div className="relative">
@@ -378,14 +378,13 @@ export function ChatBot({ context }: ChatBotProps) {
                   </div>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="w-10 h-10 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-red-500 hover:bg-red-600 border-2 border-white rounded-full flex items-center justify-center transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-110 z-50"
+                    className="w-12 h-12 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-red-500 hover:bg-red-600 border-2 border-white rounded-full flex items-center justify-center transition-all duration-300 shadow-2xl hover:shadow-2xl hover:scale-110 z-[999] relative"
                     aria-label="Cerrar chat"
                   >
-                    <X className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white font-black" />
+                    <X className="w-7 h-7 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white font-black" />
                   </button>
                 </div>
 
-                {/* Botón de cerrar removido del área de mensajes */}
 
                 {/* Messages más grandes para móviles */}
                 <div className="flex-1 overflow-y-auto p-3 sm:p-2 md:p-3 space-y-3 sm:space-y-3">
