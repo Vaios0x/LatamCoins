@@ -26,7 +26,7 @@ export function Footer() {
       { name: 'Estado', href: '/status' },
     ],
     social: [
-      { name: 'Twitter', href: 'https://twitter.com/coinlatamcap', external: true },
+      { name: 'X (Twitter)', href: 'https://x.com/coinlatamcap', external: true },
       { name: 'Discord', href: 'https://discord.gg/coinlatamcap', external: true },
       { name: 'GitHub', href: 'https://github.com/coinlatamcap', external: true },
     ]
