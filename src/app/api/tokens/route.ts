@@ -137,7 +137,7 @@ export async function GET() {
     
     const tokensWithRealData = [];
     let realTimeCount = 0;
-    const simulatedCount = 0;
+    // const simulatedCount = 0;
     
     // Obtener datos reales para cada token usando múltiples APIs
     for (const token of LATAM_TOKENS) {

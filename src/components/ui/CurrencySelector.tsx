@@ -6,7 +6,6 @@ import {
   getExchangeRates, 
   getSelectedCurrency, 
   setSelectedCurrency, 
-  formatPrice,
   type ExchangeRate 
 } from '@/lib/services/exchangeRates';
 

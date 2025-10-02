@@ -30,7 +30,7 @@ interface GlobalMetricsData {
 export function GlobalMetrics() {
   const [data, setData] = useState<GlobalMetricsData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   
   // Usar el hook de moneda
   const { formatPrice } = useCurrency();
