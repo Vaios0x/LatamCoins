@@ -2,7 +2,8 @@
 
 import { useRealPrices } from '@/lib/hooks/useRealPrices';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { formatPrice, formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { formatPercentage } from '@/lib/utils/formatters';
+import { useCurrency } from '@/components/ui/CurrencySelector';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
 import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart3, Activity } from 'lucide-react';
@@ -16,6 +17,7 @@ export default function TokenDetailPage() {
   const symbol = params.symbol as string;
   const { tokens, isLoading, hasError } = useRealPrices();
   const [selectedTimeframe, setSelectedTimeframe] = useState('7D');
+  const { formatPrice, formatLargeNumber } = useCurrency();
   
   const token = tokens.find((t: { symbol: string }) => t.symbol.toLowerCase() === symbol.toLowerCase());
   

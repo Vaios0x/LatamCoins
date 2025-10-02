@@ -146,6 +146,7 @@ export function useCurrency(): {
   exchangeRates: ExchangeRate[];
   convertPrice: (priceUSD: number) => number;
   formatPrice: (priceUSD: number) => string;
+  formatLargeNumber: (numberUSD: number) => string;
 } {
   const [selectedCurrency, setSelectedCurrencyState] = useState('USD');
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
@@ -202,10 +203,46 @@ export function useCurrency(): {
     }
   };
 
+  const formatLargeNumber = (numberUSD: number) => {
+    const convertedNumber = convertPrice(numberUSD);
+    const currencyInfo = exchangeRates.find(r => r.code === selectedCurrency);
+    
+    if (!currencyInfo) return `$${formatLargeNumberUSD(numberUSD)}`;
+    
+    const { symbol } = currencyInfo;
+    
+    if (convertedNumber >= 1e12) {
+      return `${symbol}${(convertedNumber / 1e12).toFixed(2)}T`;
+    } else if (convertedNumber >= 1e9) {
+      return `${symbol}${(convertedNumber / 1e9).toFixed(2)}B`;
+    } else if (convertedNumber >= 1e6) {
+      return `${symbol}${(convertedNumber / 1e6).toFixed(2)}M`;
+    } else if (convertedNumber >= 1e3) {
+      return `${symbol}${(convertedNumber / 1e3).toFixed(2)}K`;
+    } else {
+      return `${symbol}${convertedNumber.toFixed(2)}`;
+    }
+  };
+
+  const formatLargeNumberUSD = (number: number) => {
+    if (number >= 1e12) {
+      return `${(number / 1e12).toFixed(2)}T`;
+    } else if (number >= 1e9) {
+      return `${(number / 1e9).toFixed(2)}B`;
+    } else if (number >= 1e6) {
+      return `${(number / 1e6).toFixed(2)}M`;
+    } else if (number >= 1e3) {
+      return `${(number / 1e3).toFixed(2)}K`;
+    } else {
+      return number.toFixed(2);
+    }
+  };
+
   return {
     selectedCurrency,
     exchangeRates,
     convertPrice,
-    formatPrice
+    formatPrice,
+    formatLargeNumber
   } as const;
 }
