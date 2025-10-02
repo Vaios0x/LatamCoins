@@ -25,31 +25,30 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
   // Usar el hook de moneda
   const { formatPrice } = useCurrency();
 
-  // Función auxiliar para generar datos simulados
-  const generateSimulatedData = (currentPrice: number) => {
-    const data = Array.from({ length: 7 }, (_, i) => {
-      const variation = (Math.random() - 0.5) * 0.2; // ±10% de variación
-      return currentPrice * (1 + variation * (i / 7));
-    });
-    const labels = data.map((_, index) => {
-      const date = new Date(Date.now() - (data.length - index - 1) * 24 * 60 * 60 * 1000);
-      if (timeframe === '1H') {
-        return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-      } else if (timeframe === '24H') {
-        return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
-      } else if (timeframe === '7D') {
-        return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
-      } else if (timeframe === '30D') {
-        return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
-      } else {
-        return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
-      }
-    });
-    return { data, labels };
-  };
-
   // Obtener datos reales del token
   useEffect(() => {
+    // Función auxiliar para generar datos simulados
+    const generateSimulatedData = (currentPrice: number) => {
+      const data = Array.from({ length: 7 }, (_, i) => {
+        const variation = (Math.random() - 0.5) * 0.2; // ±10% de variación
+        return currentPrice * (1 + variation * (i / 7));
+      });
+      const labels = data.map((_, index) => {
+        const date = new Date(Date.now() - (data.length - index - 1) * 24 * 60 * 60 * 1000);
+        if (timeframe === '1H') {
+          return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        } else if (timeframe === '24H') {
+          return date.toLocaleTimeString('es-ES', { hour: '2-digit' });
+        } else if (timeframe === '7D') {
+          return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+        } else if (timeframe === '30D') {
+          return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+        } else {
+          return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+        }
+      });
+      return { data, labels };
+    };
     const fetchRealChartData = async () => {
       try {
         setIsLoading(true);
@@ -116,7 +115,7 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
     };
 
     fetchRealChartData();
-  }, [token, timeframe, generateSimulatedData]);
+  }, [token, timeframe]);
 
   const isPositive = useMemo(() => {
     if (chartData.data.length < 2) return true;

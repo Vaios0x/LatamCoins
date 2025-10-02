@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Activity, Wifi, RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-react';
 
@@ -58,12 +58,12 @@ export default function StatusPage() {
         status: 'disconnected',
         lastCheck: new Date().toLocaleTimeString('es-ES'),
         responseTime,
-        error: error.name === 'AbortError' ? 'Timeout' : error.message
+        error: error instanceof Error && error.name === 'AbortError' ? 'Timeout' : error instanceof Error ? error.message : 'Error desconocido'
       };
     }
   };
 
-  const checkAllApis = async () => {
+  const checkAllApis = useCallback(async () => {
     setIsChecking(true);
     setLastUpdate(new Date().toLocaleTimeString('es-ES'));
     
@@ -73,7 +73,7 @@ export default function StatusPage() {
     
     setApis(updatedApis);
     setIsChecking(false);
-  };
+  }, [apis, checkApiStatus]);
 
   useEffect(() => {
     checkAllApis();

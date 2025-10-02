@@ -27,8 +27,8 @@ export function TokenTable() {
   // Usar el hook de precios reales
   const { tokens, isLoading, refreshPrices } = useRealPrices();
   
-  // Usar el hook de moneda
-  const { formatPrice: _formatPrice } = useCurrency();
+  // Usar el hook de moneda (no usado en este componente)
+  // const { formatPrice } = useCurrency();
 
   // Filtrar tokens por búsqueda
   const filteredTokens = useMemo(() => {
