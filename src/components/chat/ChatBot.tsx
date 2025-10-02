@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User, Loader2, Sparkles, TrendingUp, DollarSign, BarChart3 } from 'lucide-react';
-import { GlassCard } from '@/components/ui/GlassCard';
+// import { GlassCard } from '@/components/ui/GlassCard'; // Removido - no se usa
 
 interface Message {
   id: string;
@@ -85,13 +85,13 @@ export function ChatBot({ context }: ChatBotProps) {
         return null;
       }
       
-      const token = data.data.find((t: any) => 
+      const token = data.data.find((t: { symbol: string }) => 
         t.symbol && t.symbol.toLowerCase() === symbol.toLowerCase()
       );
       
       if (!token) {
         console.log(`❌ Token ${symbol} no encontrado. Tokens disponibles:`, 
-          data.data.map((t: any) => t.symbol).join(', '));
+          data.data.map((t: { symbol: string }) => t.symbol).join(', '));
         return null;
       }
       

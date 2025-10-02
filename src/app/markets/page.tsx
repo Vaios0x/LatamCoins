@@ -6,7 +6,7 @@ import { formatPrice, formatLargeNumber } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { GlassButton } from '@/components/ui/GlassButton';
 import { PriceChange } from '@/components/ui/PriceChange';
-import { Sparkline } from '@/components/dashboard/Sparkline';
+// import { Sparkline } from '@/components/dashboard/Sparkline'; // Removido - no se usa
 import Link from 'next/link';
 
 type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'volume24h' | 'marketCap';
