@@ -60,9 +60,9 @@ export function CurrencySelector({
   const selectedCurrencyInfo = exchangeRates.find(r => r.code === selectedCurrency);
 
   const sizeClasses = {
-    sm: 'text-xs px-2 py-1',
-    md: 'text-sm px-3 py-2',
-    lg: 'text-base px-4 py-3'
+    sm: 'text-xs px-2 py-1 min-w-[80px]',
+    md: 'text-sm px-3 py-2 min-w-[100px]',
+    lg: 'text-base px-4 py-3 min-w-[120px]'
   };
 
   if (isLoading) {
@@ -88,22 +88,24 @@ export function CurrencySelector({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          flex items-center space-x-2 bg-white/10 hover:bg-white/20 
+          flex items-center justify-between bg-white/10 hover:bg-white/20 
           border border-white/20 rounded-lg transition-all duration-300
           ${sizeClasses[size]}
           ${isOpen ? 'ring-2 ring-[#00ff41]/50' : ''}
         `}
       >
-        <Globe className="w-4 h-4 text-[#00ff41]" />
-        <span className="text-white font-medium">
-          {selectedCurrencyInfo?.flag} {selectedCurrency}
-        </span>
-        <ChevronDown className={`w-4 h-4 text-white/60 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <div className="flex items-center space-x-2 min-w-0 flex-1">
+          <span className="text-lg flex-shrink-0">{selectedCurrencyInfo?.flag}</span>
+          <span className="text-white font-medium truncate">
+            {selectedCurrency}
+          </span>
+        </div>
+        <ChevronDown className={`w-4 h-4 text-white/60 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-[#0a0e27]/95 backdrop-blur-xl border border-white/20 rounded-lg shadow-2xl z-50 max-h-64 overflow-y-auto">
-          <div className="p-2">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-[#0a0e27]/95 backdrop-blur-xl border border-white/20 rounded-lg shadow-2xl z-50 max-h-80 overflow-y-auto min-w-full sm:min-w-[300px] lg:min-w-[350px]">
+          <div className="p-1">
             {exchangeRates.map((currency) => (
               <button
                 key={currency.code}
@@ -116,15 +118,15 @@ export function CurrencySelector({
                   }
                 `}
               >
-                <div className="flex items-center space-x-2">
-                  <span className="text-lg">{currency.flag}</span>
-                  <div className="text-left">
-                    <div className="font-medium">{currency.code}</div>
-                    <div className="text-xs text-white/60">{currency.name}</div>
+                <div className="flex items-center space-x-3 min-w-0 flex-1">
+                  <span className="text-lg flex-shrink-0">{currency.flag}</span>
+                  <div className="text-left min-w-0 flex-1">
+                    <div className="font-medium truncate">{currency.code}</div>
+                    <div className="text-xs text-white/60 truncate hidden sm:block">{currency.name}</div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-sm font-mono">
+                <div className="text-right flex-shrink-0 ml-2 hidden lg:block">
+                  <div className="text-xs font-mono text-white/70">
                     {currency.symbol}1 = ${(1 / currency.rate).toFixed(4)}
                   </div>
                 </div>
