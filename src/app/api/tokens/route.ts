@@ -90,7 +90,7 @@ function generateSparklineData(priceHistory: { price: string; timestamp: number 
     console.log(`⚠️ No hay datos históricos para ${tokenSymbol}, generando datos básicos`);
     // Si no hay datos históricos, generar datos básicos basados en el precio actual
     const data = [];
-    const now = Date.now();
+    // const now = Date.now();
     // const oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000);
     
     // Generar 7 puntos de datos para la última semana con variación realista

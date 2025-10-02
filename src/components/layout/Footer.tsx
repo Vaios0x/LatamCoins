@@ -80,7 +80,7 @@ export function Footer() {
             
             {/* Fruta Power */}
             <div className="mt-4 flex items-center space-x-2 text-sm text-white/60">
-              <span className="font-medium">Let's build a fruit</span>
+              <span className="font-medium">Let&apos;s build a fruit</span>
               <span className="text-[#ff6b35] font-semibold flex items-center space-x-1">
                 <span>🍒</span>
                 <span>Fruta Power</span>

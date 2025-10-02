@@ -25,7 +25,7 @@ export default function StatusPage() {
   const [isChecking, setIsChecking] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<string>('');
 
-  const checkApiStatus = async (api: ApiStatus): Promise<ApiStatus> => {
+  const checkApiStatus = useCallback(async (api: ApiStatus): Promise<ApiStatus> => {
     const startTime = Date.now();
     
     try {
@@ -61,7 +61,7 @@ export default function StatusPage() {
         error: error instanceof Error && error.name === 'AbortError' ? 'Timeout' : error instanceof Error ? error.message : 'Error desconocido'
       };
     }
-  };
+  }, []);
 
   const checkAllApis = useCallback(async () => {
     setIsChecking(true);
