@@ -56,8 +56,8 @@ export default function TokenDetailPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#16213e]">
       {/* Header */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+      <div className="container mx-auto px-4 py-8 pt-16">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-6 mt-8">
           <Link 
             href="/"
             className="inline-flex items-center px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
