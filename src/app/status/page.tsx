@@ -17,7 +17,7 @@ export default function StatusPage() {
   const [apis, setApis] = useState<ApiStatus[]>([
     {
       name: 'DexScreener',
-      url: 'https://api.dexscreener.com',
+      url: 'https://api.dexscreener.com/latest/dex/pairs/solana/b3tr9tdcpqdtkah6hou2ut3u4udv1na75oe6r4femumt',
       status: 'checking',
       lastCheck: 'Verificando...'
     }
@@ -33,7 +33,7 @@ export default function StatusPage() {
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       
       const response = await fetch(api.url, {
-        method: 'HEAD',
+        method: 'GET',
         headers: {
           'Accept': 'application/json',
           'User-Agent': 'LATAMCOINS/1.0'
