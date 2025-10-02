@@ -77,6 +77,16 @@ export function Footer() {
                 </Link>
               </div>
             </div>
+            
+            {/* Fruta Power */}
+            <div className="mt-4 flex items-center space-x-2 text-sm text-white/60">
+              <span className="font-medium">Powered by</span>
+              <span className="text-[#ff6b35] font-semibold flex items-center space-x-1">
+                <span>🍒</span>
+                <span>Fruta Power</span>
+                <span>🍉</span>
+              </span>
+            </div>
           </div>
 
           {/* Enlaces de plataforma */}
