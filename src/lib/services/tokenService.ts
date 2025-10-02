@@ -3,7 +3,6 @@
  * Combina datos de múltiples APIs para obtener información completa
  */
 
-import { getTokenData } from '@/lib/api/solana';
 import { getCMCTokenData, getCMCGlobalMetrics } from '@/lib/api/coinmarketcap';
 // import { getPumpFunTokenData, getMultiplePumpFunTokens } from '@/lib/api/pumpfun';
 import { Token } from '@/lib/constants/tokens';
@@ -26,7 +25,7 @@ export interface TokenServiceConfig {
 
 // Configuración por defecto
 const DEFAULT_CONFIG: TokenServiceConfig = {
-  useJupiter: true,
+  useJupiter: false, // Jupiter eliminado
   useCMC: true,
   usePumpFun: true,
   fallbackToMock: true,
@@ -55,39 +54,9 @@ export async function getRealTokenData(
     let tokenData: RealTokenData | null = null;
     const apiErrors: string[] = [];
 
-    // Intentar obtener datos de múltiples fuentes
-    if (finalConfig.useJupiter) {
-      try {
-        const jupiterData = await getTokenData(tokenAddress);
-        if (jupiterData) {
-          tokenData = {
-            id: tokenAddress,
-            symbol: jupiterData.symbol,
-            name: jupiterData.name,
-            price: jupiterData.price || 0,
-            change24h: 0, // Jupiter no proporciona cambio 24h
-            volume24h: 0,
-            marketCap: jupiterData.marketCap || 0,
-            platform: 'Solana',
-            chain: 'Solana',
-            contract: tokenAddress,
-            logo: jupiterData.logoURI || '/tokens/default.svg',
-            ath: 0,
-            atl: 0,
-            supply: 0,
-            rank: 0,
-            lastUpdated: new Date().toISOString(),
-            source: 'jupiter',
-            isRealTime: true,
-          };
-        }
-      } catch (error) {
-        apiErrors.push('Jupiter API failed');
-        console.warn('Jupiter API failed:', error);
-      }
-    }
+    // Jupiter eliminado - usar solo DexScreener y CoinMarketCap
 
-    // Si no hay datos de Jupiter, intentar CoinMarketCap
+    // Intentar CoinMarketCap
     if (!tokenData && finalConfig.useCMC) {
       try {
         const cmcData = await getCMCTokenData([tokenAddress]);

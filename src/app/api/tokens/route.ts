@@ -104,40 +104,6 @@ async function fetchDexScreenerData(pairAddress: string) {
   }
 }
 
-// Función para obtener datos de Jupiter API (plan Lite)
-async function fetchJupiterData(tokenAddress: string) {
-  try {
-    const apiKey = process.env.NEXT_PUBLIC_JUPITER_API_KEY;
-    
-    // Usar Price API V3 (versión actual según documentación oficial)
-    const baseUrl = apiKey ? 'https://api.jup.ag/price/v3' : 'https://lite-api.jup.ag/price/v3';
-    
-    const headers: Record<string, string> = {
-      'Accept': 'application/json',
-      'User-Agent': 'LATAMCOINS/1.0'
-    };
-    
-    // Agregar API key si está disponible
-    if (apiKey) {
-      headers['x-api-key'] = apiKey;
-    }
-    
-    const response = await fetch(`${baseUrl}?ids=${tokenAddress}`, {
-      headers
-    });
-
-    if (!response.ok) {
-      console.warn(`Jupiter API error: ${response.status} for ${tokenAddress}`);
-      return null;
-    }
-
-    const data = await response.json();
-    return data.data && data.data[tokenAddress] ? data.data[tokenAddress] : null;
-  } catch (error) {
-    console.warn(`Error fetching Jupiter data for ${tokenAddress}:`, error);
-    return null;
-  }
-}
 
 // Función para obtener datos de CoinGecko como fallback
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -215,42 +181,6 @@ export async function GET() {
           console.log(`✅ Got real data from DexScreener for ${token.symbol}`);
         }
 
-        // 2. Intentar Jupiter API (prioritario si hay API key)
-        const jupiterApiKey = process.env.NEXT_PUBLIC_JUPITER_API_KEY;
-        if (jupiterApiKey) {
-          console.log(`Trying Jupiter API for ${token.symbol} (with API key)`);
-          const jupiterData = await fetchJupiterData(token.contract);
-          
-          if (jupiterData) {
-            tokenData = {
-              ...token,
-              price: parseFloat(jupiterData.price) || 0,
-              change24h: 0, // Jupiter no proporciona cambio 24h
-              volume24h: 0,
-              marketCap: 0,
-              liquidity: 0,
-              fdv: 0,
-              rank: tokensWithRealData.length + 1,
-              lastUpdated: new Date().toISOString(),
-              source: 'jupiter',
-              isRealTime: true,
-              dexScreenerUrl: token.dexScreenerUrl,
-              pumpUrl: token.pumpUrl,
-              jupiterUrl: token.jupiterUrl,
-              priceChange: {
-                m5: 0,
-                h1: 0,
-                h6: 0,
-                h24: 0
-              }
-            };
-            dataSource = 'jupiter';
-            isRealTime = true;
-            realTimeCount++;
-            console.log(`✅ Got real data from Jupiter for ${token.symbol}`);
-          }
-        }
-
         // 2. Si no hay datos de DexScreener, intentar CoinMarketCap
         if (!tokenData && token.cmcSymbols) {
           console.log(`Trying CoinMarketCap for ${token.symbol} with symbols: ${token.cmcSymbols.join(', ')}`);
@@ -297,10 +227,16 @@ export async function GET() {
           const volatility: number = 0.1 + (tokensWithRealData.length * 0.05);
           const currentPrice: number = basePrice * (1 + (Math.random() - 0.5) * volatility);
           
+          // Crear algunos ganadores para mostrar en el filtro
+          const isGainer: boolean = tokensWithRealData.length % 3 === 0; // Cada 3er token es ganador
+          const change24h: number = isGainer ? 
+            Math.random() * 30 + 5 : // Ganadores: +5% a +35%
+            -(Math.random() * 25 + 5); // Perdedores: -5% a -30%
+          
           tokenData = {
             ...token,
             price: currentPrice,
-            change24h: (Math.random() - 0.5) * 50,
+            change24h: change24h,
             volume24h: Math.random() * 100000 + 10000,
             marketCap: currentPrice * (1000000000 - tokensWithRealData.length * 100000000),
             liquidity: Math.random() * 50000 + 10000,
@@ -315,7 +251,7 @@ export async function GET() {
               m5: (Math.random() - 0.5) * 10,
               h1: (Math.random() - 0.5) * 20,
               h6: (Math.random() - 0.5) * 30,
-              h24: (Math.random() - 0.5) * 50
+              h24: change24h
             }
           };
           dataSource = 'simulated';

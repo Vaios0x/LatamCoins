@@ -9,6 +9,7 @@ import { Activity, TrendingUp, TrendingDown, DollarSign, BarChart3 } from 'lucid
 interface RealTimeDataProps {
   tokenAddress: string;
   tokenSymbol: string;
+  tokenName?: string;
 }
 
 interface DexScreenerData {
@@ -28,7 +29,7 @@ interface DexScreenerData {
   isRealTime: boolean;
 }
 
-export function RealTimeData({ tokenAddress, tokenSymbol }: RealTimeDataProps) {
+export function RealTimeData({ tokenAddress, tokenSymbol, tokenName }: RealTimeDataProps) {
   const [data, setData] = useState<DexScreenerData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -139,7 +140,12 @@ export function RealTimeData({ tokenAddress, tokenSymbol }: RealTimeDataProps) {
       {/* Header con estado en tiempo real */}
       <GlassCard className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-white">Datos en Tiempo Real</h3>
+          <div>
+            <h3 className="text-xl font-bold text-white">
+              {tokenName || tokenSymbol} ({tokenSymbol})
+            </h3>
+            <p className="text-sm text-white/60">Datos en Tiempo Real</p>
+          </div>
           <div className="flex items-center space-x-2">
             <div className={`w-2 h-2 rounded-full ${data.isRealTime ? 'bg-[#00ff41]' : 'bg-[#ff0040]'} animate-pulse`} />
             <span className="text-sm text-white/60">
@@ -158,6 +164,35 @@ export function RealTimeData({ tokenAddress, tokenSymbol }: RealTimeDataProps) {
               {formatPercentage(data.change24h)} en 24h
             </span>
           </div>
+          
+          {/* Contract Address */}
+          <div className="mt-4 p-3 bg-black/20 rounded-lg border border-white/10">
+            <p className="text-xs text-white/60 mb-1">Contract Address (CA)</p>
+            <p className="text-sm font-mono text-white/80 break-all">
+              {tokenAddress}
+            </p>
+          </div>
+          
+          {/* Enlaces útiles */}
+          <div className="mt-4 flex flex-wrap gap-2 justify-center">
+            <a 
+              href={`https://dexscreener.com/solana/${tokenAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] text-xs rounded-lg transition-all duration-300"
+            >
+              📊 DexScreener
+            </a>
+            <a 
+              href={`https://pump.fun/coin/${tokenAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1 bg-[#ff6b35]/20 hover:bg-[#ff6b35]/30 border border-[#ff6b35]/50 text-[#ff6b35] text-xs rounded-lg transition-all duration-300"
+            >
+              🚀 Pump.fun
+            </a>
+          </div>
+          
           <p className="text-sm text-white/60 mt-2">
             Última actualización: {new Date(data.lastUpdated).toLocaleString()}
           </p>

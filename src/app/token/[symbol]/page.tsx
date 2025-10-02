@@ -8,6 +8,7 @@ import { Sparkline } from '@/components/dashboard/Sparkline';
 import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart3, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { TokenChatBot } from '@/components/chat/TokenChatBot';
 
 export default function TokenDetailPage() {
   const params = useParams();
@@ -274,6 +275,18 @@ export default function TokenDetailPage() {
           </GlassCard>
         </div>
       </div>
+      
+      {/* Chatbot específico para este token */}
+      <TokenChatBot 
+        tokenData={{
+          symbol: tokenData.symbol,
+          name: tokenData.name,
+          price: tokenData.price,
+          change24h: tokenData.change24h,
+          marketCap: tokenData.marketCap,
+          contract: tokenData.contract
+        }}
+      />
     </div>
   );
 }

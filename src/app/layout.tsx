@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TickerBar } from '@/components/layout/TickerBar';
 import MatrixRain from '@/components/effects/MatrixRain';
+import { ChatBot } from '@/components/chat/ChatBot';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -107,6 +108,9 @@ export default function RootLayout({
           
           <Footer />
         </div>
+        
+        {/* Chatbot flotante */}
+        <ChatBot />
       </body>
     </html>
   );

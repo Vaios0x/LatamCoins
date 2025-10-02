@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Search, Filter, TrendingUp, TrendingDown, Volume2, DollarSign } from 'lucide-react';
-import { LATAM_TOKENS, Token } from '@/lib/constants/tokens';
+import { useState, useMemo, useEffect } from 'react';
+import { Search, Filter, TrendingUp, TrendingDown, Volume2, DollarSign, ExternalLink } from 'lucide-react';
 import { formatPrice, formatLargeNumber } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { GlassButton } from '@/components/ui/GlassButton';
@@ -14,6 +13,32 @@ type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'volume24h' | 'market
 type SortDirection = 'asc' | 'desc';
 type FilterType = 'all' | 'gainers' | 'losers' | 'volume';
 
+// Interface para datos reales de tokens
+interface RealTokenData {
+  id: string;
+  symbol: string;
+  name: string;
+  contract: string;
+  price: number;
+  change24h: number;
+  volume24h: number;
+  marketCap: number;
+  liquidity: number;
+  fdv: number;
+  rank: number;
+  lastUpdated: string;
+  source: string;
+  isRealTime: boolean;
+  dexScreenerUrl: string;
+  pumpUrl: string;
+  priceChange: {
+    m5: number;
+    h1: number;
+    h6: number;
+    h24: number;
+  };
+}
+
 /**
  * Página de mercados con vista avanzada de tokens
  * Filtros, ordenamiento y análisis de mercado
@@ -23,11 +48,55 @@ export default function MarketsPage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<FilterType>('all');
-  // const [showFilters] = useState(false);
+  const [tokens, setTokens] = useState<RealTokenData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Cargar datos reales de tokens
+  useEffect(() => {
+    const fetchTokens = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        const response = await fetch('/api/tokens', {
+          cache: 'no-store',
+          headers: {
+            'Accept': 'application/json',
+            'Cache-Control': 'no-cache'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          setTokens(result.data);
+        } else {
+          throw new Error('Error al obtener datos de tokens');
+        }
+      } catch (err) {
+        console.error('Error fetching tokens:', err);
+        setError('Error al cargar los datos de tokens');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTokens();
+    
+    // Actualizar cada 30 segundos
+    const interval = setInterval(fetchTokens, 30000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   // Filtrar tokens
   const filteredTokens = useMemo(() => {
-    let filtered = LATAM_TOKENS;
+    let filtered = tokens;
 
     // Filtro por búsqueda
     if (searchQuery) {
@@ -46,12 +115,15 @@ export default function MarketsPage() {
         filtered = filtered.filter(token => token.change24h < 0);
         break;
       case 'volume':
-        filtered = filtered.filter(token => token.volume24h > 50000);
+        // Filtrar por volumen alto (top 50% o > 10K)
+        const sortedByVolume = [...filtered].sort((a, b) => b.volume24h - a.volume24h);
+        const medianVolume = sortedByVolume.length > 0 ? sortedByVolume[Math.floor(sortedByVolume.length / 2)].volume24h : 10000;
+        filtered = filtered.filter(token => token.volume24h > Math.max(medianVolume, 10000));
         break;
     }
 
     return filtered;
-  }, [searchQuery, filterType]);
+  }, [tokens, searchQuery, filterType]);
 
   // Ordenar tokens
   const sortedTokens = useMemo(() => {
@@ -122,7 +194,7 @@ export default function MarketsPage() {
                 </h3>
               </div>
               <div className="text-xl sm:text-2xl font-bold text-white font-mono">
-                {formatLargeNumber(LATAM_TOKENS.reduce((sum, token) => sum + token.marketCap, 0))}
+                {isLoading ? '...' : formatLargeNumber(tokens.reduce((sum, token) => sum + token.marketCap, 0))}
               </div>
             </div>
           </GlassCard>
@@ -136,7 +208,7 @@ export default function MarketsPage() {
                 </h3>
               </div>
               <div className="text-xl sm:text-2xl font-bold text-white font-mono">
-                {formatLargeNumber(LATAM_TOKENS.reduce((sum, token) => sum + token.volume24h, 0))}
+                {isLoading ? '...' : formatLargeNumber(tokens.reduce((sum, token) => sum + token.volume24h, 0))}
               </div>
             </div>
           </GlassCard>
@@ -150,22 +222,20 @@ export default function MarketsPage() {
                 </h3>
               </div>
               <div className="text-xl sm:text-2xl font-bold text-[#00ff41] font-mono">
-                {LATAM_TOKENS.filter(token => token.change24h > 0).length}
+                {isLoading ? '...' : tokens.filter(token => token.change24h > 0).length}
               </div>
             </div>
           </GlassCard>
 
           <GlassCard className="text-center p-4 sm:p-6">
-            <div className="space-y-2">
-              <div className="flex items-center justify-center space-x-2">
-                <TrendingDown className="w-5 h-5 text-[#ff0040]" />
-                <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide">
-                  Tokens en Rojo
-                </h3>
-              </div>
-              <div className="text-xl sm:text-2xl font-bold text-[#ff0040] font-mono">
-                {LATAM_TOKENS.filter(token => token.change24h < 0).length}
-              </div>
+            <div className="flex items-center justify-center space-x-2">
+              <TrendingDown className="w-5 h-5 text-[#ff0040]" />
+              <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide">
+                Tokens en Rojo
+              </h3>
+            </div>
+            <div className="text-xl sm:text-2xl font-bold text-[#ff0040] font-mono">
+              {isLoading ? '...' : tokens.filter(token => token.change24h < 0).length}
             </div>
           </GlassCard>
         </div>
@@ -209,89 +279,127 @@ export default function MarketsPage() {
           </div>
         </div>
 
+        {/* Estados de carga y error */}
+        {isLoading && (
+          <GlassCard className="p-8 text-center">
+            <div className="text-white/60 text-lg mb-4">Cargando datos de tokens...</div>
+            <div className="animate-spin w-8 h-8 border-2 border-[#00ff41] border-t-transparent rounded-full mx-auto"></div>
+          </GlassCard>
+        )}
+
+        {error && (
+          <GlassCard className="p-8 text-center">
+            <div className="text-[#ff0040] text-lg mb-4">Error al cargar datos</div>
+            <p className="text-white/60 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
+            >
+              Reintentar
+            </button>
+          </GlassCard>
+        )}
+
         {/* Tabla de tokens */}
-        <GlassCard className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[800px]">
-              <thead>
-                <tr className="border-b border-[#00ff41]/20">
-                  <th 
-                    className="text-left py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
-                    onClick={() => handleSort('rank')}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium text-white/80">#</span>
-                      {getSortIcon('rank')}
-                    </div>
-                  </th>
-                  <th 
-                    className="text-left py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
-                    onClick={() => handleSort('name')}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium text-white/80">Token</span>
-                      {getSortIcon('name')}
-                    </div>
-                  </th>
-                  <th 
-                    className="text-right py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
-                    onClick={() => handleSort('price')}
-                  >
-                    <div className="flex items-center justify-end space-x-2">
-                      <span className="text-sm font-medium text-white/80">Precio</span>
-                      {getSortIcon('price')}
-                    </div>
-                  </th>
-                  <th 
-                    className="text-right py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
-                    onClick={() => handleSort('change24h')}
-                  >
-                    <div className="flex items-center justify-end space-x-2">
-                      <span className="text-sm font-medium text-white/80">24h</span>
-                      {getSortIcon('change24h')}
-                    </div>
-                  </th>
-                  <th 
-                    className="text-right py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
-                    onClick={() => handleSort('volume24h')}
-                  >
-                    <div className="flex items-center justify-end space-x-2">
-                      <span className="text-sm font-medium text-white/80">Volumen 24h</span>
-                      {getSortIcon('volume24h')}
-                    </div>
-                  </th>
-                  <th 
-                    className="text-right py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
-                    onClick={() => handleSort('marketCap')}
-                  >
-                    <div className="flex items-center justify-end space-x-2">
-                      <span className="text-sm font-medium text-white/80">Market Cap</span>
-                      {getSortIcon('marketCap')}
-                    </div>
-                  </th>
-                  <th className="text-center py-4 px-6">
-                    <span className="text-sm font-medium text-white/80">7D</span>
-                  </th>
-                  <th className="text-center py-4 px-6">
-                    <span className="text-sm font-medium text-white/80">Acción</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedTokens.map((token) => (
-                  <TokenRow key={token.id} token={token} />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </GlassCard>
+        {!isLoading && !error && (
+          <GlassCard className="overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[800px]">
+                <thead>
+                  <tr className="border-b border-[#00ff41]/20">
+                    <th 
+                      className="text-left py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
+                      onClick={() => handleSort('rank')}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm font-medium text-white/80">#</span>
+                        {getSortIcon('rank')}
+                      </div>
+                    </th>
+                    <th 
+                      className="text-left py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
+                      onClick={() => handleSort('name')}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm font-medium text-white/80">Token</span>
+                        {getSortIcon('name')}
+                      </div>
+                    </th>
+                    <th 
+                      className="text-right py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
+                      onClick={() => handleSort('price')}
+                    >
+                      <div className="flex items-center justify-end space-x-2">
+                        <span className="text-sm font-medium text-white/80">Precio</span>
+                        {getSortIcon('price')}
+                      </div>
+                    </th>
+                    <th 
+                      className="text-right py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
+                      onClick={() => handleSort('change24h')}
+                    >
+                      <div className="flex items-center justify-end space-x-2">
+                        <span className="text-sm font-medium text-white/80">24h</span>
+                        {getSortIcon('change24h')}
+                      </div>
+                    </th>
+                    <th 
+                      className="text-right py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
+                      onClick={() => handleSort('volume24h')}
+                    >
+                      <div className="flex items-center justify-end space-x-2">
+                        <span className="text-sm font-medium text-white/80">Volumen 24h</span>
+                        {getSortIcon('volume24h')}
+                      </div>
+                    </th>
+                    <th 
+                      className="text-right py-4 px-6 cursor-pointer hover:text-[#00ff41] transition-colors duration-300"
+                      onClick={() => handleSort('marketCap')}
+                    >
+                      <div className="flex items-center justify-end space-x-2">
+                        <span className="text-sm font-medium text-white/80">Market Cap</span>
+                        {getSortIcon('marketCap')}
+                      </div>
+                    </th>
+                    <th className="text-center py-4 px-6">
+                      <span className="text-sm font-medium text-white/80">Fuente</span>
+                    </th>
+                    <th className="text-center py-4 px-6">
+                      <span className="text-sm font-medium text-white/80">Acción</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedTokens.map((token) => (
+                    <TokenRow key={token.id} token={token} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </GlassCard>
+        )}
 
         {/* Mensaje si no hay resultados */}
-        {sortedTokens.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-white/60 text-lg mb-4">No se encontraron tokens</div>
-            <p className="text-white/40">Intenta ajustar los filtros o la búsqueda</p>
-          </div>
+        {!isLoading && !error && sortedTokens.length === 0 && (
+          <GlassCard className="p-8 text-center">
+            <div className="text-white/60 text-lg mb-4">
+              {filterType === 'gainers' ? 'No hay tokens en verde en este momento' :
+               filterType === 'losers' ? 'No hay tokens en rojo en este momento' :
+               filterType === 'volume' ? 'No hay tokens con alto volumen' :
+               'No se encontraron tokens'}
+            </div>
+            <p className="text-white/40 mb-4">
+              {filterType === 'gainers' ? 'Todos los tokens están en negativo. Intenta cambiar el filtro.' :
+               filterType === 'losers' ? 'Todos los tokens están en positivo. Intenta cambiar el filtro.' :
+               'Intenta ajustar los filtros o la búsqueda'}
+            </p>
+            <button
+              onClick={() => setFilterType('all')}
+              className="px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
+            >
+              Ver Todos los Tokens
+            </button>
+          </GlassCard>
         )}
       </div>
     </div>
@@ -301,7 +409,7 @@ export default function MarketsPage() {
 /**
  * Fila individual de token
  */
-function TokenRow({ token }: { token: Token }) {
+function TokenRow({ token }: { token: RealTokenData }) {
   return (
     <tr className="border-b border-[#00ff41]/10 hover:bg-[#00ff41]/5 transition-colors duration-300">
       {/* Ranking */}
@@ -322,6 +430,9 @@ function TokenRow({ token }: { token: Token }) {
           <div>
             <div className="font-medium text-white text-base">{token.name}</div>
             <div className="text-sm text-white/60">{token.symbol}</div>
+            <div className="text-xs text-white/40 font-mono">
+              {token.contract.slice(0, 8)}...{token.contract.slice(-8)}
+            </div>
           </div>
         </div>
       </td>
@@ -352,22 +463,51 @@ function TokenRow({ token }: { token: Token }) {
         </span>
       </td>
 
-      {/* Sparkline 7D */}
+      {/* Fuente de datos */}
       <td className="py-4 px-6 text-center">
-        <div className="w-16 h-8 mx-auto">
-          <Sparkline data={token.sparkline || []} />
+        <div className="flex flex-col items-center space-y-1">
+          <span className={`text-xs px-2 py-1 rounded-full ${
+            token.source === 'dexscreener' ? 'bg-[#00ff41]/20 text-[#00ff41]' :
+            token.source === 'coinmarketcap' ? 'bg-[#ff6b35]/20 text-[#ff6b35]' :
+            'bg-white/20 text-white/60'
+          }`}>
+            {token.source}
+          </span>
+          <div className={`w-2 h-2 rounded-full ${token.isRealTime ? 'bg-[#00ff41]' : 'bg-[#ff0040]'}`} />
         </div>
       </td>
 
-      {/* Acción */}
+      {/* Acciones */}
       <td className="py-4 px-6 text-center">
-        <Link
-          href={`/token/${token.symbol.toLowerCase()}`}
-          className="inline-flex items-center px-3 py-1.5 bg-[#00ff41]/10 hover:bg-[#00ff41]/20 border border-[#00ff41]/30 hover:border-[#00ff41]/50 text-[#00ff41] text-sm font-medium rounded-lg transition-all duration-300"
-          aria-label={`Ver detalles de ${token.name}`}
-        >
-          Ver Detalles
-        </Link>
+        <div className="flex flex-col space-y-2">
+          <Link
+            href={`/token/${token.symbol.toLowerCase()}`}
+            className="inline-flex items-center px-3 py-1.5 bg-[#00ff41]/10 hover:bg-[#00ff41]/20 border border-[#00ff41]/30 hover:border-[#00ff41]/50 text-[#00ff41] text-sm font-medium rounded-lg transition-all duration-300"
+            aria-label={`Ver detalles de ${token.name}`}
+          >
+            Ver Detalles
+          </Link>
+          <div className="flex space-x-1">
+            <a
+              href={token.dexScreenerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-2 py-1 bg-[#00ff41]/10 hover:bg-[#00ff41]/20 border border-[#00ff41]/30 text-[#00ff41] text-xs rounded transition-all duration-300"
+              aria-label={`Ver en DexScreener`}
+            >
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
+              href={token.pumpUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-2 py-1 bg-[#ff6b35]/10 hover:bg-[#ff6b35]/20 border border-[#ff6b35]/30 text-[#ff6b35] text-xs rounded transition-all duration-300"
+              aria-label={`Ver en Pump.fun`}
+            >
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
       </td>
     </tr>
   );

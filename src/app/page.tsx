@@ -95,18 +95,22 @@ export default function HomePage() {
           <RealTimeData 
             tokenAddress="b3tr9tdcpqdtkah6hou2ut3u4udv1na75oe6r4femumt"
             tokenSymbol="DOGGY"
+            tokenName="HOLDER"
           />
           <RealTimeData 
             tokenAddress="6pwwjc9t5vmlqiswr4h7ux6il1eixmjfjhe1ekwsa7df"
             tokenSymbol="MAD"
+            tokenName="MAD COIN"
           />
           <RealTimeData 
             tokenAddress="3wmgnvepzkptlxldyej4epzib2xsvbq8twbpicgzkfxr"
             tokenSymbol="QRA"
+            tokenName="Quira"
           />
           <RealTimeData 
             tokenAddress="3al1hm9mcktrv8vkztvmaxnhtvqzhmmqfxhx9k7daeru"
             tokenSymbol="Darrkito"
+            tokenName="Darrkito Strategic Reserve"
           />
         </div>
       </div>

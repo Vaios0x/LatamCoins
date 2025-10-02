@@ -64,70 +64,18 @@ async function checkCoinMarketCap() {
   }
 }
 
-// Función para verificar Jupiter
-async function checkJupiter() {
-  try {
-    // Verificar si hay API key configurada
-    const apiKey = process.env.NEXT_PUBLIC_JUPITER_API_KEY;
-    
-    if (!apiKey) {
-      // Jupiter requiere API key incluso para el plan gratuito en producción
-      // Mostrar como disponible pero requiere configuración
-      return {
-        name: 'Jupiter',
-        status: 'warning',
-        message: 'Disponible (configurar API key)',
-        lastChecked: new Date().toISOString()
-      };
-    }
-    
-    // Usar el endpoint api.jup.ag para usuarios con API key (según docs oficiales)
-    const response = await fetch('https://api.jup.ag/price/v3?ids=So11111111111111111111111111111111111111112', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'x-api-key': apiKey,
-        'User-Agent': 'LATAMCOINS/1.0'
-      }
-    });
-    
-    if (response.ok) {
-      return {
-        name: 'Jupiter',
-        status: 'success',
-        message: 'Conectado (API premium)',
-        lastChecked: new Date().toISOString()
-      };
-    } else {
-      return {
-        name: 'Jupiter',
-        status: 'error',
-        message: `Error ${response.status}`,
-        lastChecked: new Date().toISOString()
-      };
-    }
-  } catch {
-    return {
-      name: 'Jupiter',
-      status: 'error',
-      message: 'Sin conexión',
-      lastChecked: new Date().toISOString()
-    };
-  }
-}
 
 export async function GET() {
   try {
     console.log('🔍 Checking API status...');
     
     // Verificar todas las APIs en paralelo
-    const [dexScreener, coinMarketCap, jupiter] = await Promise.all([
+    const [dexScreener, coinMarketCap] = await Promise.all([
       checkDexScreener(),
-      checkCoinMarketCap(),
-      checkJupiter()
+      checkCoinMarketCap()
     ]);
     
-    const apiStatuses = [dexScreener, coinMarketCap, jupiter];
+    const apiStatuses = [dexScreener, coinMarketCap];
     const workingApis = apiStatuses.filter(api => api.status === 'success' || api.status === 'warning').length;
     const totalApis = apiStatuses.length;
     

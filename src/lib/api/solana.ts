@@ -5,7 +5,6 @@
 
 // Configuración de endpoints
 // const SOLANA_RPC_URL = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
-const JUPITER_API_URL = 'https://price.jup.ag/v4/price';
 const SOLSCAN_API_URL = 'https://public-api.solscan.io';
 
 // Tipos para datos de Solana
@@ -21,32 +20,7 @@ export interface SolanaTokenData {
   change24h?: number;
 }
 
-export interface JupiterPriceData {
-  id: string;
-  mintSymbol: string;
-  vsToken: string;
-  vsTokenSymbol: string;
-  price: number;
-}
 
-/**
- * Obtiene datos de tokens desde Jupiter API
- */
-export async function getJupiterPrices(tokenAddresses: string[]): Promise<JupiterPriceData[]> {
-  try {
-    const response = await fetch(`${JUPITER_API_URL}?ids=${tokenAddresses.join(',')}`);
-    
-    if (!response.ok) {
-      throw new Error(`Jupiter API error: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return Object.values(data.data || {});
-  } catch (error) {
-    console.error('Error fetching Jupiter prices:', error);
-    return [];
-  }
-}
 
 /**
  * Obtiene información de token desde Solscan
@@ -105,13 +79,8 @@ export async function getTokenData(address: string): Promise<SolanaTokenData | n
     const tokenInfo = await getTokenInfo(address);
     if (!tokenInfo) return null;
 
-    // Obtener precio desde Jupiter
-    const prices = await getJupiterPrices([address]);
-    const priceData = prices[0];
-    
-    if (priceData) {
-      tokenInfo.price = priceData.price;
-    }
+    // Los precios se obtienen desde DexScreener o CoinMarketCap
+    // en el endpoint principal /api/tokens
 
     return tokenInfo;
   } catch (error) {
