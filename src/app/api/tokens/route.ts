@@ -10,7 +10,6 @@ const LATAM_TOKENS = [
     dexScreenerUrl: 'https://dexscreener.com/solana/b3tr9tdcpqdtkah6hou2ut3u4udv1na75oe6r4femumt',
     pumpUrl: 'https://pump.fun/coin/BS7HxRitaY5ipGfbek1nmatWLbaS9yoWRSEQzCb3pump',
     jupiterUrl: 'https://jup.ag/tokens/BS7HxRitaY5ipGfbek1nmatWLbaS9yoWRSEQzCb3pump',
-    cmcSymbols: ['DOGGY', 'HOLDER']
   },
   {
     id: 'mad-coin',
@@ -20,7 +19,6 @@ const LATAM_TOKENS = [
     dexScreenerUrl: 'https://dexscreener.com/solana/6pwwjc9t5vmlqiswr4h7ux6il1eixmjfjhe1ekwsa7df',
     pumpUrl: 'https://pump.fun/coin/CZbkRyauV5b9Q4xNwKGUtEBEggzqWpC6KMVp2oRppump',
     jupiterUrl: 'https://jup.ag/tokens/CZbkRyauV5b9Q4xNwKGUtEBEggzqWpC6KMVp2oRppump',
-    cmcSymbols: ['MAD', 'MADCOIN']
   },
   {
     id: 'quira',
@@ -30,7 +28,6 @@ const LATAM_TOKENS = [
     dexScreenerUrl: 'https://dexscreener.com/solana/3wmgnvepzkptlxldyej4epzib2xsvbq8twbpicgzkfxr',
     pumpUrl: 'https://pump.fun/coin/DsMWZg6mkheTV2XTkbUtWcsXaajTzEkk1TC7o6Fmpump',
     jupiterUrl: 'https://jup.ag/tokens/DsMWZg6mkheTV2XTkbUtWcsXaajTzEkk1TC7o6Fmpump',
-    cmcSymbols: ['QRA', 'QUIRA']
   },
   {
     id: 'humo',
@@ -40,7 +37,6 @@ const LATAM_TOKENS = [
     dexScreenerUrl: 'https://dexscreener.com/solana/cb4plxp969uyqrzlk8zwpbbxmhqybhwgzofzjozfghy',
     pumpUrl: 'https://pump.fun/coin/9RLoB3YZwk9sK78ZhmiSAj8CtPhssuJR1pVR326Vpump',
     jupiterUrl: 'https://jup.ag/tokens/9RLoB3YZwk9sK78ZhmiSAj8CtPhssuJR1pVR326Vpump',
-    cmcSymbols: ['HUMO']
   },
   {
     id: 'darrkito',
@@ -50,7 +46,6 @@ const LATAM_TOKENS = [
     dexScreenerUrl: 'https://dexscreener.com/solana/3al1hm9mcktrv8vkztvmaxnhtvqzhmmqfxhx9k7daeru',
     pumpUrl: 'https://pump.fun/coin/9Uxjbn2TyfEmjaYs1qXiLt3FbE3VDa5UMkvQGZwQpump',
     jupiterUrl: 'https://jup.ag/tokens/9Uxjbn2TyfEmjaYs1qXiLt3FbE3VDa5UMkvQGZwQpump',
-    cmcSymbols: ['DARRKITO', 'DARRKITO']
   }
 ];
 
@@ -162,35 +157,6 @@ function generateSparklineData(priceHistory: any[], currentPrice: number, tokenS
   return realData;
 }
 
-// Función para obtener datos de CoinMarketCap (solo si es necesario)
-async function fetchCoinMarketCapData(symbol: string) {
-  try {
-    const apiKey = '191d98e9-46f6-4d78-a2aa-5c5d5382724b';
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 segundos timeout
-    
-    const response = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}`, {
-      headers: {
-        'X-CMC_PRO_API_KEY': apiKey,
-        'Accept': 'application/json'
-      },
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      console.warn(`CoinMarketCap API error: ${response.status} for ${symbol}`);
-      return null;
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.warn(`Error fetching CoinMarketCap data for ${symbol}:`, error);
-    return null;
-  }
-}
 
 export async function GET() {
   try {
@@ -207,7 +173,7 @@ export async function GET() {
         let dataSource = 'none';
         let isRealTime = false;
 
-        // 1. Intentar DexScreener primero (más rápido para tokens de Solana)
+        // Obtener datos de DexScreener (única fuente necesaria)
         const dexScreenerData = await fetchDexScreenerData(token.contract);
         
         if (dexScreenerData && dexScreenerData.priceUsd) {
@@ -240,47 +206,8 @@ export async function GET() {
           isRealTime = true;
           realTimeCount++;
           console.log(`✅ Got real data from DexScreener for ${token.symbol}`);
-        }
-
-        // 2. Si no hay datos de DexScreener, intentar CoinMarketCap
-        if (!tokenData && token.cmcSymbols) {
-          for (const symbol of token.cmcSymbols) {
-            const cmcData = await fetchCoinMarketCapData(symbol);
-            
-            if (cmcData && cmcData.data && cmcData.data[symbol]) {
-              const quote = cmcData.data[symbol].quote.USD;
-              const currentPrice = quote.price;
-              const sparklineData = generateSparklineData([], currentPrice, token.symbol);
-              
-              tokenData = {
-                ...token,
-                price: currentPrice,
-                change24h: quote.percent_change_24h || 0,
-                volume24h: quote.volume_24h || 0,
-                marketCap: quote.market_cap || 0,
-                liquidity: 0,
-                fdv: quote.market_cap || 0,
-                rank: tokensWithRealData.length + 1,
-                lastUpdated: new Date().toISOString(),
-                source: 'coinmarketcap',
-                isRealTime: true,
-                dexScreenerUrl: token.dexScreenerUrl,
-                pumpUrl: token.pumpUrl,
-                sparkline: sparklineData,
-                priceChange: {
-                  m5: 0,
-                  h1: 0,
-                  h6: 0,
-                  h24: quote.percent_change_24h || 0
-                }
-              };
-              dataSource = 'coinmarketcap';
-              isRealTime = true;
-              realTimeCount++;
-              console.log(`✅ Got real data from CoinMarketCap for ${token.symbol} using symbol ${symbol}`);
-              break;
-            }
-          }
+        } else {
+          console.log(`⚠️ No data available for ${token.symbol}, skipping...`);
         }
 
         // 3. Solo incluir tokens con datos reales
