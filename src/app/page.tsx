@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { HeroSection } from '@/components/dashboard/HeroSection';
 import { TokenTable } from '@/components/dashboard/TokenTable';
 import { RealTimeData } from '@/components/dashboard/RealTimeData';
@@ -10,12 +11,14 @@ import { ApiStatusNotification } from '@/components/ui/ApiStatusNotification';
  * Dashboard con estadísticas globales y tabla de tokens
  */
 export default function HomePage() {
+  const [activeTab, setActiveTab] = useState<'memecoins' | 'utility'>('memecoins');
+
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-[#0a0e27] via-[#000000] to-[#0a0e27]">
       {/* Sección hero con estadísticas globales */}
       <HeroSection />
       
-      {/* Tabla de tokens */}
+      {/* Pestañas de tokens */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
         <div className="mb-8 sm:mb-12 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
@@ -26,7 +29,43 @@ export default function HomePage() {
           </p>
         </div>
         
-        <TokenTable />
+        {/* Pestañas */}
+        <div className="flex justify-center mb-8">
+          <div className="bg-[#0a0e27]/50 backdrop-blur-lg border border-white/10 rounded-xl p-1 flex">
+            <button
+              onClick={() => setActiveTab('memecoins')}
+              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                activeTab === 'memecoins'
+                  ? 'bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/50'
+                  : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              🚀 MemeCoins
+            </button>
+            <button
+              onClick={() => setActiveTab('utility')}
+              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                activeTab === 'utility'
+                  ? 'bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/50'
+                  : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              💎 Utility Tokens
+            </button>
+          </div>
+        </div>
+        
+        {/* Contenido de las pestañas */}
+        {activeTab === 'memecoins' && <TokenTable />}
+        {activeTab === 'utility' && (
+          <div className="bg-[#0a0e27]/50 backdrop-blur-lg border border-white/10 rounded-xl p-12 text-center">
+            <div className="text-6xl mb-4">⏳</div>
+            <h3 className="text-xl font-bold text-white mb-2">Esperando Nuevos Lanzamientos</h3>
+            <p className="text-white/70">
+              Los utility tokens estarán disponibles próximamente
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Sección de estado de APIs */}

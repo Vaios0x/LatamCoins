@@ -1,31 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-  ChartOptions,
-} from 'chart.js';
 import { Line } from 'react-chartjs-2';
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-);
+import { defaultChartOptions, latamColors, latamGradients } from '@/lib/chartjs/config';
+import { ChartOptions } from 'chart.js';
 
 interface RealTimeChartProps {
   data: number[];
@@ -50,14 +28,14 @@ export function RealTimeChart({
       {
         label: 'Precio',
         data: data,
-        borderColor: '#00ff41',
-        backgroundColor: 'rgba(0, 255, 65, 0.1)',
+        borderColor: latamColors.primary,
+        backgroundColor: latamGradients.primary,
         borderWidth: 2,
         fill: true,
         tension: 0.4,
         pointRadius: 0,
         pointHoverRadius: 6,
-        pointHoverBackgroundColor: '#00ff41',
+        pointHoverBackgroundColor: latamColors.primary,
         pointHoverBorderColor: '#ffffff',
         pointHoverBorderWidth: 2,
       },
@@ -78,17 +56,12 @@ export function RealTimeChart({
   }, [data, labels]);
 
   const options: ChartOptions<'line'> = {
-    responsive: true,
-    maintainAspectRatio: false,
+    ...defaultChartOptions,
     plugins: {
+      ...defaultChartOptions.plugins,
       legend: {
+        ...defaultChartOptions.plugins?.legend,
         display: showLegend,
-        labels: {
-          color: '#ffffff',
-          font: {
-            size: 12,
-          },
-        },
       },
       title: {
         display: !!title,
@@ -100,13 +73,7 @@ export function RealTimeChart({
         },
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: '#ffffff',
-        bodyColor: '#ffffff',
-        borderColor: '#00ff41',
-        borderWidth: 1,
-        cornerRadius: 8,
-        displayColors: false,
+        ...defaultChartOptions.plugins?.tooltip,
         callbacks: {
           label: function(context: { parsed: { y: number } }) {
             return `Precio: $${context.parsed.y.toFixed(8)}`;
@@ -116,38 +83,24 @@ export function RealTimeChart({
     },
     scales: {
       x: {
+        ...defaultChartOptions.scales?.x,
         display: showGrid,
-        grid: {
-          color: 'rgba(0, 255, 65, 0.1)',
-        },
         ticks: {
-          color: '#ffffff',
-          font: {
-            size: 10,
-          },
+          ...defaultChartOptions.scales?.x?.ticks,
           maxTicksLimit: 8,
         },
       },
       y: {
+        ...defaultChartOptions.scales?.y,
         display: showGrid,
-        grid: {
-          color: 'rgba(0, 255, 65, 0.1)',
-        },
         ticks: {
-          color: '#ffffff',
-          font: {
-            size: 10,
-          },
+          ...defaultChartOptions.scales?.y?.ticks,
           callback: (value: string | number) => {
             const numValue = typeof value === 'number' ? value : parseFloat(value.toString());
             return `$${numValue.toFixed(8)}`;
           },
         },
       },
-    },
-    interaction: {
-      intersect: false,
-      mode: 'index' as const,
     },
     elements: {
       point: {

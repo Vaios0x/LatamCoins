@@ -351,16 +351,13 @@ export function ChatBot({ context }: ChatBotProps) {
             {/* Efecto de fondo neural */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#00ff41]/5 via-transparent to-[#00cc33]/5 rounded-2xl blur-xl"></div>
             
-            {/* Glassmorphism container con efectos neurales */}
-            <div className="relative flex-1 flex flex-col overflow-hidden glass-morphism neural-glow particle-effect rounded-2xl shadow-2xl">
+             {/* Glassmorphism container con efectos neurales */}
+             <div className="relative flex-1 flex flex-col glass-morphism neural-glow particle-effect rounded-2xl shadow-2xl bg-white/30">
               {/* Efecto de borde animado */}
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#00ff41]/20 via-[#00cc33]/20 to-[#00ff41]/20 opacity-50 animate-pulse"></div>
               
-              {/* Botón flotante removido - solo el del header */}
-              
-              <div className="relative flex-1 flex flex-col overflow-hidden">
-                {/* Header fijo para móviles - siempre visible */}
-                <div className="sticky top-0 flex items-center justify-between p-2.5 sm:p-2 md:p-3 border-b border-white/10 bg-white/10 backdrop-blur-md z-50 flex-shrink-0">
+              {/* Header sticky - siempre visible */}
+               <div className="sticky top-0 flex items-center justify-between p-2 sm:p-1.5 md:p-2 border-b border-white/10 bg-white/60 backdrop-blur-lg z-[999] flex-shrink-0 rounded-t-2xl">
                   <div className="flex items-center space-x-1.5 sm:space-x-2">
                     {/* Avatar compacto */}
                     <div className="relative">
@@ -370,30 +367,31 @@ export function ChatBot({ context }: ChatBotProps) {
                       <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-[#00ff41]/30 to-[#00cc33]/30 rounded-full blur opacity-75 animate-pulse"></div>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-white font-semibold text-[10px] sm:text-xs md:text-sm truncate neural-text">
+                      <h3 className="text-white font-semibold text-[9px] sm:text-[10px] md:text-xs truncate neural-text">
                         Crypto Expert LATAM
                       </h3>
-                      <p className="text-[9px] sm:text-xs text-white/60 truncate">Solana & Tokens</p>
+                      <p className="text-[8px] sm:text-[9px] text-white/60 truncate">Solana & Tokens</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="w-12 h-12 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-red-500 hover:bg-red-600 border-2 border-white rounded-full flex items-center justify-center transition-all duration-300 shadow-2xl hover:shadow-2xl hover:scale-110 z-[999] relative"
+                    className="w-10 h-10 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-red-500 hover:bg-red-600 border-2 border-white rounded-full flex items-center justify-center transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-110 z-[999] relative"
                     aria-label="Cerrar chat"
                   >
-                    <X className="w-7 h-7 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white font-black" />
+                    <X className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white font-black" />
                   </button>
                 </div>
 
-
-                {/* Messages más grandes para móviles */}
-                <div className="flex-1 overflow-y-auto p-3 sm:p-2 md:p-3 space-y-3 sm:space-y-3">
+                {/* Contenedor de mensajes y acciones */}
+                <div className="flex-1 flex flex-col overflow-hidden">
+                   {/* Messages más grandes para móviles */}
+                   <div className="flex-1 overflow-y-auto px-3 py-2 sm:px-2 sm:py-1 md:px-3 md:py-2 pb-4 space-y-2 sm:space-y-2">
                   {messages.map((message) => (
                     <div
                       key={message.id}
                       className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
-                      <div className={`flex items-start space-x-1.5 sm:space-x-2 max-w-[90%] sm:max-w-[85%] ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                       <div className={`flex items-start space-x-1.5 sm:space-x-2 ${message.type === 'user' ? 'max-w-[80%] sm:max-w-[75%] flex-row-reverse space-x-reverse' : 'max-w-[95%] sm:max-w-[90%]'}`}>
                         {/* Avatar compacto */}
                         <div className="relative">
                           <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center backdrop-blur-sm ${
@@ -412,13 +410,13 @@ export function ChatBot({ context }: ChatBotProps) {
                           )}
                         </div>
                         
-                        {/* Mensaje compacto */}
-                        <div className={`rounded-lg sm:rounded-xl p-1.5 sm:p-2 md:p-2.5 backdrop-blur-sm border ${
-                          message.type === 'user'
-                            ? 'bg-[#00ff41]/10 border-[#00ff41]/20 text-white shadow-lg'
-                            : 'bg-white/5 border-white/10 text-white shadow-lg'
-                        }`}>
-                          <div className="whitespace-pre-wrap text-[10px] sm:text-xs leading-tight sm:leading-relaxed">
+                         {/* Mensaje compacto */}
+                         <div className={`rounded-lg sm:rounded-xl ${message.type === 'user' ? 'p-1.5 sm:p-2 md:p-2.5' : 'p-1.5 sm:p-1.5 md:p-2'} backdrop-blur-sm border ${
+                           message.type === 'user'
+                             ? 'bg-[#00ff41]/10 border-[#00ff41]/20 text-white shadow-lg'
+                             : 'bg-white/5 border-white/10 text-white shadow-lg'
+                         }`}>
+                          <div className={`whitespace-pre-wrap leading-tight sm:leading-relaxed ${message.type === 'user' ? 'text-[10px] sm:text-xs' : 'text-[11px] sm:text-sm'}`}>
                             {message.content}
                           </div>
                           <div className="text-[9px] sm:text-xs opacity-50 mt-0.5 sm:mt-1 flex items-center space-x-1">
@@ -449,14 +447,13 @@ export function ChatBot({ context }: ChatBotProps) {
                     </div>
                   </div>
                 )}
-                <div ref={messagesEndRef} />
+                    <div ref={messagesEndRef} />
+                  </div>
                 </div>
 
-              </div>
-
-              {/* Quick actions muy compactas para móviles */}
+              {/* Quick actions solo en mensaje inicial */}
               {messages.length === 1 && (
-                <div className="p-1 sm:p-1.5 md:p-2 border-t border-white/10 bg-white/5 backdrop-blur-sm">
+                <div className="absolute bottom-12 left-2 right-2 p-2 border-t border-white/10 bg-white/20 backdrop-blur-sm rounded-lg">
                   <div className="text-[8px] sm:text-[9px] text-white/60 mb-0.5 sm:mb-1 flex items-center space-x-1">
                     <div className="w-0.5 h-0.5 bg-[#00ff41] rounded-full animate-pulse"></div>
                     <span>Acciones:</span>
@@ -475,35 +472,35 @@ export function ChatBot({ context }: ChatBotProps) {
                   </div>
                 </div>
               )}
+            </div>
 
-              {/* Input compacto para móviles */}
-              <div className="p-2.5 sm:p-2 md:p-3 border-t border-white/10 bg-white/5 backdrop-blur-sm">
-                <div className="flex items-center space-x-2 sm:space-x-1.5 md:space-x-2">
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Pregunta sobre tokens..."
-                    className="flex-1 px-3 py-2 sm:px-2 sm:py-1.5 md:px-2.5 md:py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/50 transition-all duration-300 text-sm sm:text-xs shadow-lg"
-                    disabled={isTyping}
-                  />
+            {/* Input fijo en la parte inferior del modal */}
+            <div className="absolute bottom-0 left-0 right-0 p-2 border-t border-white/10 bg-white/40 backdrop-blur-sm rounded-b-lg z-10">
+                 <div className="flex items-center space-x-2">
+                   <input
+                     ref={inputRef}
+                     type="text"
+                     value={inputValue}
+                     onChange={(e) => setInputValue(e.target.value)}
+                     onKeyPress={handleKeyPress}
+                     placeholder="Pregunta sobre tokens..."
+                     className="flex-1 px-2 py-1.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/50 transition-all duration-300 text-xs shadow-lg"
+                     disabled={isTyping}
+                   />
                   <button
                     onClick={handleSendMessage}
                     disabled={!inputValue.trim() || isTyping}
-                    className="p-1 sm:p-1.5 md:p-1.5 bg-gradient-to-r from-[#00ff41]/20 to-[#00cc33]/20 hover:from-[#00ff41]/30 hover:to-[#00cc33]/30 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-all duration-300 flex-shrink-0 backdrop-blur-sm border border-[#00ff41]/30 hover:border-[#00ff41]/50 shadow-lg hover:shadow-[#00ff41]/25"
+                    className="p-1.5 bg-gradient-to-r from-[#00ff41]/20 to-[#00cc33]/20 hover:from-[#00ff41]/30 hover:to-[#00cc33]/30 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-all duration-300 flex-shrink-0 backdrop-blur-sm border border-[#00ff41]/30 hover:border-[#00ff41]/50 shadow-lg hover:shadow-[#00ff41]/25"
                   >
                     {isTyping ? (
-                      <Loader2 className="w-3 h-3 sm:w-3 sm:h-3 md:w-3 md:h-3 text-[#00ff41] animate-spin" />
+                      <Loader2 className="w-3 h-3 text-[#00ff41] animate-spin" />
                     ) : (
-                      <Send className="w-3 h-3 sm:w-3 sm:h-3 md:w-3 md:h-3 text-[#00ff41]" />
+                      <Send className="w-3 h-3 text-[#00ff41]" />
                     )}
                   </button>
                 </div>
               </div>
             </div>
-          </div>
         </div>
       )}
     </>

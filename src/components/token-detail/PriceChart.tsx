@@ -1,9 +1,11 @@
 'use client';
 
 import { useMemo } from 'react';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import { Line } from 'react-chartjs-2';
 import { Token } from '@/lib/constants/tokens';
 import { formatPrice } from '@/lib/utils/formatters';
+import { defaultChartOptions, latamColors, latamGradients } from '@/lib/chartjs/config';
+import { ChartOptions } from 'chart.js';
 
 interface PriceChartProps {
   token: Token;
@@ -11,7 +13,7 @@ interface PriceChartProps {
 }
 
 /**
- * Gráfico de precio interactivo
+ * Gráfico de precio interactivo con Chart.js
  * Muestra la evolución del precio del token
  */
 export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
@@ -19,6 +21,7 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
   // Generar datos mock para el gráfico
   const chartData = useMemo(() => {
     const data = [];
+    const labels = [];
     const now = Date.now();
     const days = timeframe === '1H' ? 1 : timeframe === '24H' ? 1 : timeframe === '7D' ? 7 : timeframe === '30D' ? 30 : 365;
     const points = timeframe === '1H' ? 24 : timeframe === '24H' ? 24 : 50;
@@ -30,46 +33,84 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
       const randomChange = (Math.random() - 0.5) * volatility;
       const price = basePrice * (1 + randomChange);
       
-      data.push({
-        timestamp,
-        price: Math.max(price, token.atl), // No menor que ATL
-        date: new Date(timestamp).toISOString(),
-      });
+      data.push(Math.max(price, token.atl)); // No menor que ATL
+      
+      // Generar labels para el eje X
+      const date = new Date(timestamp);
+      if (timeframe === '1H' || timeframe === '24H') {
+        labels.push(date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }));
+      } else {
+        labels.push(date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }));
+      }
     }
     
-    return data;
+    return { data, labels };
   }, [token, timeframe]);
 
   const isPositive = useMemo(() => {
-    if (chartData.length < 2) return true;
-    return chartData[chartData.length - 1].price >= chartData[0].price;
+    if (chartData.data.length < 2) return true;
+    return chartData.data[chartData.data.length - 1] >= chartData.data[0];
   }, [chartData]);
 
-  const lineColor = isPositive ? '#00ff41' : '#ff0040';
+  const lineColor = isPositive ? latamColors.primary : latamColors.danger;
+  const fillColor = isPositive ? latamGradients.primary : latamGradients.danger;
 
-  const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: number }) => {
-    if (active && payload && payload.length && label) {
-      return (
-        <div className="bg-[#0a0e27]/90 backdrop-blur-xl border border-[#00ff41]/30 rounded-lg p-3 shadow-[0_8px_32px_0_rgba(0,255,65,0.1)]">
-          <p className="text-white/60 text-sm">
-            {new Date(label).toLocaleDateString('es-ES', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </p>
-          <p className="text-white font-mono">
-            {formatPrice(payload[0].value)}
-          </p>
-        </div>
-      );
-    }
-    return null;
+  const options: ChartOptions<'line'> = {
+    ...defaultChartOptions,
+    plugins: {
+      ...defaultChartOptions.plugins,
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        ...defaultChartOptions.plugins?.tooltip,
+        borderColor: lineColor,
+        callbacks: {
+          label: function(context: { parsed: { y: number } }) {
+            return `Precio: ${formatPrice(context.parsed.y)}`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        display: false,
+      },
+      y: {
+        display: false,
+      },
+    },
+    elements: {
+      point: {
+        radius: 0,
+        hoverRadius: 6,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#ffffff',
+      },
+    },
   };
 
-  if (chartData.length === 0) {
+  const data = {
+    labels: chartData.labels,
+    datasets: [
+      {
+        label: 'Precio',
+        data: chartData.data,
+        borderColor: lineColor,
+        backgroundColor: fillColor,
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: lineColor,
+        pointHoverBorderColor: '#ffffff',
+        pointHoverBorderWidth: 2,
+      },
+    ],
+  };
+
+  if (chartData.data.length === 0) {
     return (
       <div className="h-full flex items-center justify-center">
         <div className="text-white/60">No hay datos disponibles</div>
@@ -79,36 +120,7 @@ export function PriceChart({ token, timeframe = '7D' }: PriceChartProps) {
 
   return (
     <div className="h-full w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData}>
-          <XAxis
-            dataKey="timestamp"
-            type="number"
-            scale="time"
-            domain={['dataMin', 'dataMax']}
-            hide
-          />
-          <YAxis
-            domain={['dataMin', 'dataMax']}
-            hide
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Line
-            type="monotone"
-            dataKey="price"
-            stroke={lineColor}
-            strokeWidth={2}
-            dot={false}
-            activeDot={{
-              r: 4,
-              fill: lineColor,
-              stroke: '#ffffff',
-              strokeWidth: 2,
-            }}
-            connectNulls={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <Line data={data} options={options} />
     </div>
   );
 }

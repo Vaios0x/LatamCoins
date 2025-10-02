@@ -25,9 +25,8 @@ export function TickerBar() {
         )}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
-        style={{
-          animation: isPaused ? 'none' : 'ticker-scroll 30s linear infinite'
-        }}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
       >
         {tickerData.map((token, index) => (
           <div

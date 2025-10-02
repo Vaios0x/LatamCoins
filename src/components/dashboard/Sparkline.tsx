@@ -1,7 +1,9 @@
 'use client';
 
 import { useMemo } from 'react';
-import { LineChart, Line, ResponsiveContainer } from 'recharts';
+import { Line } from 'react-chartjs-2';
+import { defaultChartOptions, latamColors, latamGradients } from '@/lib/chartjs/config';
+import { ChartOptions } from 'chart.js';
 
 interface SparklineProps {
   data: number[];
@@ -9,7 +11,7 @@ interface SparklineProps {
 }
 
 /**
- * Componente de sparkline para mostrar mini gráficos
+ * Componente de sparkline para mostrar mini gráficos con Chart.js
  * Gráfico de línea simple para tendencias de 7 días
  */
 export function Sparkline({ data, className }: SparklineProps) {
@@ -17,39 +19,72 @@ export function Sparkline({ data, className }: SparklineProps) {
   const chartData = useMemo(() => {
     if (!data || data.length === 0) {
       // Si no hay datos reales, mostrar línea plana
-      return [{ value: 0, index: 0 }];
+      return { data: [0], labels: [''] };
     }
     
-    // Usar datos reales de CoinGecko
-    return data.map((value, index) => ({
-      value: value || 0,
-      index,
-    }));
+    // Usar datos reales
+    const processedData = data.map(value => value || 0);
+    const labels = processedData.map((_, index) => index.toString());
+    
+    return { data: processedData, labels };
   }, [data]);
 
   // Determinar color basado en la tendencia
   const isPositive = useMemo(() => {
-    if (chartData.length < 2) return true;
-    return chartData[chartData.length - 1].value >= chartData[0].value;
+    if (chartData.data.length < 2) return true;
+    return chartData.data[chartData.data.length - 1] >= chartData.data[0];
   }, [chartData]);
 
-  const lineColor = isPositive ? '#00ff41' : '#ff0040';
+  const lineColor = isPositive ? latamColors.primary : latamColors.danger;
+  const fillColor = isPositive ? latamGradients.primary : latamGradients.danger;
+
+  const options: ChartOptions<'line'> = {
+    ...defaultChartOptions,
+    plugins: {
+      ...defaultChartOptions.plugins,
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        enabled: false,
+      },
+    },
+    scales: {
+      x: {
+        display: false,
+      },
+      y: {
+        display: false,
+      },
+    },
+    elements: {
+      point: {
+        radius: 0,
+        hoverRadius: 0,
+      },
+    },
+  };
+
+  const dataConfig = {
+    labels: chartData.labels,
+    datasets: [
+      {
+        label: 'Sparkline',
+        data: chartData.data,
+        borderColor: lineColor,
+        backgroundColor: fillColor,
+        borderWidth: 1.5,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+      },
+    ],
+  };
 
   return (
     <div className={`w-full h-full ${className}`}>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData}>
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke={lineColor}
-            strokeWidth={2}
-            dot={false}
-            activeDot={false}
-            connectNulls={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <Line data={dataConfig} options={options} />
     </div>
   );
 }

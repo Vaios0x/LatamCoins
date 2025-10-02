@@ -470,12 +470,33 @@ body {
    ANIMACIONES DEL TICKER
    ============================================ */
 @keyframes ticker-scroll {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% { 
+    transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+  }
+  100% { 
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+  }
 }
 
 .animate-pause {
   animation-play-state: paused !important;
+}
+
+.animate-ticker-scroll {
+  animation: ticker-scroll 30s linear infinite;
+  -webkit-animation: ticker-scroll 30s linear infinite;
+  will-change: transform;
+  -webkit-will-change: transform;
+}
+
+/* Optimización para mobile */
+@media (max-width: 768px) {
+  .animate-ticker-scroll {
+    animation: ticker-scroll 25s linear infinite;
+    -webkit-animation: ticker-scroll 25s linear infinite;
+  }
 }
 
 /* ============================================
