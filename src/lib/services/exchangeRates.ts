@@ -19,28 +19,10 @@ export interface ExchangeRatesResponse {
   source: string;
 }
 
-// Monedas latinoamericanas soportadas
+// Monedas soportadas - Solo México y Reino Unido
 export const LATAM_CURRENCIES: Omit<ExchangeRate, 'rate' | 'lastUpdated'>[] = [
-  { code: 'USD', name: 'Dólar Estadounidense', symbol: '$', flag: '🇺🇸' },
   { code: 'MXN', name: 'Peso Mexicano', symbol: '$', flag: '🇲🇽' },
-  { code: 'ARS', name: 'Peso Argentino', symbol: '$', flag: '🇦🇷' },
-  { code: 'UYU', name: 'Peso Uruguayo', symbol: '$', flag: '🇺🇾' },
-  { code: 'BRL', name: 'Real Brasileño', symbol: 'R$', flag: '🇧🇷' },
-  { code: 'CLP', name: 'Peso Chileno', symbol: '$', flag: '🇨🇱' },
-  { code: 'COP', name: 'Peso Colombiano', symbol: '$', flag: '🇨🇴' },
-  { code: 'PEN', name: 'Sol Peruano', symbol: 'S/', flag: '🇵🇪' },
-  { code: 'VES', name: 'Bolívar Venezolano', symbol: 'Bs', flag: '🇻🇪' },
-  { code: 'GTQ', name: 'Quetzal Guatemalteco', symbol: 'Q', flag: '🇬🇹' },
-  { code: 'HNL', name: 'Lempira Hondureño', symbol: 'L', flag: '🇭🇳' },
-  { code: 'NIO', name: 'Córdoba Nicaragüense', symbol: 'C$', flag: '🇳🇮' },
-  { code: 'CRC', name: 'Colón Costarricense', symbol: '₡', flag: '🇨🇷' },
-  { code: 'PAB', name: 'Balboa Panameño', symbol: 'B/.', flag: '🇵🇦' },
-  { code: 'DOP', name: 'Peso Dominicano', symbol: '$', flag: '🇩🇴' },
-  { code: 'CUP', name: 'Peso Cubano', symbol: '$', flag: '🇨🇺' },
-  { code: 'JMD', name: 'Dólar Jamaiquino', symbol: '$', flag: '🇯🇲' },
-  { code: 'TTD', name: 'Dólar de Trinidad y Tobago', symbol: '$', flag: '🇹🇹' },
-  { code: 'BBD', name: 'Dólar de Barbados', symbol: '$', flag: '🇧🇧' },
-  { code: 'XCD', name: 'Dólar del Caribe Oriental', symbol: '$', flag: '🇦🇬' },
+  { code: 'GBP', name: 'Libra Esterlina', symbol: '£', flag: '🇬🇧' },
 ];
 
 // Cache para tipos de cambio
@@ -122,26 +104,8 @@ export async function getExchangeRates(): Promise<ExchangeRatesResponse> {
  */
 function getFallbackRate(currencyCode: string): number {
   const fallbackRates: Record<string, number> = {
-    'USD': 1,
     'MXN': 20.0,
-    'ARS': 1000.0,
-    'UYU': 40.0,
-    'BRL': 5.0,
-    'CLP': 900.0,
-    'COP': 4000.0,
-    'PEN': 3.7,
-    'VES': 36.0,
-    'GTQ': 7.8,
-    'HNL': 24.7,
-    'NIO': 36.8,
-    'CRC': 520.0,
-    'PAB': 1.0,
-    'DOP': 56.0,
-    'CUP': 24.0,
-    'JMD': 155.0,
-    'TTD': 6.8,
-    'BBD': 2.0,
-    'XCD': 2.7
+    'GBP': 0.8
   };
   
   return fallbackRates[currencyCode] || 1;
@@ -183,8 +147,8 @@ export function formatPrice(price: number, currency: string, rates: ExchangeRate
  * Predeterminada: Dólar Estadounidense (USD)
  */
 export function getSelectedCurrency(): string {
-  if (typeof window === 'undefined') return 'USD';
-  return localStorage.getItem('selectedCurrency') || 'USD';
+  if (typeof window === 'undefined') return 'MXN';
+  return localStorage.getItem('selectedCurrency') || 'MXN';
 }
 
 /**

@@ -23,7 +23,7 @@ export function CurrencySelector({
 }: CurrencySelectorProps) {
   const { t, locale } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrencyState] = useState('USD');
+  const [selectedCurrency, setSelectedCurrencyState] = useState('MXN');
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -96,11 +96,8 @@ export function CurrencySelector({
           ${isOpen ? 'ring-2 ring-[#00ff41]/50' : ''}
         `}
       >
-        <div className="flex items-center space-x-2 min-w-0 flex-1">
-          <span className="text-lg flex-shrink-0">{selectedCurrencyInfo?.flag}</span>
-          <span className="text-white font-medium truncate">
-            {selectedCurrency}
-          </span>
+        <div className="flex items-center justify-center min-w-0 flex-1">
+          <span className="text-2xl flex-shrink-0">{selectedCurrencyInfo?.flag}</span>
         </div>
         <ChevronDown className={`w-4 h-4 text-white/60 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
@@ -120,12 +117,8 @@ export function CurrencySelector({
                   }
                 `}
               >
-                <div className="flex items-center space-x-3 min-w-0 flex-1">
-                  <span className="text-xl flex-shrink-0">{currency.flag}</span>
-                  <div className="text-left min-w-0 flex-1">
-                    <div className="font-medium truncate">{currency.code}</div>
-                    <div className="text-xs text-white/60 truncate">{currency.name}</div>
-                  </div>
+                <div className="flex items-center justify-center min-w-0 flex-1">
+                  <span className="text-2xl flex-shrink-0">{currency.flag}</span>
                 </div>
               </button>
             ))}
