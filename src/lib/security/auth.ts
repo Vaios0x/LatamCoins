@@ -3,7 +3,7 @@
  * JWT + 2FA + Rate Limiting + Security Headers
  */
 
-import jwt from 'jsonwebtoken';
+import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 import crypto from 'crypto';
 import { NextRequest } from 'next/server';
 
@@ -61,10 +61,10 @@ export class SecureAuth {
       exp: Math.floor(Date.now() / 1000) + (15 * 60) // 15 minutes
     };
 
-    return jwt.sign(payload, this.jwtSecret, {
-      algorithm: 'HS256',
+    const options: SignOptions = {
       expiresIn: this.jwtExpiresIn
-    });
+    };
+    return jwt.sign(payload, this.jwtSecret as Secret, options);
   }
 
   /**
@@ -79,7 +79,7 @@ export class SecureAuth {
    */
   verifyToken(token: string): AuthUser | null {
     try {
-      const decoded = jwt.verify(token, this.jwtSecret) as any;
+      const decoded = jwt.verify(token, this.jwtSecret as Secret) as any;
       
       return {
         id: decoded.id,
