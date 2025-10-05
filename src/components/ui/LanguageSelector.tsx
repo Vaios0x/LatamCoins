@@ -39,7 +39,7 @@ export function LanguageSelector({ className = '', showLabel = true, size = 'md'
         )}
       >
         <div className="flex items-center space-x-2 min-w-0 flex-1">
-          <span className="text-lg flex-shrink-0">{locale === 'en' ? '🇺🇸' : '🇪🇸'}</span>
+          <span className="text-lg flex-shrink-0">{locale === 'en' ? '🇬🇧' : '🇲🇽'}</span>
           <span className="text-white font-medium truncate">
             {locale === 'en' ? t('language.en') : t('language.es')}
           </span>
@@ -60,7 +60,7 @@ export function LanguageSelector({ className = '', showLabel = true, size = 'md'
               className={cn('w-full flex items-center p-3 transition-all duration-200',
                 locale === 'es' ? 'bg-[#00ff41]/20 text-[#00ff41]' : 'hover:bg-white/10 text-white/80 hover:text-white')}
             >
-              <span className="text-xl mr-3">🇪🇸</span>
+              <span className="text-xl mr-3">🇲🇽</span>
               <span>{t('language.es')}</span>
             </button>
           </li>
@@ -72,7 +72,7 @@ export function LanguageSelector({ className = '', showLabel = true, size = 'md'
               className={cn('w-full flex items-center p-3 transition-all duration-200',
                 locale === 'en' ? 'bg-[#00ff41]/20 text-[#00ff41]' : 'hover:bg-white/10 text-white/80 hover:text-white')}
             >
-              <span className="text-xl mr-3">🇺🇸</span>
+              <span className="text-xl mr-3">🇬🇧</span>
               <span>{t('language.en')}</span>
             </button>
           </li>
