@@ -80,7 +80,7 @@ export class SecureValidator {
   /**
    * Sanitiza datos recursivamente
    */
-  private sanitizeData(data: any): any {
+  public sanitizeData(data: any): any {
     if (typeof data === 'string') {
       return this.sanitizeString(data);
     }
