@@ -38,7 +38,7 @@ export function Footer() {
   return (
     <footer className="relative w-full bg-[#0a0e27]/90 backdrop-blur-xl border-t border-[#00ff41]/20 mt-12 sm:mt-16 md:mt-20">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Logo y descripción */}
           <div className="md:col-span-2 lg:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
@@ -137,6 +137,37 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Sección de enlistado de tokens */}
+          <div>
+            <h3 className="text-white font-semibold mb-4 text-base">{t('listing.title')}</h3>
+            <div className="space-y-4">
+              <p className="text-white/70 text-sm leading-relaxed">
+                {t('listing.subtitle')}
+              </p>
+              
+              <div className="space-y-2">
+                <h4 className="text-white/90 font-medium text-sm">{t('listing.requirements')}</h4>
+                <ul className="space-y-1 text-xs text-white/60">
+                  <li>{t('listing.requirement1')}</li>
+                  <li>{t('listing.requirement2')}</li>
+                  <li>{t('listing.requirement3')}</li>
+                  <li>{t('listing.requirement4')}</li>
+                </ul>
+              </div>
+
+              <div className="pt-2">
+                <Link
+                  href={`mailto:${t('listing.email')}?subject=${encodeURIComponent(t('listing.contact'))}&body=${encodeURIComponent(t('listing.description'))}`}
+                  className="inline-flex items-center space-x-2 px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 hover:border-[#00ff41]/70 text-[#00ff41] text-sm font-medium rounded-lg transition-all duration-300 hover:scale-105 transform"
+                  aria-label={t('listing.contact')}
+                >
+                  <span>🚀</span>
+                  <span>{t('listing.contact')}</span>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 

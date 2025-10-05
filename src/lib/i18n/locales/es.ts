@@ -207,6 +207,18 @@ const es = {
   "status.last_verification": "Última verificación",
   "status.next_verification": "Próxima verificación",
 
+  // Token Listing
+  "listing.title": "Lista tu Token",
+  "listing.subtitle": "¿Tienes un token latinoamericano que quieres que aparezca en CoinLatamCap?",
+  "listing.description": "Solicita el enlistado de tu token para que la comunidad LATAM pueda descubrirlo y hacer trading.",
+  "listing.requirements": "Requisitos para enlistado:",
+  "listing.requirement1": "• Token en Solana o Pump.fun",
+  "listing.requirement2": "• Proyecto con enfoque en LATAM",
+  "listing.requirement3": "• Liquidez mínima de $10,000 USD",
+  "listing.requirement4": "• Información del proyecto verificada",
+  "listing.contact": "Contactar para enlistado",
+  "listing.email": "tokens@coinlatamcap.com",
+
   // Chatbot
   "chatbot.welcome": "🤖 **¡Hola! Soy tu asistente experto en criptomonedas LATAM y Solana.**\n\n**Puedo ayudarte con:**\n• 📊 **Análisis de tokens**: \"analiza HOLDER\", \"analiza MAD\"\n• ⚡ **Información sobre Solana**: DeFi, protocolos, trading\n• 📈 **Estrategias de trading**: Técnicas y recomendaciones\n• 🛡️ **Seguridad crypto**: Mejores prácticas y consejos\n\n**¿Qué te interesa saber?**",
   "chatbot.analyzing": "Analizando",
