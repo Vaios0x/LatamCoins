@@ -69,17 +69,6 @@ export function Footer() {
               <span className="font-medium">{t('footer.powered_by')}</span>
               <div className="flex items-center space-x-4">
                 <Link 
-                  href="https://pump.fun" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-[#00ff41] hover:text-[#00ff41]/80 transition-colors duration-300 flex items-center space-x-2 hover:scale-105 transform"
-                  aria-label="Visitar Pump.fun"
-                >
-                  <span className="font-medium">Pump.fun</span>
-                  <ExternalLink className="w-4 h-4" />
-                </Link>
-                <span className="text-white/40">&</span>
-                <Link 
                   href="https://solana.com" 
                   target="_blank" 
                   rel="noopener noreferrer"

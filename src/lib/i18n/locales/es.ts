@@ -1,7 +1,7 @@
 const es = {
   // App
   "app.title": "CoinLatamCap - El pulso de las crypto latinas",
-  "app.description": "Tracking en tiempo real de tokens latinoamericanos en Solana y Pump.fun.",
+  "app.description": "Tracking en tiempo real de tokens latinoamericanos en Solana.",
 
   // Header
   "nav.home": "Inicio",
@@ -38,7 +38,7 @@ const es = {
 
   // Hero
   "hero.tagline1": "El futuro de las crypto latinas en tiempo real",
-  "hero.tagline2": "Tracking exclusivo de tokens latinoamericanos en Solana y Pump.fun",
+  "hero.tagline2": "Tracking exclusivo de tokens latinoamericanos en Solana",
   "hero.status.loading": "Cargando datos de DexScreener...",
   "hero.status.error": "Error cargando datos",
   "hero.status.ok": "Datos en tiempo real desde DexScreener",
@@ -212,7 +212,7 @@ const es = {
   "listing.subtitle": "¿Tienes un token latinoamericano que quieres que aparezca en CoinLatamCap?",
   "listing.description": "Solicita el enlistado de tu token para que la comunidad LATAM pueda descubrirlo y hacer trading.",
   "listing.requirements": "Requisitos para enlistado:",
-  "listing.requirement1": "• Token en Solana o Pump.fun",
+  "listing.requirement1": "• Token desplegado en Solana",
   "listing.requirement2": "• Proyecto con enfoque en LATAM",
   "listing.requirement3": "• Liquidez mínima de $10,000 USD",
   "listing.requirement4": "• Información del proyecto verificada",

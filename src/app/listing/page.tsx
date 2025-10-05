@@ -71,8 +71,8 @@ export default function ListingPage() {
 
   const requirements = [
     {
-      title: 'Token en Solana o Pump.fun',
-      description: 'Debe estar desplegado en la blockchain de Solana o en la plataforma Pump.fun',
+      title: 'Token en Solana',
+      description: 'Debe estar desplegado en la blockchain de Solana',
       icon: '⚡'
     },
     {
