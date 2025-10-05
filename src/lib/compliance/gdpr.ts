@@ -424,5 +424,5 @@ export class GDPRCompliance {
 
 // Instancia global del sistema GDPR
 export const gdprCompliance = new GDPRCompliance(
-  process.env.GDPR_MASTER_KEY || 'your-64-character-hex-key-here-for-development-only'
+  process.env.GDPR_MASTER_KEY || '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
 );
