@@ -4,6 +4,7 @@
  */
 
 import { z } from 'zod';
+import { NextRequest } from 'next/server';
 import DOMPurify from 'isomorphic-dompurify';
 
 /**
