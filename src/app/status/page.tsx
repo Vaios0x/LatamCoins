@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Activity, Wifi, RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
 
 interface ApiStatus {
   name: string;
@@ -14,12 +15,13 @@ interface ApiStatus {
 }
 
 export default function StatusPage() {
+  const { t } = useI18n();
   const [apis, setApis] = useState<ApiStatus[]>([
     {
       name: 'DexScreener',
       url: 'https://api.dexscreener.com/latest/dex/pairs/solana/b3tr9tdcpqdtkah6hou2ut3u4udv1na75oe6r4femumt',
       status: 'checking',
-      lastCheck: 'Verificando...'
+      lastCheck: t('status.checking')
     }
   ]);
   const [isChecking, setIsChecking] = useState(false);
@@ -47,7 +49,7 @@ export default function StatusPage() {
       return {
         ...api,
         status: response.ok ? 'connected' : 'disconnected',
-        lastCheck: new Date().toLocaleTimeString('es-ES'),
+        lastCheck: new Date().toLocaleTimeString(t('locale')),
         responseTime,
         error: response.ok ? undefined : `HTTP ${response.status}`
       };
@@ -56,16 +58,16 @@ export default function StatusPage() {
       return {
         ...api,
         status: 'disconnected',
-        lastCheck: new Date().toLocaleTimeString('es-ES'),
+        lastCheck: new Date().toLocaleTimeString(t('locale')),
         responseTime,
-        error: error instanceof Error && error.name === 'AbortError' ? 'Timeout' : error instanceof Error ? error.message : 'Error desconocido'
+        error: error instanceof Error && error.name === 'AbortError' ? t('status.timeout') : error instanceof Error ? error.message : t('status.unknown_error')
       };
     }
   }, []);
 
   const checkAllApis = useCallback(async () => {
     setIsChecking(true);
-    setLastUpdate(new Date().toLocaleTimeString('es-ES'));
+    setLastUpdate(new Date().toLocaleTimeString(t('locale')));
     
     const updatedApis = await Promise.all(
       apis.map(api => checkApiStatus(api))
@@ -99,13 +101,13 @@ export default function StatusPage() {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'connected':
-        return 'Conectado';
+        return t('status.connected');
       case 'disconnected':
-        return 'Desconectado';
+        return t('status.disconnected');
       case 'checking':
-        return 'Verificando...';
+        return t('status.checking');
       default:
-        return 'Desconocido';
+        return t('status.unknown');
     }
   };
 
@@ -131,10 +133,10 @@ export default function StatusPage() {
         {/* Header */}
         <div className="text-center mb-8 sm:mb-10 lg:mb-12">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 sm:mb-4">
-            Estado del Sistema
+            {t('status.title')}
           </h1>
           <p className="text-white/60 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-4">
-            Monitoreo en tiempo real de las conexiones y servicios de la plataforma
+            {t('status.subtitle')}
           </p>
         </div>
 
@@ -147,7 +149,7 @@ export default function StatusPage() {
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">
               {connectedApis}/{totalApis}
             </h3>
-            <p className="text-white/60 text-sm sm:text-base">APIs Conectadas</p>
+            <p className="text-white/60 text-sm sm:text-base">{t('status.apis_connected')}</p>
           </GlassCard>
 
           <GlassCard className="p-4 sm:p-6 text-center">
@@ -157,7 +159,7 @@ export default function StatusPage() {
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">
               {connectedApis === totalApis ? '100%' : `${Math.round((connectedApis / totalApis) * 100)}%`}
             </h3>
-            <p className="text-white/60 text-sm sm:text-base">Disponibilidad</p>
+            <p className="text-white/60 text-sm sm:text-base">{t('status.availability')}</p>
           </GlassCard>
 
           <GlassCard className="p-4 sm:p-6 text-center sm:col-span-2 lg:col-span-1">
@@ -167,7 +169,7 @@ export default function StatusPage() {
             <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2 break-all">
               {lastUpdate || 'N/A'}
             </h3>
-            <p className="text-white/60 text-sm sm:text-base">Última Verificación</p>
+            <p className="text-white/60 text-sm sm:text-base">{t('status.last_check')}</p>
           </GlassCard>
         </div>
 
@@ -175,14 +177,14 @@ export default function StatusPage() {
         <div className="max-w-4xl mx-auto">
           <GlassCard className="p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-4">
-              <h2 className="text-xl sm:text-2xl font-bold text-white text-center sm:text-left">Estado de Conexiones</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-white text-center sm:text-left">{t('status.connections_status')}</h2>
               <button
                 onClick={checkAllApis}
                 disabled={isChecking}
                 className="flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300 disabled:opacity-50 text-sm sm:text-base"
               >
                 <RefreshCw className={`w-4 h-4 ${isChecking ? 'animate-spin' : ''}`} />
-                <span>Verificar</span>
+                <span>{t('status.check')}</span>
               </button>
             </div>
 
@@ -220,12 +222,12 @@ export default function StatusPage() {
             <div className="mt-6 pt-6 border-t border-white/10">
               <div className="flex items-center justify-between text-sm text-white/60">
                 <div>
-                  <p>Las APIs se verifican automáticamente cada 5 minutos.</p>
-                  <p>Los datos se actualizan cada 30 segundos cuando están disponibles.</p>
+                  <p>{t('status.auto_check_info')}</p>
+                  <p>{t('status.data_update_info')}</p>
                 </div>
                 <div className="text-right">
-                  <p>Última verificación: {lastUpdate}</p>
-                  <p>Próxima verificación: {lastUpdate ? new Date(Date.now() + 5 * 60 * 1000).toLocaleTimeString('es-ES') : 'N/A'}</p>
+                  <p>{t('status.last_verification')}: {lastUpdate}</p>
+                  <p>{t('status.next_verification')}: {lastUpdate ? new Date(Date.now() + 5 * 60 * 1000).toLocaleTimeString(t('locale')) : 'N/A'}</p>
                 </div>
               </div>
             </div>

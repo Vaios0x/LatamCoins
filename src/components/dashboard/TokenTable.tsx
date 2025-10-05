@@ -11,6 +11,7 @@ import { PriceChange } from '@/components/ui/PriceChange';
 import { Sparkline } from './Sparkline';
 import { useRealPrices } from '@/lib/hooks/useRealPrices';
 import { useCurrency } from '@/components/ui/CurrencySelector';
+import { useI18n } from '@/lib/i18n';
 
 type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'volume24h' | 'marketCap';
 type SortDirection = 'asc' | 'desc';
@@ -20,9 +21,15 @@ type SortDirection = 'asc' | 'desc';
  * Muestra todos los tokens con sorting y filtros
  */
 export function TokenTable() {
+  const { t } = useI18n();
   const [sortField, setSortField] = useState<SortField>('price');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Controles móviles
+  const [mobileFilter, setMobileFilter] = useState<'all' | 'gainers' | 'losers'>('all');
+  const [mobileSortField, setMobileSortField] = useState<SortField>('marketCap');
+  const [mobileSortDir, setMobileSortDir] = useState<SortDirection>('desc');
   
   // Usar el hook de precios reales
   const { tokens, isLoading, refreshPrices } = useRealPrices();
@@ -113,6 +120,43 @@ export function TokenTable() {
       : <ArrowDown className="w-4 h-4 text-[#00ff41]" />;
   };
 
+  // Móvil: lista según filtros y orden seleccionados
+  const mobileList = useMemo(() => {
+    // Base: aplicar búsqueda ya hecha (filteredTokens)
+    let list = [...filteredTokens];
+
+    // Filtro por cambio 24h
+    if (mobileFilter === 'gainers') {
+      list = list.filter(t => (t.change24h ?? 0) > 0);
+    } else if (mobileFilter === 'losers') {
+      list = list.filter(t => (t.change24h ?? 0) < 0);
+    }
+
+    // Orden
+    list.sort((a, b) => {
+      const num = (field: SortField, x: typeof a) => {
+        switch (field) {
+          case 'price': return x.price ?? 0;
+          case 'change24h': return x.change24h ?? 0;
+          case 'volume24h': return x.volume24h ?? 0;
+          case 'marketCap': return x.marketCap ?? 0;
+          case 'rank': return x.rank ?? 0;
+          default: return 0;
+        }
+      };
+      if (mobileSortField === 'name') {
+        const an = a.name.toLowerCase();
+        const bn = b.name.toLowerCase();
+        return mobileSortDir === 'asc' ? (an > bn ? 1 : -1) : (an < bn ? 1 : -1);
+      }
+      const av = num(mobileSortField, a);
+      const bv = num(mobileSortField, b);
+      return mobileSortDir === 'asc' ? av - bv : bv - av;
+    });
+
+    return list;
+  }, [filteredTokens, mobileFilter, mobileSortField, mobileSortDir]);
+
   return (
     <div className="w-full space-y-6 sm:space-y-8">
       {/* Controles superiores */}
@@ -122,17 +166,17 @@ export function TokenTable() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#00ff41]/60 w-4 h-4" />
           <input
             type="text"
-            placeholder="Buscar tokens..."
+            placeholder={t('search.placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-10 py-3 sm:py-4 bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/40 transition-all duration-300 text-base"
-            aria-label="Buscar tokens"
+            aria-label={t('search.aria')}
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#00ff41]/60 hover:text-[#00ff41] transition-colors duration-300"
-              aria-label="Limpiar búsqueda"
+              aria-label="Clear"
             >
               <X className="w-4 h-4" />
             </button>
@@ -149,7 +193,7 @@ export function TokenTable() {
             🔄
           </div>
           <span className="text-sm text-white">
-            {isLoading ? 'Actualizando...' : 'Actualizar'}
+            {isLoading ? t('markets.loading') : t('apis.control.reload').replace('🔄 ', '')}
           </span>
         </button>
       </div>
@@ -159,30 +203,53 @@ export function TokenTable() {
         <div className="text-center">
           <p className="text-white/70 text-sm">
             {sortedTokens.length === 0 
-              ? `No se encontraron tokens que coincidan con "${searchQuery}"`
-              : `${sortedTokens.length} token${sortedTokens.length !== 1 ? 's' : ''} encontrado${sortedTokens.length !== 1 ? 's' : ''}`
+              ? `${t('analytics.no_tokens_found')} "${searchQuery}"`
+              : `${sortedTokens.length} ${t('analytics.total_tokens').toLowerCase()}`
             }
           </p>
         </div>
       )}
 
-      {/* Vista móvil - Cards */}
+      {/* Vista móvil - Lista completa ordenada por Market Cap (desc) */}
       <div className="block lg:hidden">
-        <div className="space-y-4">
-          {sortedTokens.map((token) => (
-            <TokenCard key={token.id} token={token} />
-          ))}
-        </div>
-        
-        {/* Botón flotante de ayuda para móvil - Solo en home */}
-        <div className="fixed bottom-4 left-4 z-50 lg:hidden">
-          <div className="bg-[#00ff41]/15 backdrop-blur-sm border border-[#00ff41]/30 rounded-lg p-2 shadow-md">
-            <div className="flex items-center space-x-1">
-              <div className="text-[#00ff41] text-xs">💡</div>
-              <div className="text-white text-xs">Toca cualquier token</div>
-            </div>
+        <GlassCard className="p-3">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-white font-semibold text-sm">
+              {t('markets.title')} · {t('table.market_cap')}
+            </h3>
+            <Link href="/markets" className="text-xs text-[#00ff41] hover:underline">
+              {t('markets.view_all')}
+            </Link>
           </div>
-        </div>
+
+          {/* Controles móviles: filtros y orden */}
+          <div className="flex items-center gap-2 mb-3 overflow-x-auto">
+            <button
+              onClick={() => setMobileFilter('all')}
+              className={`px-2 py-1 rounded text-xs border ${mobileFilter === 'all' ? 'bg-[#00ff41]/20 border-[#00ff41]/50 text-[#00ff41]' : 'bg-white/5 border-white/10 text-white/70'}`}
+            >
+              {t('markets.filters.all')}
+            </button>
+            <button
+              onClick={() => setMobileFilter('gainers')}
+              className={`px-2 py-1 rounded text-xs border ${mobileFilter === 'gainers' ? 'bg-[#00ff41]/20 border-[#00ff41]/50 text-[#00ff41]' : 'bg-white/5 border-white/10 text-white/70'}`}
+            >
+              {t('markets.filters.gainers')}
+            </button>
+            <button
+              onClick={() => setMobileFilter('losers')}
+              className={`px-2 py-1 rounded text-xs border ${mobileFilter === 'losers' ? 'bg-[#ff0040]/20 border-[#ff0040]/50 text-[#ff0040]' : 'bg-white/5 border-white/10 text-white/70'}`}
+            >
+              {t('markets.filters.losers')}
+            </button>
+          </div>
+
+          <ul className="divide-y divide-white/10">
+            {mobileList.map((token) => (
+              <MobileGainerItem key={token.id} token={token} />)
+            )}
+          </ul>
+        </GlassCard>
       </div>
 
       {/* Vista desktop - Tabla completa */}
@@ -439,5 +506,32 @@ function TokenCard({ token }: { token: Token }) {
         </div>
       </GlassCard>
     </Link>
+  );
+}
+
+function MobileGainerItem({ token }: { token: Token }) {
+  const router = useRouter();
+  const { formatPrice } = useCurrency();
+  const handleClick = () => router.push(`/token/${token.symbol.toLowerCase()}`);
+
+  return (
+    <li
+      className="py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-white/5 px-2 rounded"
+      onClick={handleClick}
+    >
+      <div className="flex items-center gap-2 min-w-0">
+        <div className="w-7 h-7 bg-[#00ff41]/20 rounded-full flex items-center justify-center flex-shrink-0">
+          <span className="text-xs font-bold text-[#00ff41]">{token.symbol.charAt(0)}</span>
+        </div>
+        <div className="min-w-0">
+          <div className="text-white text-sm font-medium truncate">{token.symbol}</div>
+          <div className="text-white/60 text-xs truncate">{token.name}</div>
+        </div>
+      </div>
+      <div className="text-right flex-shrink-0">
+        <div className="text-white font-mono text-xs">{formatPrice(token.price)}</div>
+        <PriceChange change={token.change24h} size="sm" />
+      </div>
+    </li>
   );
 }

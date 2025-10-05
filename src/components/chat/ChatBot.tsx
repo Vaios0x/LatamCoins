@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User, Loader2, TrendingUp, BarChart3 } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
 // import { GlassCard } from '@/components/ui/GlassCard'; // Removido - no se usa
 
 interface Message {
@@ -42,12 +43,13 @@ interface TokenAnalysis {
 }
 
 export function ChatBot({ context }: ChatBotProps) {
+  const { t, locale } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       type: 'bot',
-      content: '🤖 **¡Hola! Soy tu asistente experto en criptomonedas LATAM y Solana.**\n\n**Puedo ayudarte con:**\n• 📊 **Análisis de tokens**: "analiza HOLDER", "analiza MAD"\n• ⚡ **Información sobre Solana**: DeFi, protocolos, trading\n• 📈 **Estrategias de trading**: Técnicas y recomendaciones\n• 🛡️ **Seguridad crypto**: Mejores prácticas y consejos\n\n**¿Qué te interesa saber?**',
+      content: t('chatbot.welcome'),
       timestamp: new Date()
     }
   ]);
@@ -127,6 +129,16 @@ export function ChatBot({ context }: ChatBotProps) {
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    // Si cambia el idioma y solo está el mensaje de bienvenida, actualizar su contenido
+    setMessages(prev => {
+      if (prev.length === 1 && prev[0]?.id === '1' && prev[0]?.type === 'bot') {
+        return [{ ...prev[0], content: t('chatbot.welcome') }];
+      }
+      return prev;
+    });
+  }, [locale, t]);
+
   // Función para generar análisis avanzado de tokens
   const generateTokenAnalysis = (tokenData: TokenAnalysis): string => {
     const { symbol, name, price, change24h, volume24h, marketCap, liquidity, fdv, source, isRealTime } = tokenData;
@@ -187,48 +199,56 @@ export function ChatBot({ context }: ChatBotProps) {
   };
 
   const generateBotResponse = (userMessage: string): string => {
-    const message = userMessage.toLowerCase();
+    const msg = userMessage.toLowerCase();
     
-    // Respuestas contextuales basadas en el token actual
     if (context?.token) {
       const { symbol, name, price, change24h, marketCap, contract } = context.token;
-      
-      if (message.includes(symbol.toLowerCase()) || message.includes(name.toLowerCase())) {
-        return `Analizando ${name} (${symbol}):\n\n📊 **Precio actual**: $${price.toFixed(6)}\n📈 **Cambio 24h**: ${change24h > 0 ? '+' : ''}${change24h.toFixed(2)}%\n💰 **Market Cap**: $${(marketCap / 1000).toFixed(1)}K\n🔗 **Contract**: ${contract.slice(0, 8)}...${contract.slice(-8)}\n\n${change24h > 0 ? '🚀 Tendencia alcista detectada' : '📉 Corrección en curso'}. ¿Te interesa más información sobre este token?`;
+      if (msg.includes(symbol.toLowerCase()) || msg.includes(name.toLowerCase())) {
+        const trendText = change24h > 0 ? t('chatbot.bullish') : t('chatbot.correction');
+        const contractShort = `${contract.slice(0, 8)}...${contract.slice(-8)}`;
+        const parts = [
+          `${t('chatbot.analyzing')} ${name} (${symbol}):`,
+          '',
+          `📊 ${t('chatbot.currentPrice')}: $${price.toFixed(6)}`,
+          `📈 ${t('chatbot.change24h')}: ${change24h > 0 ? '+' : ''}${change24h.toFixed(2)}%`,
+          `💰 ${t('chatbot.marketCap')}: $${(marketCap / 1000).toFixed(1)}K` ,
+          `🔗 ${t('chatbot.contract')}: ${contractShort}`,
+          '',
+          `${change24h > 0 ? '🚀' : '📉'} ${trendText}. ${t('chatbot.moreInfoQuestion')}`
+        ];
+        return parts.join('\n');
       }
     }
 
-    // Respuestas generales sobre criptomonedas LATAM
-    if (message.includes('latam') || message.includes('latinoamerica') || message.includes('latinoamérica')) {
-      return `🇨🇴 **Ecosistema Crypto LATAM**\n\nLos tokens latinoamericanos están ganando tracción en Solana:\n\n• **HOLDER (DOGGY)**: Token comunitario con fuerte base\n• **MAD COIN**: Proyecto innovador con utilidad real\n• **Quira (QRA)**: Enfoque en DeFi y pagos\n• **Darrkito**: Reserva estratégica comunitaria\n\n💡 **Consejo**: Diversifica entre proyectos con casos de uso reales y comunidades activas.`;
+    if (msg.includes('latam') || msg.includes('latinoamerica') || msg.includes('latinoamérica')) {
+      return t('chatbot.latamInfo');
     }
 
-    if (message.includes('solana') || message.includes('sol')) {
-      return `⚡ **Solana - La Blockchain de Alta Velocidad**\n\n**Ventajas clave:**\n• ⚡ 65,000 TPS (transacciones por segundo)\n• 💰 Fees ultra bajos (~$0.00025)\n• 🔄 Finalidad en 400ms\n• 🌱 Ecosistema DeFi en crecimiento\n\n**Para traders:**\n• Usa Jupiter para swaps con mejor precio\n• Raydium para liquidez\n• Phantom como wallet principal\n\n¿Quieres saber sobre algún protocolo específico?`;
+    if (msg.includes('solana') || msg.includes('sol')) {
+      return t('chatbot.solanaInfo');
     }
 
-    if (message.includes('trading') || message.includes('comprar') || message.includes('vender')) {
-      return `📈 **Estrategias de Trading LATAM**\n\n**Para principiantes:**\n• 🎯 DCA (Dollar Cost Averaging)\n• 📊 Análisis técnico básico\n• 🛡️ Stop-loss siempre\n\n**Herramientas recomendadas:**\n• 📱 DexScreener para análisis\n• 🔄 Jupiter para swaps\n• 📊 TradingView para gráficos\n\n**⚠️ Recuerda:** Solo invierte lo que puedes permitirte perder.`;
+    if (msg.includes('trading') || msg.includes('comprar') || msg.includes('vender')) {
+      return t('chatbot.tradingStrategies');
     }
 
-    if (message.includes('defi') || message.includes('yield') || message.includes('farming')) {
-      return `🌾 **DeFi en Solana**\n\n**Protocolos principales:**\n• 🏦 **Jupiter**: Agregador de liquidez\n• 🦅 **Orca**: AMM más popular\n• 🐧 **Penguin**: Yield farming\n• 🦎 **Raydium**: Liquidez y staking\n\n**APY típicos:**\n• Stablecoins: 8-15%\n• LP tokens: 20-50%\n• Staking SOL: 6-8%\n\n¿Te interesa algún protocolo específico?`;
+    if (msg.includes('defi') || msg.includes('yield') || msg.includes('farming')) {
+      return t('chatbot.defiInfo');
     }
 
-    if (message.includes('seguridad') || message.includes('scam') || message.includes('estafa')) {
-      return `🛡️ **Seguridad en Crypto**\n\n**Red flags a evitar:**\n• 🚫 Promesas de "garantía" de ganancias\n• 🚫 Presión para invertir rápido\n• 🚫 Grupos de Telegram con "señales"\n• 🚫 Proyectos sin doxxed team\n\n**Mejores prácticas:**\n• ✅ Verifica contratos en Solscan\n• ✅ Usa wallets oficiales\n• ✅ Nunca compartas seed phrase\n• ✅ DYOR (Do Your Own Research)\n\n¿Tienes dudas sobre algún proyecto específico?`;
+    if (msg.includes('seguridad') || msg.includes('scam') || msg.includes('estafa') || msg.includes('security')) {
+      return t('chatbot.securityTips');
     }
 
-    if (message.includes('precio') || message.includes('valor') || message.includes('análisis')) {
-      return `📊 **Análisis de Precios**\n\n**Indicadores clave:**\n• 📈 **RSI**: Sobrecompra/sobreventa\n• 📊 **MACD**: Momentum\n• 📉 **Soporte/Resistencia**: Niveles clave\n• 📈 **Volumen**: Confirmación de movimientos\n\n**Para tokens LATAM:**\n• 🎯 Observa correlación con BTC/ETH\n• 📊 Analiza volumen vs. precio\n• 🏘️ Considera desarrollo comunitario\n• 📰 Sigue noticias del proyecto\n\n¿Quieres análisis de algún token específico?`;
+    if (msg.includes('precio') || msg.includes('valor') || msg.includes('análisis') || msg.includes('analysis') || msg.includes('price') || msg.includes('value')) {
+      return t('chatbot.priceAnalysis');
     }
 
-    if (message.includes('ayuda') || message.includes('help')) {
-      return `🤖 **¿Cómo puedo ayudarte?**\n\n**Puedo ayudarte con:**\n• 📊 Análisis de tokens LATAM\n• ⚡ Información sobre Solana\n• 📈 Estrategias de trading\n• 🛡️ Seguridad en crypto\n• 🌾 Protocolos DeFi\n• 💰 Gestión de portfolio\n\n**Comandos útiles:**\n• "Analiza [TOKEN]"\n• "Explica [CONCEPTO]"\n• "Recomienda [ESTRATEGIA]"\n\n¿Qué te interesa saber?`;
+    if (msg.includes('ayuda') || msg.includes('help')) {
+      return t('chatbot.help');
     }
 
-    // Respuesta por defecto
-    return `🤖 Entiendo tu consulta. Como experto en criptomonedas LATAM y Solana, puedo ayudarte con:\n\n• 📊 Análisis de tokens específicos\n• ⚡ Información sobre Solana\n• 📈 Estrategias de trading\n• 🛡️ Seguridad y mejores prácticas\n• 🌾 Protocolos DeFi\n\n¿Podrías ser más específico sobre lo que necesitas? Por ejemplo: "Analiza HOLDER" o "Explica DeFi en Solana"`;
+    return t('chatbot.defaultResponse');
   };
 
   const handleSendMessage = async () => {
@@ -247,12 +267,11 @@ export function ChatBot({ context }: ChatBotProps) {
     setIsTyping(true);
 
     try {
-      // Verificar si el usuario quiere análisis de un token específico
       const message = currentInput.toLowerCase();
-      const tokenMatch = message.match(/analiza\s+(\w+)/i);
+      const tokenMatch = message.match(/(analiza|analyze)\s+(\w+)/i);
       
       if (tokenMatch) {
-        const tokenSymbol = tokenMatch[1].toUpperCase();
+        const tokenSymbol = tokenMatch[2].toUpperCase();
         console.log(`🔍 Buscando token: ${tokenSymbol}`);
         
         // Mapeo de nombres alternativos
@@ -285,7 +304,7 @@ export function ChatBot({ context }: ChatBotProps) {
           const botMessage: Message = {
             id: (Date.now() + 1).toString(),
             type: 'bot',
-            content: `❌ No pude encontrar datos para el token "${tokenSymbol}".\n\n**Los tokens disponibles son:**\n• **HOLDER** (símbolo: DOGGY)\n• **MAD COIN** (símbolo: MAD)\n• **Quira** (símbolo: QRA)\n• **Darrkito** (símbolo: DARRKITO)\n\n**Comandos que funcionan:**\n• "analiza HOLDER" → Analiza DOGGY\n• "analiza MAD" → Analiza MAD COIN\n• "analiza QRA" → Analiza Quira\n• "analiza Darrkito" → Analiza Darrkito`,
+            content: `${t('chatbot.tokenNotFound')} "${tokenSymbol}".`,
             timestamp: new Date()
           };
           setMessages(prev => [...prev, botMessage]);
@@ -306,7 +325,7 @@ export function ChatBot({ context }: ChatBotProps) {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'bot',
-        content: '❌ Error al procesar tu consulta. Por favor, intenta de nuevo.',
+        content: t('chatbot.errorProcessing'),
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -323,8 +342,8 @@ export function ChatBot({ context }: ChatBotProps) {
   };
 
   const quickActions = [
-    { label: 'Analizar HOLDER (DOGGY)', icon: TrendingUp, action: 'analiza HOLDER' },
-    { label: 'DeFi en Solana', icon: BarChart3, action: 'Explica DeFi en Solana' }
+    { label: t('chatbot.quickAnalyzeHolder'), icon: TrendingUp, action: 'analiza HOLDER' },
+    { label: t('chatbot.quickDeFiSolana'), icon: BarChart3, action: 'Explica DeFi en Solana' }
   ];
 
   return (
@@ -334,7 +353,7 @@ export function ChatBot({ context }: ChatBotProps) {
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-4 right-4 z-50 w-14 h-14 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full shadow-2xl hover:shadow-[#00ff41]/25 hover:shadow-2xl transition-all duration-500 flex items-center justify-center group hover:scale-110"
-          aria-label="Abrir chatbot"
+          aria-label={t('chatbot.openAria')}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-[#00ff41]/20 to-[#00cc33]/20 rounded-full animate-pulse"></div>
           <div className="relative w-6 h-6 bg-gradient-to-r from-[#00ff41] to-[#00cc33] rounded-full flex items-center justify-center">
@@ -376,7 +395,7 @@ export function ChatBot({ context }: ChatBotProps) {
                   <button
                     onClick={() => setIsOpen(false)}
                     className="w-10 h-10 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-red-500 hover:bg-red-600 border-2 border-white rounded-full flex items-center justify-center transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-110 z-[999] relative"
-                    aria-label="Cerrar chat"
+                    aria-label={t('chatbot.closeAria')}
                   >
                     <X className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white font-black" />
                   </button>
@@ -396,7 +415,7 @@ export function ChatBot({ context }: ChatBotProps) {
                         <div className="relative">
                           <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center backdrop-blur-sm ${
                             message.type === 'user' 
-                              ? 'bg-[#00ff41]/20 border border-[#00ff41]/30' 
+                              ? 'bg-[#00ff41]/10 border border-[#00ff41]/20' 
                               : 'bg-gradient-to-r from-[#00ff41] to-[#00cc33] shadow-lg'
                           }`}>
                             {message.type === 'user' ? (
@@ -456,7 +475,7 @@ export function ChatBot({ context }: ChatBotProps) {
                 <div className="absolute bottom-12 left-2 right-2 p-2 border-t border-white/10 bg-white/20 backdrop-blur-sm rounded-lg">
                   <div className="text-[8px] sm:text-[9px] text-white/60 mb-0.5 sm:mb-1 flex items-center space-x-1">
                     <div className="w-0.5 h-0.5 bg-[#00ff41] rounded-full animate-pulse"></div>
-                    <span>Acciones:</span>
+                    <span>{t('chatbot.actions')}</span>
                   </div>
                   <div className="grid grid-cols-1 gap-0.5 sm:gap-1">
                     {quickActions.map((action, index) => (
@@ -483,7 +502,7 @@ export function ChatBot({ context }: ChatBotProps) {
                      value={inputValue}
                      onChange={(e) => setInputValue(e.target.value)}
                      onKeyPress={handleKeyPress}
-                     placeholder="Pregunta sobre tokens..."
+                     placeholder={t('chatbot.placeholder')}
                      className="flex-1 px-2 py-1.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/50 transition-all duration-300 text-xs shadow-lg"
                      disabled={isTyping}
                    />

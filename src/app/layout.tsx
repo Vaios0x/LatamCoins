@@ -7,6 +7,7 @@ import { TickerBar } from '@/components/layout/TickerBar';
 import MatrixRain from '@/components/effects/MatrixRain';
 import { ChatBot } from '@/components/chat/ChatBot';
 import { Analytics } from '@vercel/analytics/next';
+import { I18nProvider } from '@/lib/i18n';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -100,21 +101,23 @@ export default function RootLayout({
         <MatrixRain />
         
         {/* Layout principal */}
-        <div className="relative z-10 flex flex-col min-h-screen">
-          <Header />
-          <TickerBar />
-          
-          <main className="flex-1 w-full">
-            <div className="w-full">
-              {children}
-            </div>
-          </main>
-          
-          <Footer />
-        </div>
-        
-        {/* Chatbot flotante */}
-        <ChatBot />
+        <I18nProvider>
+          <div className="relative z-10 flex flex-col min-h-screen">
+            <Header />
+            <TickerBar />
+            
+            <main className="flex-1 w-full">
+              <div className="w-full">
+                {children}
+              </div>
+            </main>
+            
+            <Footer />
+          </div>
+
+          {/* Chatbot flotante */}
+          <ChatBot />
+        </I18nProvider>
         
         {/* Vercel Analytics */}
         <Analytics />

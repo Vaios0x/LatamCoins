@@ -4,12 +4,14 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { GlassButton } from '@/components/ui/GlassButton';
 import { ArrowLeft, Book, Code, Zap, Database, Globe, Shield, Users, ExternalLink, Key, Settings } from 'lucide-react';
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n';
 
 /**
  * Página de Documentación
  * Guía completa para desarrolladores y usuarios de CoinLatamCap
  */
 export default function DocsPage() {
+  const { t } = useI18n();
   const quickStart = [
     {
       step: 1,
@@ -139,7 +141,7 @@ export default function DocsPage() {
             <Link href="/">
               <GlassButton variant="ghost" size="sm">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Volver
+                {t('common.back')}
               </GlassButton>
             </Link>
           </div>
@@ -147,20 +149,19 @@ export default function DocsPage() {
           <div className="flex items-center space-x-3 mb-4">
             <Book className="w-8 h-8 text-[#00ff41]" />
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-              Documentación
+              {t('docs.title')}
             </h1>
           </div>
           
           <p className="text-white/70 max-w-3xl text-base sm:text-lg">
-            Guía completa para desarrolladores. Integra CoinLatamCap en tu aplicación 
-            con nuestra API REST, WebSocket y SDKs oficiales.
+            {t('docs.subtitle')}
           </p>
         </div>
 
         {/* Quick Start */}
         <div className="mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">
-            Inicio Rápido
+            {t('docs.quick_start')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {quickStart.map((step, index) => {
@@ -184,7 +185,7 @@ export default function DocsPage() {
         {/* API Endpoints */}
         <div className="mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">
-            Endpoints de la API
+            {t('docs.endpoints')}
           </h2>
           <div className="space-y-4">
             {apiEndpoints.map((endpoint, index) => (
@@ -213,7 +214,7 @@ export default function DocsPage() {
         {/* Características */}
         <div className="mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">
-            Características de la API
+            {t('docs.features_title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {features.map((feature, index) => {
@@ -237,7 +238,7 @@ export default function DocsPage() {
         {/* SDKs */}
         <div className="mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">
-            SDKs Oficiales
+            {t('docs.sdks_title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {sdks.map((sdk, index) => (
@@ -263,7 +264,7 @@ export default function DocsPage() {
         {/* Tutoriales */}
         <div className="mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">
-            Tutoriales
+            {t('docs.tutorials_title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {tutorials.map((tutorial, index) => (
@@ -290,7 +291,7 @@ export default function DocsPage() {
         {/* Recursos adicionales */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <GlassCard className="p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">Recursos Adicionales</h3>
+            <h3 className="text-xl font-semibold text-white mb-4">{t('docs.more_resources')}</h3>
             <div className="space-y-3">
               <a
                 href="https://github.com/coinlatamcap/examples"
@@ -299,7 +300,7 @@ export default function DocsPage() {
                 className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"
               >
                 <ExternalLink className="w-4 h-4" />
-                <span>Ejemplos de Código</span>
+                <span>{t('docs.examples')}</span>
               </a>
               <a
                 href="https://status.coinlatamcap.com"
@@ -308,20 +309,20 @@ export default function DocsPage() {
                 className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"
               >
                 <ExternalLink className="w-4 h-4" />
-                <span>Estado del Servicio</span>
+                <span>{t('docs.status')}</span>
               </a>
               <a
                 href="/contact"
                 className="flex items-center space-x-3 text-white/80 hover:text-[#00ff41] transition-colors duration-300"
               >
                 <Users className="w-4 h-4" />
-                <span>Soporte Técnico</span>
+                <span>{t('docs.support')}</span>
               </a>
             </div>
           </GlassCard>
 
           <GlassCard className="p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">Comunidad</h3>
+            <h3 className="text-xl font-semibold text-white mb-4">{t('docs.community')}</h3>
             <div className="space-y-3">
               <a
                 href="https://discord.gg/coinlatamcap"

@@ -5,12 +5,14 @@ import { GlassButton } from '@/components/ui/GlassButton';
 import { ArrowLeft, Users, Target, Zap, Globe, Shield, Heart, Copy, Check } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useI18n } from '@/lib/i18n';
 
 /**
  * Página Acerca de CoinLatamCap
  * Información sobre la plataforma, misión y equipo
  */
 export default function AboutPage() {
+  const { t } = useI18n();
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
 
   const copyToClipboard = async (address: string, type: string) => {
@@ -70,18 +72,17 @@ export default function AboutPage() {
             <Link href="/">
               <GlassButton variant="ghost" size="sm">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Volver
+                {t('common.back')}
               </GlassButton>
             </Link>
           </div>
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            <span className="text-white">Acerca de</span>
+            <span className="text-white">{t('about.title')}</span>
             <span className="text-[#00ff41] neon-text animate-neon-pulse ml-2">LATAMCOINS</span>
           </h1>
           <p className="text-white/70 max-w-3xl text-base sm:text-lg">
-            La plataforma líder para el tracking de criptomonedas latinoamericanas. 
-            Conectamos la comunidad crypto de Latinoamérica con datos en tiempo real.
+            {t('about.subtitle')}
           </p>
         </div>
 
@@ -90,12 +91,9 @@ export default function AboutPage() {
           <GlassCard className="p-6 sm:p-8">
             <div className="text-center">
               <Heart className="w-12 h-12 text-[#00ff41] mx-auto mb-4" />
-              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Nuestra Misión</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">{t('about.mission.title')}</h2>
               <p className="text-white/80 text-lg leading-relaxed max-w-4xl mx-auto">
-                Democratizar el acceso a información crypto de calidad en Latinoamérica. 
-                Creemos que cada persona en nuestra región merece tener acceso a datos 
-                precisos y actualizados sobre el ecosistema crypto local, sin barreras 
-                de idioma, conocimiento técnico o recursos económicos.
+                {t('about.mission.text')}
               </p>
             </div>
           </GlassCard>
@@ -104,7 +102,7 @@ export default function AboutPage() {
         {/* Características */}
         <div className="mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8 text-center">
-            ¿Por qué elegir LATAMCOINS?
+            {t('about.why_title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => {
@@ -123,7 +121,7 @@ export default function AboutPage() {
         {/* Estadísticas */}
         <div className="mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8 text-center">
-            Números que nos respaldan
+            {t('about.numbers_title')}
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((stat, index) => {
@@ -142,7 +140,7 @@ export default function AboutPage() {
         {/* Equipo */}
         <div className="mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8 text-center">
-            Nuestro Equipo
+            {t('about.team_title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {team.map((member, index) => (
@@ -162,11 +160,11 @@ export default function AboutPage() {
         <div className="mb-12 sm:mb-16">
           <GlassCard className="p-6 sm:p-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 text-center">
-              Tecnología de Vanguardia
+              {t('about.tech.title')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Stack Tecnológico</h3>
+                <h3 className="text-xl font-semibold text-white mb-4">{t('about.tech.stack')}</h3>
                 <ul className="space-y-3">
                   <li className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-[#00ff41] rounded-full"></div>
@@ -191,7 +189,7 @@ export default function AboutPage() {
                 </ul>
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Características Técnicas</h3>
+                <h3 className="text-xl font-semibold text-white mb-4">{t('about.tech.features')}</h3>
                 <ul className="space-y-3">
                   <li className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-[#00ff41] rounded-full"></div>
@@ -225,11 +223,10 @@ export default function AboutPage() {
             <div className="text-center mb-8">
               <Heart className="w-8 h-8 text-[#00ff41] mx-auto mb-4" />
               <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                Apoya el Proyecto
+                {t('about.donate.title')}
               </h2>
               <p className="text-white/70 text-sm max-w-2xl mx-auto">
-                Si LATAMCOINS te ha sido útil, considera hacer una donación para ayudar 
-                a mantener y mejorar la plataforma.
+                {t('about.donate.text')}
               </p>
             </div>
             
@@ -254,12 +251,12 @@ export default function AboutPage() {
                   {copiedAddress === 'sol' ? (
                     <>
                       <Check className="w-4 h-4" />
-                      <span>Copiado</span>
+                      <span>{t('common.copied')}</span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-4 h-4" />
-                      <span>Copiar Dirección</span>
+                      <span>{t('common.copy_address')}</span>
                     </>
                   )}
                 </button>
@@ -268,7 +265,7 @@ export default function AboutPage() {
             
             <div className="text-center mt-6">
               <p className="text-white/50 text-xs">
-                Gracias por tu apoyo. Cada donación nos ayuda a mantener LATAMCOINS gratuito y accesible.
+                {t('about.donate.thanks')}
               </p>
             </div>
           </GlassCard>
@@ -278,21 +275,20 @@ export default function AboutPage() {
         <div className="text-center">
           <GlassCard className="p-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-              ¿Listo para unirte a la revolución crypto latina?
+              {t('about.cta.title')}
             </h2>
             <p className="text-white/70 mb-6 max-w-2xl mx-auto">
-              Únete a miles de usuarios que ya confían en LATAMCOINS para 
-              mantenerse informados sobre el mercado crypto latinoamericano.
+              {t('about.cta.text')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/">
                 <GlassButton size="lg">
-                  Explorar Tokens
+                  {t('about.cta.explore')}
                 </GlassButton>
               </Link>
               <Link href="/contact">
                 <GlassButton variant="secondary" size="lg">
-                  Contactar Equipo
+                  {t('about.cta.contact')}
                 </GlassButton>
               </Link>
             </div>

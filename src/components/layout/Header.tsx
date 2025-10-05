@@ -6,23 +6,26 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Search, Menu, X } from 'lucide-react';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
+import LanguageSelector from '@/components/ui/LanguageSelector';
+import { useI18n } from '@/lib/i18n';
 
 /**
  * Header principal de CoinLatamCap
  * Logo con efecto neón y navegación
  */
 export function Header() {
+  const { t } = useI18n();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
   const navigation = [
-    { name: 'Inicio', href: '/' },
-    { name: 'Mercados', href: '/markets' },
-    { name: 'Análisis', href: '/analytics' },
-    { name: 'Status', href: '/status' },
-    { name: 'Acerca de', href: '/about' },
+    { name: t('nav.home'), href: '/' },
+    { name: t('nav.markets'), href: '/markets' },
+    { name: t('nav.analytics'), href: '/analytics' },
+    { name: t('nav.status'), href: '/status' },
+    { name: t('nav.about'), href: '/about' },
   ];
 
   useEffect(() => {
@@ -66,17 +69,18 @@ export function Header() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#00ff41]/60 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Buscar tokens..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl text-white placeholder-[#00ff41]/60 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/40 transition-all duration-300 text-sm"
-                aria-label="Buscar tokens"
+                aria-label={t('search.aria')}
               />
             </form>
           </div>
 
-          {/* Selector de Moneda - Desktop */}
-          <div className="hidden lg:flex mr-6">
+          {/* Selectores - Desktop/Tablet */}
+          <div className="hidden md:flex items-center gap-3 mr-6">
+            <LanguageSelector size="sm" showLabel={false} />
             <CurrencySelector size="sm" showLabel={false} />
           </div>
 
@@ -97,7 +101,7 @@ export function Header() {
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-1 sm:p-2 text-white hover:text-[#00ff41] transition-colors duration-300"
-            aria-label="Abrir menú"
+            aria-label={t('menu.open')}
             tabIndex={0}
           >
             {isMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
@@ -113,16 +117,17 @@ export function Header() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#00ff41]/60 w-3 h-3 sm:w-4 sm:h-4" />
                 <input
                   type="text"
-                  placeholder="Buscar tokens..."
+                  placeholder={t('search.placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-lg sm:rounded-xl text-white placeholder-[#00ff41]/60 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/40 transition-all duration-300 text-sm"
-                  aria-label="Buscar tokens"
+                  aria-label={t('search.aria')}
                 />
               </form>
 
-              {/* Selector de Moneda - Móvil */}
-              <div className="mb-3 sm:mb-4">
+              {/* Selectores - Móvil */}
+              <div className="mb-3 sm:mb-4 flex items-center gap-3">
+                <LanguageSelector size="sm" showLabel={true} />
                 <CurrencySelector size="sm" showLabel={true} />
               </div>
 

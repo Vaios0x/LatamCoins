@@ -7,6 +7,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
 import { useCurrency } from '@/components/ui/CurrencySelector';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
+import { useI18n } from '@/lib/i18n';
 
 // Interface para datos reales de tokens
 interface RealTokenData {
@@ -39,6 +40,7 @@ interface RealTokenData {
  * Gráficos, estadísticas y tendencias del mercado
  */
 export default function AnalyticsPage() {
+  const { t } = useI18n();
   const [selectedTimeframe, setSelectedTimeframe] = useState('7D');
   const [selectedToken, setSelectedToken] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -166,18 +168,18 @@ export default function AnalyticsPage() {
         {/* Header de la página */}
         <div className="mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            <span className="text-white">Análisis</span>
+            <span className="text-white">{t('analytics.title')}</span>
             <span className="text-[#00ff41] neon-text animate-neon-pulse ml-2">LATAM</span>
           </h1>
           <p className="text-white/70 max-w-3xl text-base sm:text-lg mb-4">
-            Análisis profundo del mercado crypto latinoamericano. Tendencias, patrones y oportunidades.
+            {t('analytics.subtitle')}
           </p>
           
           {/* Indicador de datos reales */}
           <div className="flex items-center space-x-2 mb-6">
             <div className="w-2 h-2 bg-[#00ff41] rounded-full animate-pulse"></div>
             <span className="text-sm text-[#00ff41] font-medium">
-              Solo datos reales de APIs - Sin datos simulados
+              {t('analytics.real_data_badge')}
             </span>
           </div>
           
@@ -185,12 +187,12 @@ export default function AnalyticsPage() {
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
             {/* Selector de token */}
             <div className="flex-1 max-w-md">
-              <label className="block text-white/60 text-sm mb-2">Seleccionar Token para Análisis</label>
+              <label className="block text-white/60 text-sm mb-2">{t('analytics.select_token')}</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#00ff41]/60 w-4 h-4" />
                 <input
                   type="text"
-                  placeholder="Buscar token por nombre o símbolo..."
+                  placeholder={t('analytics.search_placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/40 transition-all duration-300"
@@ -204,7 +206,7 @@ export default function AnalyticsPage() {
           
           {/* Botones de tokens disponibles */}
           <div className="mt-4">
-            <label className="block text-white/60 text-sm mb-3">Tokens Disponibles</label>
+            <label className="block text-white/60 text-sm mb-3">{t('analytics.available_tokens')}</label>
             
             {/* Top 4 tokens destacados */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
@@ -279,7 +281,7 @@ export default function AnalyticsPage() {
                     <span className="text-xs">+</span>
                   </div>
                   <div className="text-sm">
-                    +{tokens.length - 12} más
+                    +{tokens.length - 12} {t('analytics.more_tokens')}
                   </div>
                 </button>
               )}
@@ -326,7 +328,7 @@ export default function AnalyticsPage() {
                 </div>
               ) : (
                 <div className="text-center text-white/60 py-4">
-                  No se encontraron tokens que coincidan con &quot;{searchQuery}&quot;
+                  {t('analytics.no_tokens_found')} &quot;{searchQuery}&quot;
                 </div>
               )}
             </div>
@@ -336,20 +338,20 @@ export default function AnalyticsPage() {
         {/* Estados de carga y error */}
         {isLoading && (
           <GlassCard className="p-8 text-center mb-8">
-            <div className="text-white/60 text-lg mb-4">Cargando análisis de mercado...</div>
+            <div className="text-white/60 text-lg mb-4">{t('analytics.loading_analysis')}</div>
             <div className="animate-spin w-8 h-8 border-2 border-[#00ff41] border-t-transparent rounded-full mx-auto"></div>
           </GlassCard>
         )}
 
         {error && (
           <GlassCard className="p-8 text-center mb-8">
-            <div className="text-[#ff0040] text-lg mb-4">Error al cargar datos</div>
+            <div className="text-[#ff0040] text-lg mb-4">{t('common.error_loading')}</div>
             <p className="text-white/60 mb-4">{error}</p>
             <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
             >
-              Reintentar
+              {t('common.retry')}
             </button>
           </GlassCard>
         )}
@@ -362,7 +364,7 @@ export default function AnalyticsPage() {
                 <div className="flex items-center justify-center space-x-2">
                   <BarChart3 className="w-5 h-5 text-[#00ff41]" />
                   <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide">
-                    Market Cap Total
+                    {t('stats.total_market_cap')}
                   </h3>
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-white font-mono">
@@ -376,7 +378,7 @@ export default function AnalyticsPage() {
                 <div className="flex items-center justify-center space-x-2">
                   <Activity className="w-5 h-5 text-[#00ff41]" />
                   <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide">
-                    Volumen 24h
+                    {t('stats.volume_24h')}
                   </h3>
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-white font-mono">
@@ -390,7 +392,7 @@ export default function AnalyticsPage() {
                 <div className="flex items-center justify-center space-x-2">
                   <TrendingUp className="w-5 h-5 text-[#00ff41]" />
                   <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide">
-                    Tokens en Verde
+                    {t('analytics.tokens_green')}
                   </h3>
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-[#00ff41] font-mono">
@@ -404,7 +406,7 @@ export default function AnalyticsPage() {
                 <div className="flex items-center justify-center space-x-2">
                   <TrendingDown className="w-5 h-5 text-[#ff0040]" />
                   <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide">
-                    Tokens en Rojo
+                    {t('analytics.tokens_red')}
                   </h3>
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-[#ff0040] font-mono">
@@ -620,7 +622,7 @@ export default function AnalyticsPage() {
         {!isLoading && !error && tokens.length > 0 && (
           <div className="mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
-              Comparación de Tokens
+              {t('analytics.compare_heading')}
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               {/* Top 5 tokens por market cap */}
@@ -628,7 +630,7 @@ export default function AnalyticsPage() {
                 <div className="p-4 sm:p-6">
                   <div className="flex items-center space-x-2 mb-4">
                     <BarChart3 className="w-5 h-5 text-[#00ff41]" />
-                    <h3 className="text-lg font-semibold text-white">Top 5 por Market Cap</h3>
+                    <h3 className="text-lg font-semibold text-white">{t('analytics.top_marketcap')}</h3>
                   </div>
                   <div className="space-y-3">
                     {tokens
@@ -662,7 +664,7 @@ export default function AnalyticsPage() {
                 <div className="p-4 sm:p-6">
                   <div className="flex items-center space-x-2 mb-4">
                     <Activity className="w-5 h-5 text-[#00ff41]" />
-                    <h3 className="text-lg font-semibold text-white">Top 5 por Volumen 24h</h3>
+                    <h3 className="text-lg font-semibold text-white">{t('analytics.top_volume')}</h3>
                   </div>
                   <div className="space-y-3">
                     {tokens
@@ -701,7 +703,7 @@ export default function AnalyticsPage() {
               <div className="p-4 sm:p-6">
                 <div className="flex items-center space-x-2 mb-4">
                   <PieChart className="w-5 h-5 text-[#00ff41]" />
-                  <h3 className="text-lg font-semibold text-white">Distribución por Market Cap</h3>
+                  <h3 className="text-lg font-semibold text-white">{t('analytics.distribution_marketcap')}</h3>
                 </div>
                 <div className="space-y-4">
                   {tokens.map((token) => {
@@ -739,11 +741,11 @@ export default function AnalyticsPage() {
               <div className="p-4 sm:p-6">
                 <div className="flex items-center space-x-2 mb-4">
                   <Target className="w-5 h-5 text-[#00ff41]" />
-                  <h3 className="text-lg font-semibold text-white">Métricas Clave</h3>
+                  <h3 className="text-lg font-semibold text-white">{t('analytics.key_metrics')}</h3>
                 </div>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-white/60 text-sm">Cambio Promedio</span>
+                    <span className="text-white/60 text-sm">{t('analytics.avg_change')}</span>
                     <span className={`font-mono font-bold ${
                       marketMetrics.avgChange >= 0 ? 'text-[#00ff41]' : 'text-[#ff0040]'
                     }`}>
@@ -751,25 +753,25 @@ export default function AnalyticsPage() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/60 text-sm">Tokens Totales</span>
+                    <span className="text-white/60 text-sm">{t('analytics.total_tokens')}</span>
                     <span className="text-white font-mono font-bold">
                       {tokens.length}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/60 text-sm">Ratio Verde/Rojo</span>
+                    <span className="text-white/60 text-sm">{t('analytics.green_red_ratio')}</span>
                     <span className="text-white font-mono font-bold">
                       {marketMetrics.gainers}:{marketMetrics.losers}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/60 text-sm">Volumen Promedio</span>
+                    <span className="text-white/60 text-sm">{t('analytics.avg_volume')}</span>
                     <span className="text-white font-mono font-bold">
                       {formatLargeNumber(tokens.length > 0 ? marketMetrics.totalVolume / tokens.length : 0)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/60 text-sm">Datos en Tiempo Real</span>
+                    <span className="text-white/60 text-sm">{t('analytics.realtime_data')}</span>
                     <span className="text-[#00ff41] font-mono font-bold">
                       {tokens.filter(token => token.isRealTime).length}/{tokens.length}
                     </span>

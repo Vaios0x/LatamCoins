@@ -8,6 +8,7 @@ import { GlassButton } from '@/components/ui/GlassButton';
 import { PriceChange } from '@/components/ui/PriceChange';
 // import { Sparkline } from '@/components/dashboard/Sparkline'; // Removido - no se usa
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n';
 
 type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'volume24h' | 'marketCap';
 type SortDirection = 'asc' | 'desc';
@@ -44,6 +45,7 @@ interface RealTokenData {
  * Filtros, ordenamiento y análisis de mercado
  */
 export default function MarketsPage() {
+  const { t } = useI18n();
   const [sortField, setSortField] = useState<SortField>('rank');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [searchQuery, setSearchQuery] = useState('');
@@ -163,10 +165,10 @@ export default function MarketsPage() {
   };
 
   const filterOptions = [
-    { label: 'Todos', value: 'all', icon: Filter },
-    { label: 'Ganadores', value: 'gainers', icon: TrendingUp },
-    { label: 'Perdedores', value: 'losers', icon: TrendingDown },
-    { label: 'Alto Volumen', value: 'volume', icon: Volume2 },
+    { label: t('markets.filters.all'), value: 'all', icon: Filter },
+    { label: t('markets.filters.gainers'), value: 'gainers', icon: TrendingUp },
+    { label: t('markets.filters.losers'), value: 'losers', icon: TrendingDown },
+    { label: t('markets.filters.volume'), value: 'volume', icon: Volume2 },
   ];
 
   return (
@@ -175,11 +177,11 @@ export default function MarketsPage() {
         {/* Header de la página */}
         <div className="mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            <span className="text-white">Mercados</span>
+            <span className="text-white">{t('markets.title')}</span>
             <span className="text-[#00ff41] neon-text animate-neon-pulse ml-2">LATAM</span>
           </h1>
           <p className="text-white/70 max-w-3xl text-base sm:text-lg">
-            Análisis avanzado de tokens latinoamericanos. Filtra, ordena y descubre oportunidades.
+            {t('markets.subtitle')}
           </p>
         </div>
 
@@ -249,11 +251,11 @@ export default function MarketsPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#00ff41]/60 w-4 h-4" />
                 <input
                   type="text"
-                  placeholder="Buscar tokens..."
+                  placeholder={t('search.placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/40 transition-all duration-300"
-                  aria-label="Buscar tokens"
+                  aria-label={t('search.aria')}
                 />
               </div>
             </div>
@@ -282,20 +284,20 @@ export default function MarketsPage() {
         {/* Estados de carga y error */}
         {isLoading && (
           <GlassCard className="p-8 text-center">
-            <div className="text-white/60 text-lg mb-4">Cargando datos de tokens...</div>
+            <div className="text-white/60 text-lg mb-4">{t('markets.loading')}</div>
             <div className="animate-spin w-8 h-8 border-2 border-[#00ff41] border-t-transparent rounded-full mx-auto"></div>
           </GlassCard>
         )}
 
         {error && (
           <GlassCard className="p-8 text-center">
-            <div className="text-[#ff0040] text-lg mb-4">Error al cargar datos</div>
+            <div className="text-[#ff0040] text-lg mb-4">{t('common.error_loading')}</div>
             <p className="text-white/60 mb-4">{error}</p>
             <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
             >
-              Reintentar
+              {t('common.retry')}
             </button>
           </GlassCard>
         )}
@@ -321,7 +323,7 @@ export default function MarketsPage() {
                       onClick={() => handleSort('name')}
                     >
                       <div className="flex items-center space-x-2">
-                        <span className="text-sm font-medium text-white/80">Token</span>
+                        <span className="text-sm font-medium text-white/80">{t('table.token')}</span>
                         {getSortIcon('name')}
                       </div>
                     </th>
@@ -330,7 +332,7 @@ export default function MarketsPage() {
                       onClick={() => handleSort('price')}
                     >
                       <div className="flex items-center justify-end space-x-2">
-                        <span className="text-sm font-medium text-white/80">Precio</span>
+                        <span className="text-sm font-medium text-white/80">{t('table.price')}</span>
                         {getSortIcon('price')}
                       </div>
                     </th>
@@ -348,7 +350,7 @@ export default function MarketsPage() {
                       onClick={() => handleSort('volume24h')}
                     >
                       <div className="flex items-center justify-end space-x-2">
-                        <span className="text-sm font-medium text-white/80">Volumen 24h</span>
+                        <span className="text-sm font-medium text-white/80">{t('table.volume_24h')}</span>
                         {getSortIcon('volume24h')}
                       </div>
                     </th>
@@ -357,15 +359,15 @@ export default function MarketsPage() {
                       onClick={() => handleSort('marketCap')}
                     >
                       <div className="flex items-center justify-end space-x-2">
-                        <span className="text-sm font-medium text-white/80">Market Cap</span>
+                        <span className="text-sm font-medium text-white/80">{t('table.market_cap')}</span>
                         {getSortIcon('marketCap')}
                       </div>
                     </th>
                     <th className="text-center py-4 px-6">
-                      <span className="text-sm font-medium text-white/80">Fuente</span>
+                      <span className="text-sm font-medium text-white/80">{t('table.source')}</span>
                     </th>
                     <th className="text-center py-4 px-6">
-                      <span className="text-sm font-medium text-white/80">Acción</span>
+                      <span className="text-sm font-medium text-white/80">{t('table.action')}</span>
                     </th>
                   </tr>
                 </thead>
@@ -383,21 +385,21 @@ export default function MarketsPage() {
         {!isLoading && !error && sortedTokens.length === 0 && (
           <GlassCard className="p-8 text-center">
             <div className="text-white/60 text-lg mb-4">
-              {filterType === 'gainers' ? 'No hay tokens en verde en este momento' :
-               filterType === 'losers' ? 'No hay tokens en rojo en este momento' :
-               filterType === 'volume' ? 'No hay tokens con alto volumen' :
-               'No se encontraron tokens'}
+              {filterType === 'gainers' ? t('markets.empty.gainers') :
+               filterType === 'losers' ? t('markets.empty.losers') :
+               filterType === 'volume' ? t('markets.empty.volume') :
+               t('markets.empty.none')}
             </div>
             <p className="text-white/40 mb-4">
-              {filterType === 'gainers' ? 'Todos los tokens están en negativo. Intenta cambiar el filtro.' :
-               filterType === 'losers' ? 'Todos los tokens están en positivo. Intenta cambiar el filtro.' :
-               'Intenta ajustar los filtros o la búsqueda'}
+              {filterType === 'gainers' ? t('markets.empty.gainers_hint') :
+               filterType === 'losers' ? t('markets.empty.losers_hint') :
+               t('markets.empty.hint')}
             </p>
             <button
               onClick={() => setFilterType('all')}
               className="px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 text-[#00ff41] rounded-lg transition-all duration-300"
             >
-              Ver Todos los Tokens
+              {t('markets.view_all')}
             </button>
           </GlassCard>
         )}

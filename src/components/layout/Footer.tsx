@@ -4,26 +4,29 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ExternalLink } from 'lucide-react';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
+import LanguageSelector from '@/components/ui/LanguageSelector';
+import { useI18n } from '@/lib/i18n';
 
 /**
  * Footer de CoinLatamCap
  * Enlaces y información de la plataforma
  */
 export function Footer() {
+  const { t } = useI18n();
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
     platform: [
-      { name: 'Acerca de', href: '/about' },
-      { name: 'Términos', href: '/terms' },
-      { name: 'Privacidad', href: '/privacy' },
-      { name: 'Contacto', href: '/contact' },
+      { name: t('footer.about'), href: '/about' },
+      { name: t('footer.terms'), href: '/terms' },
+      { name: t('footer.privacy'), href: '/privacy' },
+      { name: t('footer.contact'), href: '/contact' },
     ],
     resources: [
-      { name: 'Documentación', href: '/docs' },
-      { name: 'API', href: '/api' },
-      { name: 'Soporte', href: '/support' },
-      { name: 'Estado', href: '/status' },
+      { name: t('footer.docs'), href: '/docs' },
+      { name: t('footer.api'), href: '/api' },
+      { name: t('footer.support'), href: '/support' },
+      { name: t('footer.status'), href: '/status' },
     ],
     social: [
       { name: 'X (Twitter)', href: 'https://x.com/coinlatamcap', external: true },
@@ -52,16 +55,18 @@ export function Footer() {
               </h2>
             </div>
             <p className="text-white/70 mb-6 max-w-lg text-sm sm:text-base leading-relaxed">
-              El pulso de las crypto latinas. Tracking en tiempo real de tokens 
-              latinoamericanos en Solana y Pump.fun.
+              {t('app.description')}
             </p>
             
             {/* Selector de Moneda */}
             <div className="mb-6">
-              <CurrencySelector size="md" showLabel={true} />
+              <div className="flex items-center gap-3">
+                <LanguageSelector size="md" showLabel={true} />
+                <CurrencySelector size="md" showLabel={true} />
+              </div>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-6 text-sm text-white/60">
-              <span className="font-medium">Powered by</span>
+              <span className="font-medium">{t('footer.powered_by')}</span>
               <div className="flex items-center space-x-4">
                 <Link 
                   href="https://pump.fun" 
@@ -100,7 +105,7 @@ export function Footer() {
 
           {/* Enlaces de plataforma */}
           <div>
-            <h3 className="text-white font-semibold mb-4 text-base">Plataforma</h3>
+            <h3 className="text-white font-semibold mb-4 text-base">{t('footer.platform')}</h3>
             <ul className="space-y-3">
               {footerLinks.platform.map((link) => (
                 <li key={link.name}>
@@ -118,7 +123,7 @@ export function Footer() {
 
           {/* Enlaces de recursos */}
           <div>
-            <h3 className="text-white font-semibold mb-4 text-base">Recursos</h3>
+            <h3 className="text-white font-semibold mb-4 text-base">{t('footer.resources')}</h3>
             <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
@@ -141,7 +146,7 @@ export function Footer() {
         {/* Copyright y enlaces sociales */}
         <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
           <div className="text-white/60 text-sm text-center lg:text-left">
-            © {currentYear} CoinLatamCap. Todos los derechos reservados.
+            © {currentYear} CoinLatamCap. {t('footer.rights')}
           </div>
           
           <div className="flex items-center space-x-6">

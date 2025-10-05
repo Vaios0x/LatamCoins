@@ -8,6 +8,7 @@ import {
   setSelectedCurrency, 
   type ExchangeRate 
 } from '@/lib/services/exchangeRates';
+import { useI18n } from '@/lib/i18n';
 
 interface CurrencySelectorProps {
   className?: string;
@@ -20,6 +21,7 @@ export function CurrencySelector({
   showLabel = true,
   size = 'md'
 }: CurrencySelectorProps) {
+  const { t, locale } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrencyState] = useState('USD');
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
@@ -68,7 +70,7 @@ export function CurrencySelector({
   if (isLoading) {
     return (
       <div className={`flex items-center space-x-2 ${className}`}>
-        {showLabel && <span className="text-white/60">Moneda:</span>}
+        {showLabel && <span className="text-white/60">{t('currency.label')}:</span>}
         <div className="flex items-center space-x-1 bg-white/10 rounded-lg px-3 py-2">
           <div className="w-4 h-4 bg-white/20 rounded animate-pulse"></div>
           <div className="w-16 h-4 bg-white/20 rounded animate-pulse"></div>
@@ -81,7 +83,7 @@ export function CurrencySelector({
     <div className={`relative ${className}`}>
       {showLabel && (
         <label className="block text-white/60 text-sm mb-1">
-          Moneda
+          {t('currency.label')}
         </label>
       )}
       
@@ -130,7 +132,7 @@ export function CurrencySelector({
           </div>
           
           <div className="border-t border-white/10 p-2 text-xs text-white/40 text-center">
-            Última actualización: {new Date().toLocaleTimeString('es-ES')}
+            {t('currency.last_update')}: {new Date().toLocaleTimeString(locale === 'en' ? 'en-US' : 'es-ES')}
           </div>
         </div>
       )}

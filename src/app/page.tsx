@@ -5,12 +5,14 @@ import { HeroSection } from '@/components/dashboard/HeroSection';
 import { TokenTable } from '@/components/dashboard/TokenTable';
 import { RealTimeData } from '@/components/dashboard/RealTimeData';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
+import { useI18n } from '@/lib/i18n';
 
 /**
  * Página principal de CoinLatamCap
  * Dashboard con estadísticas globales y tabla de tokens
  */
 export default function HomePage() {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState<'memecoins' | 'utility'>('memecoins');
 
   return (
@@ -22,10 +24,10 @@ export default function HomePage() {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
         <div className="mb-8 sm:mb-12 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-            Tokens Latinoamericanos
+            {t('home.tokens_heading')}
           </h2>
           <p className="text-white/70 max-w-3xl mx-auto text-base sm:text-lg">
-            Tracking en tiempo real de los tokens más importantes de Latinoamérica
+            {t('home.tokens_subtitle')}
           </p>
         </div>
         
@@ -41,7 +43,7 @@ export default function HomePage() {
                   : 'text-white/70 hover:text-white hover:bg-white/5'
               }`}
             >
-              🚀 MemeCoins
+              {t('tabs.memecoins')}
             </button>
             <button
               onClick={() => setActiveTab('utility')}
@@ -51,7 +53,7 @@ export default function HomePage() {
                   : 'text-white/70 hover:text-white hover:bg-white/5'
               }`}
             >
-              💎 Utility Tokens
+              {t('tabs.utility')}
             </button>
           </div>
           
@@ -64,9 +66,9 @@ export default function HomePage() {
         {activeTab === 'utility' && (
           <div className="bg-[#0a0e27]/50 backdrop-blur-lg border border-white/10 rounded-xl p-12 text-center">
             <div className="text-6xl mb-4">⏳</div>
-            <h3 className="text-xl font-bold text-white mb-2">Esperando Nuevos Lanzamientos</h3>
+            <h3 className="text-xl font-bold text-white mb-2">{t('utility.placeholder.title')}</h3>
             <p className="text-white/70">
-              Los utility tokens estarán disponibles próximamente
+              {t('utility.placeholder.desc')}
             </p>
           </div>
         )}
@@ -76,39 +78,39 @@ export default function HomePage() {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-            Estado de APIs
+            {t('apis.heading')}
           </h2>
           <p className="text-white/70 max-w-3xl mx-auto text-base sm:text-lg">
-            Monitoreo en tiempo real de las fuentes de datos
+            {t('apis.subheading')}
           </p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-white mb-4">Control de Datos</h3>
+            <h3 className="text-xl font-bold text-white mb-4">{t('apis.control.title')}</h3>
             <div className="space-y-4">
               <button 
                 onClick={() => window.location.reload()} 
                 className="w-full bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 hover:border-[#00ff41]/70 text-[#00ff41] font-semibold py-3 px-4 rounded-lg transition-all duration-300"
               >
-                🔄 Forzar Actualización de Datos
+                {t('apis.control.reload')}
               </button>
               <p className="text-xs text-white/60">
-                Si los precios no se actualizan, haz clic en este botón para recargar los datos reales.
+                {t('apis.control.note')}
               </p>
             </div>
           </div>
           <div className="bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-white mb-4">Fuentes de Datos</h3>
+            <h3 className="text-xl font-bold text-white mb-4">{t('apis.sources.title')}</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-white/80">DexScreener</span>
-                <span className="text-[#00ff41] text-sm">Datos de Solana DEX</span>
+                <span className="text-[#00ff41] text-sm">{t('apis.sources.dex.desc')}</span>
               </div>
             </div>
             <div className="mt-6 text-sm text-white/60">
-              <p>DexScreener proporciona datos en tiempo real de tokens de Solana.</p>
-              <p>Los datos se actualizan automáticamente cada 30 segundos.</p>
+              <p>{t('apis.sources.dex.note1')}</p>
+              <p>{t('apis.sources.dex.note2')}</p>
             </div>
           </div>
         </div>
@@ -118,10 +120,10 @@ export default function HomePage() {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-            Datos en Tiempo Real
+            {t('realtime.heading')}
           </h2>
           <p className="text-white/70 max-w-3xl mx-auto text-base sm:text-lg">
-            Información actualizada desde múltiples fuentes cada 30 segundos
+            {t('realtime.subheading')}
           </p>
         </div>
         

@@ -6,6 +6,7 @@ import { formatPercentage } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useRealPrices } from '@/lib/hooks/useRealPrices';
 import { useCurrency } from '@/components/ui/CurrencySelector';
+import { useI18n } from '@/lib/i18n';
 // import { ApiStatusNotification } from '@/components/ui/ApiStatusNotification';
 
 /**
@@ -13,6 +14,7 @@ import { useCurrency } from '@/components/ui/CurrencySelector';
  * Estadísticas globales y título principal
  */
 export function HeroSection() {
+  const { t } = useI18n();
   const { 
     globalStats, 
     isLoading, 
@@ -24,17 +26,17 @@ export function HeroSection() {
   
   const stats = [
     {
-      label: 'Total Market Cap',
+      label: t('stats.total_market_cap'),
       value: formatPrice(globalStats.totalMarketCap),
       change: globalStats.averageChange24h,
     },
     {
-      label: '24h Volume',
+      label: t('stats.volume_24h'),
       value: formatPrice(globalStats.totalVolume24h),
       change: 0, // No hay cambio para volumen
     },
     {
-      label: 'Tokens Tracked',
+      label: t('stats.tokens_tracked'),
       value: globalStats.tokensTracked.toString(),
       change: 0, // No hay cambio para cantidad
     },
@@ -64,10 +66,10 @@ export function HeroSection() {
             <span className="text-white">LatamCap</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/80 max-w-4xl mx-auto mb-4">
-            El futuro de las crypto latinas en tiempo real
+            {t('hero.tagline1')}
           </p>
           <p className="text-base sm:text-lg md:text-xl text-white/60 max-w-3xl mx-auto mb-4">
-            Tracking exclusivo de tokens latinoamericanos en Solana y Pump.fun
+            {t('hero.tagline2')}
           </p>
           
           {/* Indicador de estado de datos */}
@@ -76,8 +78,8 @@ export function HeroSection() {
               hasError ? 'bg-[#ff0040]' : 'bg-[#00ff41]'
             } ${isLoading ? 'animate-pulse' : ''}`} />
             <span className="text-sm text-white/60">
-              {isLoading ? 'Cargando datos de DexScreener...' : 
-               hasError ? 'Error cargando datos' : 'Datos en tiempo real desde DexScreener'}
+              {isLoading ? t('hero.status.loading') : 
+               hasError ? t('hero.status.error') : t('hero.status.ok')}
             </span>
           </div>
         </div>

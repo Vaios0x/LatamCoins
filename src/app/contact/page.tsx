@@ -5,12 +5,14 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { GlassButton } from '@/components/ui/GlassButton';
 import { ArrowLeft, Mail, MessageSquare, Send, MapPin, Clock, Users, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n';
 
 /**
  * Página de Contacto
  * Formulario de contacto y información de CoinLatamCap
  */
 export default function ContactPage() {
+  const { t } = useI18n();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -105,18 +107,17 @@ export default function ContactPage() {
             <Link href="/">
               <GlassButton variant="ghost" size="sm">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Volver
+                {t('common.back')}
               </GlassButton>
             </Link>
           </div>
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            <span className="text-white">Contacto</span>
+            <span className="text-white">{t('contact.title')}</span>
             <span className="text-[#00ff41] neon-text animate-neon-pulse ml-2">CoinLatamCap</span>
           </h1>
           <p className="text-white/70 max-w-3xl text-base sm:text-lg">
-            ¿Tienes preguntas, sugerencias o quieres colaborar con nosotros? 
-            Estamos aquí para ayudarte y escuchar tu feedback.
+            {t('contact.subtitle')}
           </p>
         </div>
 
@@ -125,15 +126,15 @@ export default function ContactPage() {
           <div className="lg:col-span-2">
             <GlassCard className="p-6 sm:p-8">
               <h2 className="text-xl sm:text-2xl font-bold text-white mb-6">
-                Envíanos un Mensaje
+                {t('contact.send_message')}
               </h2>
               
               {isSubmitted ? (
                 <div className="text-center py-8">
                   <CheckCircle className="w-16 h-16 text-[#00ff41] mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-white mb-2">¡Mensaje Enviado!</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">{t('contact.sent_title')}</h3>
                   <p className="text-white/70">
-                    Gracias por contactarnos. Te responderemos pronto.
+                    {t('contact.sent_desc')}
                   </p>
                 </div>
               ) : (
@@ -141,7 +142,7 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-white/80 mb-2">
-                        Nombre *
+                        {t('contact.name')} *
                       </label>
                       <input
                         type="text"
@@ -151,13 +152,13 @@ export default function ContactPage() {
                         onChange={handleInputChange}
                         required
                         className="w-full px-4 py-3 bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/40 transition-all duration-300"
-                        placeholder="Tu nombre completo"
+                        placeholder={t('contact.name_placeholder')}
                       />
                     </div>
                     
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-white/80 mb-2">
-                        Email *
+                        {t('contact.email')} *
                       </label>
                       <input
                         type="email"
@@ -167,14 +168,14 @@ export default function ContactPage() {
                         onChange={handleInputChange}
                         required
                         className="w-full px-4 py-3 bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/40 transition-all duration-300"
-                        placeholder="tu@email.com"
+                        placeholder={t('contact.email_placeholder')}
                       />
                     </div>
                   </div>
 
                   <div>
                     <label htmlFor="type" className="block text-sm font-medium text-white/80 mb-2">
-                      Tipo de Consulta
+                      {t('contact.type')}
                     </label>
                     <select
                       id="type"
@@ -193,7 +194,7 @@ export default function ContactPage() {
 
                   <div>
                     <label htmlFor="subject" className="block text-sm font-medium text-white/80 mb-2">
-                      Asunto *
+                      {t('contact.subject')} *
                     </label>
                     <input
                       type="text"
@@ -203,13 +204,13 @@ export default function ContactPage() {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/40 transition-all duration-300"
-                      placeholder="Resumen de tu consulta"
+                      placeholder={t('contact.subject_placeholder')}
                     />
                   </div>
 
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-white/80 mb-2">
-                      Mensaje *
+                      {t('contact.message')} *
                     </label>
                     <textarea
                       id="message"
@@ -219,7 +220,7 @@ export default function ContactPage() {
                       required
                       rows={6}
                       className="w-full px-4 py-3 bg-[#0a0e27]/50 backdrop-blur-lg border border-[#00ff41]/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#00ff41]/50 focus:border-[#00ff41]/40 transition-all duration-300 resize-none"
-                      placeholder="Cuéntanos más detalles sobre tu consulta..."
+                      placeholder={t('contact.message_placeholder')}
                     />
                   </div>
 
@@ -230,7 +231,7 @@ export default function ContactPage() {
                     className="w-full"
                   >
                     <Send className="w-4 h-4 mr-2" />
-                    {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
+                    {isSubmitting ? t('contact.sending') : t('contact.send')}
                   </GlassButton>
                 </form>
               )}
