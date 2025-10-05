@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Activity, Users, Zap } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { formatLargeNumber, formatPercentage } from '@/lib/utils/formatters';
+import { formatPercentage } from '@/lib/utils/formatters';
 import { useCurrency } from '@/components/ui/CurrencySelector';
 
 interface GlobalMetricsData {
@@ -33,7 +33,7 @@ export function GlobalMetrics() {
   const [error, setError] = useState<string | null>(null);
   
   // Usar el hook de moneda
-  const { formatPrice } = useCurrency();
+  const { formatPrice, formatLargeNumber } = useCurrency();
 
   useEffect(() => {
     // Obtener datos reales de métricas globales

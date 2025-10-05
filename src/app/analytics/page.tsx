@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { TrendingUp, TrendingDown, BarChart3, PieChart, Activity, Target, Search } from 'lucide-react';
-import { formatLargeNumber } from '@/lib/utils/formatters';
+import { formatLargeNumber as formatLargeNumberUSD } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
 import { useCurrency } from '@/components/ui/CurrencySelector';
@@ -49,7 +49,7 @@ export default function AnalyticsPage() {
   const [error, setError] = useState<string | null>(null);
   
   // Usar el hook de moneda
-  const { formatPrice } = useCurrency();
+  const { formatPrice, formatLargeNumber } = useCurrency();
 
   // Cargar datos reales de tokens
   useEffect(() => {

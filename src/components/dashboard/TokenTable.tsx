@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowUpDown, ArrowUp, ArrowDown, Search, X } from 'lucide-react';
 import { Token } from '@/lib/constants/tokens';
-import { formatLargeNumber } from '@/lib/utils/formatters';
+import { formatLargeNumber as formatLargeNumberUSD } from '@/lib/utils/formatters';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { Sparkline } from './Sparkline';
@@ -339,7 +339,7 @@ function TokenRow({ token }: { token: Token }) {
   const router = useRouter();
   
   // Usar el hook de moneda
-  const { formatPrice } = useCurrency();
+  const { formatPrice, formatLargeNumber } = useCurrency();
   
   const handleRowClick = () => {
     router.push(`/token/${token.symbol.toLowerCase()}`);
