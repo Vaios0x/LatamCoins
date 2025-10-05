@@ -159,7 +159,7 @@ export function Footer() {
 
               <div className="pt-2">
                 <Link
-                  href={`mailto:${t('listing.email')}?subject=${encodeURIComponent(t('listing.contact'))}&body=${encodeURIComponent(t('listing.description'))}`}
+                  href="/listing"
                   className="inline-flex items-center space-x-2 px-4 py-2 bg-[#00ff41]/20 hover:bg-[#00ff41]/30 border border-[#00ff41]/50 hover:border-[#00ff41]/70 text-[#00ff41] text-sm font-medium rounded-lg transition-all duration-300 hover:scale-105 transform"
                   aria-label={t('listing.contact')}
                 >
