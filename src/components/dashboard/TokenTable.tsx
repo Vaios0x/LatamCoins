@@ -455,7 +455,7 @@ function TokenRow({ token }: { token: Token }) {
  */
 function TokenCard({ token }: { token: Token }) {
   // Usar el hook de moneda
-  const { formatPrice } = useCurrency();
+  const { formatPrice, formatLargeNumber } = useCurrency();
 
   return (
     <Link href={`/token/${token.symbol.toLowerCase()}`} className="block">
