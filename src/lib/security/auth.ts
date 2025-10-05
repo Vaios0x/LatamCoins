@@ -34,14 +34,14 @@ export interface AuthSession {
  */
 export class SecureAuth {
   private readonly jwtSecret: string;
-  private readonly jwtExpiresIn: string;
+  private readonly jwtExpiresIn: SignOptions['expiresIn'];
   private readonly refreshTokenExpiresIn: string;
   private readonly maxLoginAttempts: number;
   private readonly lockoutDuration: number;
 
   constructor() {
     this.jwtSecret = process.env.JWT_SECRET || 'fallback-secret-change-in-production';
-    this.jwtExpiresIn = process.env.JWT_EXPIRES_IN || '15m';
+    this.jwtExpiresIn = (process.env.JWT_EXPIRES_IN || '15m') as unknown as SignOptions['expiresIn'];
     this.refreshTokenExpiresIn = process.env.REFRESH_TOKEN_EXPIRES_IN || '7d';
     this.maxLoginAttempts = parseInt(process.env.MAX_LOGIN_ATTEMPTS || '5');
     this.lockoutDuration = parseInt(process.env.LOCKOUT_DURATION || '900000'); // 15 minutes
