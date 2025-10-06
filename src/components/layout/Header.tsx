@@ -33,9 +33,9 @@ export function Header() {
   return (
     <header className="relative z-50 w-full bg-[#0a0e27]/80 backdrop-blur-xl border-b border-[#00ff41]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-14 sm:h-16 md:h-18">
+        <div className="flex items-center h-14 sm:h-16 md:h-18">
           {/* Logo CoinLatamCap */}
-          <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
+          <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group flex-shrink-0">
             <div className="relative">
               <Image
                 src="/images/logo/CLCl.png"
@@ -53,15 +53,11 @@ export function Header() {
             </div>
           </Link>
 
-
-          {/* Selectores - Desktop/Tablet */}
-          <div className="hidden md:flex items-center gap-3 mr-6">
-            <LanguageSelector size="sm" showLabel={false} />
-            <CurrencySelector size="sm" showLabel={false} />
-          </div>
+          {/* Espaciador central */}
+          <div className="flex-1" />
 
           {/* Navegación - Desktop */}
-          <nav className="hidden md:flex items-center space-x-3 lg:space-x-6">
+          <nav className="hidden md:flex items-center space-x-3 lg:space-x-6 flex-shrink-0">
             {isClient && navigation.map((item) => (
               <Link
                 key={item.name}
@@ -72,6 +68,15 @@ export function Header() {
               </Link>
             ))}
           </nav>
+
+          {/* Espaciador entre navegación y selectores */}
+          <div className="hidden md:block w-6" />
+
+          {/* Selectores - Desktop/Tablet */}
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0">
+            <LanguageSelector size="sm" showLabel={false} />
+            <CurrencySelector size="sm" showLabel={false} />
+          </div>
 
           {/* Botón menú móvil */}
           <button
