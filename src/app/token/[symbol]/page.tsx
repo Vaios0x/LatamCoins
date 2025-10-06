@@ -6,6 +6,9 @@ import { formatPercentage } from '@/lib/utils/formatters';
 import { useCurrency } from '@/components/ui/CurrencySelector';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
+import { AdvancedCandlestickChart } from '@/components/charts/AdvancedCandlestickChart';
+import { TimeframeSelector } from '@/components/charts/TimeframeSelector';
+import { TechnicalIndicators } from '@/components/charts/TechnicalIndicators';
 import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart3, Activity, Star, Share2, Copy, CheckCircle, Users, Heart, Zap, Target, Globe, Clock, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -270,20 +273,11 @@ export default function TokenDetailPage() {
             <GlassCard className="p-4 sm:p-6">
               {/* Chart Header */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
-                <div className="flex flex-wrap gap-1 sm:gap-2">
-                  {['1m', '30m', '1h', '15m'].map((period) => (
-                    <button
-                      key={period}
-                      className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm ${
-                        period === '15m' 
-                          ? 'bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/50'
-                          : 'text-white/60 hover:text-white bg-white/10'
-                      }`}
-                    >
-                      {period}
-                    </button>
-                  ))}
-                </div>
+                <TimeframeSelector 
+                  selectedTimeframe={selectedTimeframe}
+                  onTimeframeChange={setSelectedTimeframe}
+                  className="flex-wrap gap-1 sm:gap-2"
+                />
                 <div className="text-left sm:text-right w-full sm:w-auto">
                   <div className="text-lg sm:text-2xl font-mono text-white">{formatPrice(token.price)}</div>
                   <div className="text-xs sm:text-sm text-white/60">
@@ -292,9 +286,18 @@ export default function TokenDetailPage() {
                 </div>
               </div>
 
-              {/* Chart */}
+              {/* Advanced Candlestick Chart */}
               <div className="h-64 sm:h-80 lg:h-96 mb-4 sm:mb-6">
-                <RealTimePriceChart token={token} timeframe={selectedTimeframe} />
+                <AdvancedCandlestickChart 
+                  token={token} 
+                  timeframe={selectedTimeframe}
+                  height={400}
+                />
+              </div>
+
+              {/* Technical Indicators */}
+              <div className="mb-4 sm:mb-6">
+                <TechnicalIndicators />
               </div>
 
               {/* Chart Info */}
