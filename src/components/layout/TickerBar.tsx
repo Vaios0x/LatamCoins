@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { LATAM_TOKENS } from '@/lib/constants/tokens';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { cn } from '@/lib/utils';
 import { useCurrency } from '@/components/ui/CurrencySelector';
-import { useRealPrices } from '@/lib/hooks/useRealPrices';
 
 /**
  * Barra de ticker con scroll horizontal infinito
@@ -13,37 +12,24 @@ import { useRealPrices } from '@/lib/hooks/useRealPrices';
  */
 export function TickerBar() {
   const [isPaused, setIsPaused] = useState(false);
-  const [supportsHover, setSupportsHover] = useState(false);
   
   // Usar el hook de moneda
   const { formatPrice } = useCurrency();
-  const { tokens } = useRealPrices();
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const mq = window.matchMedia('(hover: hover)');
-      setSupportsHover(mq.matches);
-    }
-  }, []);
 
   // Duplicar tokens para scroll infinito
-  const liveData = useMemo(() => {
-    // Estructura esperada: { symbol, price, change24h }
-    if (Array.isArray(tokens) && tokens.length > 0) return tokens as any[];
-    return LATAM_TOKENS as any[];
-  }, [tokens]);
-
-  const tickerData = useMemo(() => [...liveData, ...liveData], [liveData]);
+  const tickerData = [...LATAM_TOKENS, ...LATAM_TOKENS];
 
   return (
     <div className="relative overflow-hidden bg-[#0a0e27]/80 backdrop-blur-lg border-b border-[#00ff41]/20">
       <div
         className={cn(
-          'inline-flex items-center space-x-4 sm:space-x-6 md:space-x-8 py-1 sm:py-2 min-w-max',
+          'flex items-center space-x-4 sm:space-x-6 md:space-x-8 py-1 sm:py-2',
           isPaused ? 'animate-pause' : 'animate-ticker-scroll'
         )}
-        onMouseEnter={() => supportsHover && setIsPaused(true)}
-        onMouseLeave={() => supportsHover && setIsPaused(false)}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
       >
         {tickerData.map((token, index) => (
           <div

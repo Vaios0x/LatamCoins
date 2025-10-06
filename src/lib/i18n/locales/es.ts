@@ -243,7 +243,53 @@ const es = {
   "chatbot.openAria": "Abrir chatbot",
   "chatbot.closeAria": "Cerrar chat",
   "chatbot.quickAnalyzeHolder": "Analizar HOLDER (DOGGY)",
-  "chatbot.quickDeFiSolana": "DeFi en Solana"
+  "chatbot.quickDeFiSolana": "DeFi en Solana",
+
+  // Home sections - New sections
+  "sections.top_volume.title": "Top 5 por Volumen 24h",
+  "sections.top_volume.subtitle": "Los tokens con mayor volumen de trading en las últimas 24 horas",
+  "sections.top_volume.loading": "Cargando datos...",
+  "sections.top_volume.volume_label": "Volumen:",
+
+  "sections.top_price.title": "Top 5 por Precio",
+  "sections.top_price.subtitle": "Los tokens con mayor precio en el mercado",
+  "sections.top_price.loading": "Cargando datos...",
+  "sections.top_price.price_label": "Precio:",
+
+  "sections.top_gainers.title": "Top 5 Ganadores 24h",
+  "sections.top_gainers.subtitle": "Los tokens con mayor ganancia en las últimas 24 horas",
+  "sections.top_gainers.loading": "Cargando datos...",
+  "sections.top_gainers.price_label": "Precio:",
+  "sections.top_gainers.volume_label": "Vol:",
+
+  "sections.top_losers.title": "Top 5 Perdedores 24h",
+  "sections.top_losers.subtitle": "Los tokens con mayor pérdida en las últimas 24 horas",
+  "sections.top_losers.loading": "Cargando datos reales...",
+  "sections.top_losers.price_label": "Precio:",
+  "sections.top_losers.volume_label": "Vol:",
+  "sections.top_losers.no_losers": "No hay tokens con pérdidas en las últimas 24 horas",
+  "sections.top_losers.good_news": "¡Excelente noticia!",
+  "sections.top_losers.all_profitable": "Todos los tokens LATAM están en ganancia en las últimas 24 horas",
+
+  "sections.trending.title": "🔥 Tokens Trending",
+  "sections.trending.subtitle": "Los tokens más populares y mencionados en redes sociales",
+  "sections.trending.loading": "Cargando datos...",
+  "sections.trending.price_label": "Precio:",
+  "sections.trending.mentions": "menciones",
+
+  "sections.market_cap_leaders.title": "💎 Market Cap Leaders",
+  "sections.market_cap_leaders.subtitle": "Tokens con mayor capitalización de mercado",
+  "sections.market_cap_leaders.loading": "Cargando datos...",
+  "sections.market_cap_leaders.price_label": "Precio:",
+  "sections.market_cap_leaders.market_cap_label": "MC:",
+  "sections.market_cap_leaders.volume_label": "Vol:",
+
+  "sections.most_active.title": "🔄 Más Activos",
+  "sections.most_active.subtitle": "Tokens con mayor actividad de trading",
+  "sections.most_active.loading": "Cargando datos...",
+  "sections.most_active.price_label": "Precio:",
+  "sections.most_active.volume_label": "Vol:",
+  "sections.most_active.trades": "trades"
 };
 
 export default es;

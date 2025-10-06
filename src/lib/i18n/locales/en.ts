@@ -243,7 +243,53 @@ const en = {
   "chatbot.openAria": "Open chatbot",
   "chatbot.closeAria": "Close chat",
   "chatbot.quickAnalyzeHolder": "Analyze HOLDER (DOGGY)",
-  "chatbot.quickDeFiSolana": "DeFi on Solana"
+  "chatbot.quickDeFiSolana": "DeFi on Solana",
+
+  // Home sections - New sections
+  "sections.top_volume.title": "Top 5 by 24h Volume",
+  "sections.top_volume.subtitle": "Tokens with the highest trading volume in the last 24 hours",
+  "sections.top_volume.loading": "Loading data...",
+  "sections.top_volume.volume_label": "Volume:",
+
+  "sections.top_price.title": "Top 5 by Price",
+  "sections.top_price.subtitle": "Tokens with the highest price in the market",
+  "sections.top_price.loading": "Loading data...",
+  "sections.top_price.price_label": "Price:",
+
+  "sections.top_gainers.title": "Top 5 Gainers 24h",
+  "sections.top_gainers.subtitle": "Tokens with the highest gains in the last 24 hours",
+  "sections.top_gainers.loading": "Loading data...",
+  "sections.top_gainers.price_label": "Price:",
+  "sections.top_gainers.volume_label": "Vol:",
+
+  "sections.top_losers.title": "Top 5 Losers 24h",
+  "sections.top_losers.subtitle": "Tokens with the highest losses in the last 24 hours",
+  "sections.top_losers.loading": "Loading real data...",
+  "sections.top_losers.price_label": "Price:",
+  "sections.top_losers.volume_label": "Vol:",
+  "sections.top_losers.no_losers": "No tokens with losses in the last 24 hours",
+  "sections.top_losers.good_news": "Great news!",
+  "sections.top_losers.all_profitable": "All LATAM tokens are in profit in the last 24 hours",
+
+  "sections.trending.title": "🔥 Trending Tokens",
+  "sections.trending.subtitle": "Most popular and mentioned tokens on social media",
+  "sections.trending.loading": "Loading data...",
+  "sections.trending.price_label": "Price:",
+  "sections.trending.mentions": "mentions",
+
+  "sections.market_cap_leaders.title": "💎 Market Cap Leaders",
+  "sections.market_cap_leaders.subtitle": "Tokens with the highest market capitalization",
+  "sections.market_cap_leaders.loading": "Loading data...",
+  "sections.market_cap_leaders.price_label": "Price:",
+  "sections.market_cap_leaders.market_cap_label": "MC:",
+  "sections.market_cap_leaders.volume_label": "Vol:",
+
+  "sections.most_active.title": "🔄 Most Active",
+  "sections.most_active.subtitle": "Tokens with the highest trading activity",
+  "sections.most_active.loading": "Loading data...",
+  "sections.most_active.price_label": "Price:",
+  "sections.most_active.volume_label": "Vol:",
+  "sections.most_active.trades": "trades"
 };
 
 export default en;

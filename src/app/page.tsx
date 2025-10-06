@@ -4,6 +4,13 @@ import { useState } from 'react';
 import { HeroSection } from '@/components/dashboard/HeroSection';
 import { TokenTable } from '@/components/dashboard/TokenTable';
 import { RealTimeData } from '@/components/dashboard/RealTimeData';
+import { TopVolumeSection } from '@/components/dashboard/TopVolumeSection';
+import { TopPriceSection } from '@/components/dashboard/TopPriceSection';
+import { TopGainersSection } from '@/components/dashboard/TopGainersSection';
+import { TopLosersSection } from '@/components/dashboard/TopLosersSection';
+import { TrendingTokensSection } from '@/components/dashboard/TrendingTokensSection';
+import { MarketCapLeadersSection } from '@/components/dashboard/MarketCapLeadersSection';
+import { MostActiveSection } from '@/components/dashboard/MostActiveSection';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 import { useI18n } from '@/lib/i18n';
 
@@ -73,6 +80,27 @@ export default function HomePage() {
           </div>
         )}
       </div>
+
+      {/* Sección Top 5 por Volumen 24h */}
+      <TopVolumeSection />
+
+      {/* Sección Top 5 por Precio */}
+      <TopPriceSection />
+
+      {/* Sección Top 5 Ganadores 24h */}
+      <TopGainersSection />
+
+      {/* Sección Top 5 Perdedores 24h */}
+      <TopLosersSection />
+
+      {/* Sección Tokens Trending */}
+      <TrendingTokensSection />
+
+      {/* Sección Market Cap Leaders */}
+      <MarketCapLeadersSection />
+
+      {/* Sección Más Activos */}
+      <MostActiveSection />
 
       {/* Sección de estado de APIs */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">

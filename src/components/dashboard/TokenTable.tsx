@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowUpDown, ArrowUp, ArrowDown, Search, X } from 'lucide-react';
@@ -45,10 +45,7 @@ export function TokenTable() {
     
     return tokens.filter(token => 
       token.name.toLowerCase().includes(query) ||
-      token.symbol.toLowerCase().includes(query) ||
-      token.platform.toLowerCase().includes(query) ||
-      token.chain.toLowerCase().includes(query) ||
-      token.contract.toLowerCase().includes(query)
+      token.symbol.toLowerCase().includes(query)
     );
   }, [searchQuery, tokens]);
 
