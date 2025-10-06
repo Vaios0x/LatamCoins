@@ -6,7 +6,7 @@ import { formatPercentage } from '@/lib/utils/formatters';
 import { useCurrency } from '@/components/ui/CurrencySelector';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
-import { AdvancedCandlestickChart } from '@/components/charts/AdvancedCandlestickChart';
+import { SimpleCandlestickChart } from '@/components/charts/SimpleCandlestickChart';
 import { TimeframeSelector } from '@/components/charts/TimeframeSelector';
 import { TechnicalIndicators } from '@/components/charts/TechnicalIndicators';
 import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart3, Activity, Star, Share2, Copy, CheckCircle, Users, Heart, Zap, Target, Globe, Clock, RefreshCw } from 'lucide-react';
@@ -286,9 +286,9 @@ export default function TokenDetailPage() {
                 </div>
               </div>
 
-              {/* Advanced Candlestick Chart */}
+              {/* Simple Candlestick Chart */}
               <div className="h-64 sm:h-80 lg:h-96 mb-4 sm:mb-6">
-                <AdvancedCandlestickChart 
+                <SimpleCandlestickChart 
                   token={token} 
                   timeframe={selectedTimeframe}
                   height={400}

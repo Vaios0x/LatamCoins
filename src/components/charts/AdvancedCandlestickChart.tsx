@@ -92,10 +92,11 @@ export function AdvancedCandlestickChart({
 
     // Importación dinámica de lightweight-charts
     const initChart = async () => {
-      const { createChart, ColorType } = await import('lightweight-charts');
-      
-      // Configuración del tema oscuro
-    const chartOptions = {
+      try {
+        const { createChart, ColorType } = await import('lightweight-charts');
+        
+        // Configuración del tema oscuro
+        const chartOptions = {
       layout: {
         background: { type: ColorType.Solid, color: '#0a0a0a' },
         textColor: '#ffffff',
@@ -231,8 +232,11 @@ export function AdvancedCandlestickChart({
     candlestickSeriesRef.current = candlestickSeries;
     volumeSeriesRef.current = volumeSeries;
 
-    setIsLoading(false);
-
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error loading lightweight-charts:', error);
+        setIsLoading(false);
+      }
     };
 
     // Llamar a la función async
