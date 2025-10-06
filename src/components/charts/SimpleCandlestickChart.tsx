@@ -86,7 +86,12 @@ export function SimpleCandlestickChart({
 
     // Ajustar tamaño real del canvas con devicePixelRatio para nitidez
     const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
-    const containerWidth = containerRef.current?.clientWidth || 800;
+    // Medir ancho del contenedor con múltiples fallbacks
+    const measuredWidth = containerRef.current?.clientWidth 
+      || canvas.parentElement?.clientWidth 
+      || (typeof window !== 'undefined' ? window.innerWidth : 800) 
+      || 800;
+    const containerWidth = Math.max(1, Math.floor(measuredWidth));
     const cssHeight = height; // altura CSS controlada por prop
 
     // Establecer tamaño en píxeles del canvas (escala por dpr)
@@ -110,9 +115,16 @@ export function SimpleCandlestickChart({
 
     // Encontrar min y max de precios
     const prices = data.flatMap(d => [d.open, d.high, d.low, d.close]);
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
-    const priceRange = maxPrice - minPrice;
+    let minPrice = Math.min(...prices);
+    let maxPrice = Math.max(...prices);
+    let priceRange = maxPrice - minPrice;
+    // Evitar división entre cero cuando hay variación mínima
+    if (!isFinite(priceRange) || priceRange === 0) {
+      const epsilon = Math.max(1e-8, (minPrice || 1) * 0.0001);
+      minPrice = minPrice - epsilon;
+      maxPrice = maxPrice + epsilon;
+      priceRange = maxPrice - minPrice;
+    }
 
     // Dibujar grid
     ctx.strokeStyle = '#1a1a2e';
@@ -140,8 +152,8 @@ export function SimpleCandlestickChart({
     ctx.setLineDash([]);
 
     // Dibujar velas japonesas
-    const candleWidth = chartWidth / data.length * 0.8;
-    const candleSpacing = chartWidth / data.length;
+    const candleSpacing = chartWidth / Math.max(1, data.length);
+    const candleWidth = Math.max(1, candleSpacing * 0.7);
 
     data.forEach((candle, index) => {
       const x = padding + (candleSpacing * index) + (candleSpacing - candleWidth) / 2;
