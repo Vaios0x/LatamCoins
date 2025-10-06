@@ -31,6 +31,7 @@ export function SimpleCandlestickChart({
   timeframe = '15m',
   height = 400 
 }: SimpleCandlestickChartProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -83,8 +84,22 @@ export function SimpleCandlestickChart({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
+    // Ajustar tamaño real del canvas con devicePixelRatio para nitidez
+    const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
+    const containerWidth = containerRef.current?.clientWidth || 800;
+    const cssHeight = height; // altura CSS controlada por prop
+
+    // Establecer tamaño en píxeles del canvas (escala por dpr)
+    canvas.width = Math.floor(containerWidth * dpr);
+    canvas.height = Math.floor(cssHeight * dpr);
+    // Establecer tamaño CSS (sin dpr)
+    canvas.style.width = `${containerWidth}px`;
+    canvas.style.height = `${cssHeight}px`;
+    // Escalar el contexto para que las coordenadas estén en CSS px
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const canvasWidth = containerWidth;
+    const canvasHeight = cssHeight;
     const padding = 40;
     const chartWidth = canvasWidth - (padding * 2);
     const chartHeight = canvasHeight - (padding * 2);
@@ -210,7 +225,32 @@ export function SimpleCandlestickChart({
     const data = generateCandlestickData();
     drawCandlestickChart(data);
     setIsLoading(false);
-  }, [token, timeframe]);
+
+    // Redibujar en resize del contenedor/ventana
+    const ResizeObs = (window as any).ResizeObserver;
+    const ro = ResizeObs
+      ? new ResizeObs(() => {
+          const newData = generateCandlestickData();
+          drawCandlestickChart(newData);
+        })
+      : undefined;
+    if (containerRef.current && ro) {
+      ro.observe(containerRef.current);
+    }
+
+    const handleResize = () => {
+      const newData = generateCandlestickData();
+      drawCandlestickChart(newData);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (ro && typeof ro.disconnect === 'function') {
+        ro.disconnect();
+      }
+    };
+  }, [token, timeframe, height]);
 
   if (isLoading) {
     return (
@@ -224,13 +264,10 @@ export function SimpleCandlestickChart({
   }
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative w-full" style={{ height }}>
       <canvas 
         ref={canvasRef}
-        width={800}
-        height={height}
-        className="w-full h-full"
-        style={{ maxWidth: '100%', height: 'auto' }}
+        className="block"
       />
       
       {/* Overlay con información del token */}
