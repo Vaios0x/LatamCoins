@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickData, UTCTimestamp } from 'lightweight-charts';
 
 interface Token {
   symbol: string;
@@ -91,7 +90,11 @@ export function AdvancedCandlestickChart({
   useEffect(() => {
     if (!chartContainerRef.current) return;
 
-    // Configuración del tema oscuro
+    // Importación dinámica de lightweight-charts
+    const initChart = async () => {
+      const { createChart, ColorType } = await import('lightweight-charts');
+      
+      // Configuración del tema oscuro
     const chartOptions = {
       layout: {
         background: { type: ColorType.Solid, color: '#0a0a0a' },
@@ -229,6 +232,11 @@ export function AdvancedCandlestickChart({
     volumeSeriesRef.current = volumeSeries;
 
     setIsLoading(false);
+
+    };
+
+    // Llamar a la función async
+    initChart();
 
     // Cleanup
     return () => {
