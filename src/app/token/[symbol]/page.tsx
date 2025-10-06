@@ -6,6 +6,7 @@ import { formatPercentage } from '@/lib/utils/formatters';
 import { useCurrency } from '@/components/ui/CurrencySelector';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
+import { RealCandlestickChart } from '@/components/charts/RealCandlestickChart';
 // Mostrar datos reales inmediatamente (sparkline DexScreener)
 import { TimeframeSelector } from '@/components/charts/TimeframeSelector';
 import { TechnicalIndicators } from '@/components/charts/TechnicalIndicators';
@@ -286,9 +287,13 @@ export default function TokenDetailPage() {
                 </div>
               </div>
 
-              {/* Real data chart (sparkline) mientras integramos velas OHLC */}
+              {/* Real Candlestick Chart with OHLC data */}
               <div className="h-64 sm:h-80 lg:h-96 mb-4 sm:mb-6">
-                <RealTimePriceChart token={token} timeframe={selectedTimeframe} />
+                <RealCandlestickChart 
+                  token={token} 
+                  timeframe={selectedTimeframe}
+                  height={400}
+                />
               </div>
 
               {/* Technical Indicators */}
