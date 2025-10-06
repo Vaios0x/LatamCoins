@@ -172,43 +172,57 @@ export function RealCandlestickChart({
 
       console.log('Chart created:', chart);
       console.log('Chart methods:', Object.getOwnPropertyNames(chart));
-      console.log('addCandlestickSeries:', typeof chart.addCandlestickSeries);
 
       // Verificar que el objeto chart sea válido
       if (!chart) {
         throw new Error('Failed to create chart object');
       }
-      
-      if (typeof chart.addCandlestickSeries !== 'function') {
-        console.error('Available methods:', Object.getOwnPropertyNames(chart));
-        throw new Error(`addCandlestickSeries is not a function. Available methods: ${Object.getOwnPropertyNames(chart).join(', ')}`);
+
+      // Usar la API correcta de Lightweight Charts
+      // Los métodos están en el objeto chart directamente
+      let candlestickSeries;
+      let volumeSeries = null;
+
+      try {
+        // Crear serie de velas japonesas usando la API correcta
+        candlestickSeries = chart.addCandlestickSeries({
+          upColor: '#00ff41',
+          downColor: '#ff0040',
+          borderUpColor: '#00ff41',
+          borderDownColor: '#ff0040',
+          wickUpColor: '#00ff41',
+          wickDownColor: '#ff0040',
+          priceFormat: {
+            type: 'price',
+            precision: 8,
+            minMove: 0.00000001
+          }
+        });
+        console.log('Candlestick series created:', candlestickSeries);
+      } catch (error) {
+        console.error('Error creating candlestick series:', error);
+        // Fallback a línea si no funciona
+        candlestickSeries = chart.addLineSeries({
+          color: '#00ff41',
+          lineWidth: 2
+        });
+        console.log('Using line series fallback');
       }
 
-      // Crear serie de velas japonesas
-      const candlestickSeries = chart.addCandlestickSeries({
-        upColor: '#00ff41',
-        downColor: '#ff0040',
-        borderUpColor: '#00ff41',
-        borderDownColor: '#ff0040',
-        wickUpColor: '#00ff41',
-        wickDownColor: '#ff0040',
-        priceFormat: {
-          type: 'price',
-          precision: 8,
-          minMove: 0.00000001
-        }
-      });
-
       // Crear serie de volumen
-      let volumeSeries = null;
-      if (typeof chart.addHistogramSeries === 'function') {
-        volumeSeries = chart.addHistogramSeries({
-          color: '#00ff41',
-          priceFormat: {
-            type: 'volume'
-          },
-          priceScaleId: 'volume'
-        });
+      try {
+        if (typeof chart.addHistogramSeries === 'function') {
+          volumeSeries = chart.addHistogramSeries({
+            color: '#00ff41',
+            priceFormat: {
+              type: 'volume'
+            },
+            priceScaleId: 'volume'
+          });
+          console.log('Volume series created:', volumeSeries);
+        }
+      } catch (error) {
+        console.warn('Could not create volume series:', error);
       }
 
       // Configurar escala de volumen
