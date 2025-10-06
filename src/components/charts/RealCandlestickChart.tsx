@@ -164,9 +164,13 @@ export function RealCandlestickChart({
         height: height
       });
 
+      // Verificar que el objeto chart sea válido
+      if (!chart || typeof chart.addCandlestickSeries !== 'function') {
+        throw new Error('Invalid chart object - missing addCandlestickSeries method');
+      }
+
       // Crear serie de velas japonesas
-      const candlestickSeries = chart.addCandlestickSeries
-        ? chart.addCandlestickSeries({
+      const candlestickSeries = chart.addCandlestickSeries({
         upColor: '#00ff41',
         downColor: '#ff0040',
         borderUpColor: '#00ff41',
@@ -178,27 +182,32 @@ export function RealCandlestickChart({
           precision: 8,
           minMove: 0.00000001
         }
-        })
-        // Fallback a serie de líneas si por alguna razón falta el método
-        : chart.addLineSeries({ color: '#ff6b35' });
+      });
 
       // Crear serie de volumen
-      const volumeSeries = chart.addHistogramSeries ? chart.addHistogramSeries({
-        color: '#00ff41',
-        priceFormat: {
-          type: 'volume'
-        },
-        priceScaleId: 'volume'
-      }) : null;
+      let volumeSeries = null;
+      if (typeof chart.addHistogramSeries === 'function') {
+        volumeSeries = chart.addHistogramSeries({
+          color: '#00ff41',
+          priceFormat: {
+            type: 'volume'
+          },
+          priceScaleId: 'volume'
+        });
+      }
 
       // Configurar escala de volumen
-      if (volumeSeries && chart.priceScale) {
-        chart.priceScale('volume').applyOptions({
-        scaleMargins: {
-          top: 0.8,
-          bottom: 0
+      if (volumeSeries && typeof chart.priceScale === 'function') {
+        try {
+          chart.priceScale('volume').applyOptions({
+            scaleMargins: {
+              top: 0.8,
+              bottom: 0
+            }
+          });
+        } catch (error) {
+          console.warn('Could not configure volume price scale:', error);
         }
-        });
       }
 
       // Configurar responsividad
