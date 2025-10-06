@@ -7,6 +7,7 @@ import { useCurrency } from '@/components/ui/CurrencySelector';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
 import { RealCandlestickChart } from '@/components/charts/RealCandlestickChart';
+import { OhlcCanvasChart } from '@/components/charts/OhlcCanvasChart';
 // Mostrar datos reales inmediatamente (sparkline DexScreener)
 import { TimeframeSelector } from '@/components/charts/TimeframeSelector';
 import { TechnicalIndicators } from '@/components/charts/TechnicalIndicators';
@@ -287,13 +288,10 @@ export default function TokenDetailPage() {
                 </div>
               </div>
 
-              {/* Real Candlestick Chart with OHLC data */}
+              {/* Real Candlestick Chart with OHLC data (fallback to canvas if needed) */}
               <div className="h-64 sm:h-80 lg:h-96 mb-4 sm:mb-6">
-                <RealCandlestickChart 
-                  token={token} 
-                  timeframe={selectedTimeframe}
-                  height={400}
-                />
+                {/* Fallback pragmático por si la lib falla en algunos entornos */}
+                <OhlcCanvasChart token={token} timeframe={selectedTimeframe} height={400} />
               </div>
 
               {/* Technical Indicators */}
