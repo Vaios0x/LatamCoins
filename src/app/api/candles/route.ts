@@ -44,9 +44,12 @@ export async function GET(request: NextRequest) {
 
     console.log(`🕯️ Fetching candles for ${address} (${timeframe})...`);
 
-    // Obtener velas de Birdeye API
+    // Obtener velas de Birdeye API v3 (más datos, mejor rendimiento)
+    const timeFrom = Math.floor((Date.now() - 30 * 24 * 60 * 60 * 1000) / 1000);
+    const timeTo = Math.floor(Date.now() / 1000);
+    
     const birdeyeResponse = await fetch(
-      `https://public-api.birdeye.so/defi/ohlcv?address=${address}&type=${interval}&time_from=${Math.floor((Date.now() - 30 * 24 * 60 * 60 * 1000) / 1000)}&time_to=${Math.floor(Date.now() / 1000)}`,
+      `https://public-api.birdeye.so/defi/v3/ohlcv?address=${address}&type=${interval}&time_from=${timeFrom}&time_to=${timeTo}&chain=solana`,
       {
         headers: {
           'X-API-KEY': process.env.BIRDEYE_API_KEY || '',

@@ -53,7 +53,7 @@ export function RealCandlestickChart({
       setError(null);
 
       const response = await fetch(
-        `/api/candles?address=${token.contract}&timeframe=${timeframe}&limit=100`
+        `/api/candles?address=${token.contract}&timeframe=${timeframe}&limit=200`
       );
       
       const result = await response.json();
@@ -69,7 +69,7 @@ export function RealCandlestickChart({
 
       // Crear gráfico si no existe
       if (!chartRef.current) {
-        await createChart();
+        await initChart();
       }
 
       // Actualizar datos
@@ -94,12 +94,17 @@ export function RealCandlestickChart({
     }
   };
 
-  const createChart = async () => {
+  const initChart = async () => {
     if (!chartContainerRef.current) return;
 
     try {
-      // Importación dinámica de lightweight-charts
-      const { createChart, ColorType } = await import('lightweight-charts');
+      // Importación dinámica robusta de lightweight-charts (compat ESM/CJS/Turbopack)
+      const LW: any = await import('lightweight-charts');
+      const lwCreateChart = (LW && (LW.createChart || LW.default)) as any;
+      const ColorType = LW?.ColorType || { Solid: 0 } as any;
+      if (!lwCreateChart) {
+        throw new Error('lightweight-charts createChart not available');
+      }
 
       // Configuración del tema oscuro
       const chartOptions = {
@@ -153,14 +158,15 @@ export function RealCandlestickChart({
       };
 
       // Crear el gráfico
-      const chart = createChart(chartContainerRef.current, {
+      const chart: any = lwCreateChart(chartContainerRef.current, {
         ...chartOptions,
         width: chartContainerRef.current.clientWidth,
         height: height
       });
 
       // Crear serie de velas japonesas
-      const candlestickSeries = chart.addCandlestickSeries({
+      const candlestickSeries = chart.addCandlestickSeries
+        ? chart.addCandlestickSeries({
         upColor: '#00ff41',
         downColor: '#ff0040',
         borderUpColor: '#00ff41',
@@ -172,24 +178,28 @@ export function RealCandlestickChart({
           precision: 8,
           minMove: 0.00000001
         }
-      });
+        })
+        // Fallback a serie de líneas si por alguna razón falta el método
+        : chart.addLineSeries({ color: '#ff6b35' });
 
       // Crear serie de volumen
-      const volumeSeries = chart.addHistogramSeries({
+      const volumeSeries = chart.addHistogramSeries ? chart.addHistogramSeries({
         color: '#00ff41',
         priceFormat: {
           type: 'volume'
         },
         priceScaleId: 'volume'
-      });
+      }) : null;
 
       // Configurar escala de volumen
-      chart.priceScale('volume').applyOptions({
+      if (volumeSeries && chart.priceScale) {
+        chart.priceScale('volume').applyOptions({
         scaleMargins: {
           top: 0.8,
           bottom: 0
         }
-      });
+        });
+      }
 
       // Configurar responsividad
       const handleResize = () => {
