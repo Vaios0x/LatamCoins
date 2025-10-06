@@ -100,10 +100,16 @@ export function RealCandlestickChart({
     try {
       // Importación dinámica robusta de lightweight-charts (compat ESM/CJS/Turbopack)
       const LW: any = await import('lightweight-charts');
-      const lwCreateChart = (LW && (LW.createChart || LW.default)) as any;
-      const ColorType = LW?.ColorType || { Solid: 0 } as any;
-      if (!lwCreateChart) {
-        throw new Error('lightweight-charts createChart not available');
+      console.log('Lightweight Charts imported:', LW);
+      
+      const lwCreateChart = LW?.createChart || LW?.default?.createChart || LW?.default;
+      const ColorType = LW?.ColorType || LW?.default?.ColorType || { Solid: 0 };
+      
+      console.log('createChart function:', lwCreateChart);
+      console.log('ColorType:', ColorType);
+      
+      if (!lwCreateChart || typeof lwCreateChart !== 'function') {
+        throw new Error('lightweight-charts createChart not available or not a function');
       }
 
       // Configuración del tema oscuro
@@ -164,9 +170,18 @@ export function RealCandlestickChart({
         height: height
       });
 
+      console.log('Chart created:', chart);
+      console.log('Chart methods:', Object.getOwnPropertyNames(chart));
+      console.log('addCandlestickSeries:', typeof chart.addCandlestickSeries);
+
       // Verificar que el objeto chart sea válido
-      if (!chart || typeof chart.addCandlestickSeries !== 'function') {
-        throw new Error('Invalid chart object - missing addCandlestickSeries method');
+      if (!chart) {
+        throw new Error('Failed to create chart object');
+      }
+      
+      if (typeof chart.addCandlestickSeries !== 'function') {
+        console.error('Available methods:', Object.getOwnPropertyNames(chart));
+        throw new Error(`addCandlestickSeries is not a function. Available methods: ${Object.getOwnPropertyNames(chart).join(', ')}`);
       }
 
       // Crear serie de velas japonesas
