@@ -6,7 +6,7 @@ import { formatPercentage } from '@/lib/utils/formatters';
 import { useCurrency } from '@/components/ui/CurrencySelector';
 import { PriceChange } from '@/components/ui/PriceChange';
 import { RealTimePriceChart } from '@/components/analytics/RealTimePriceChart';
-import { SimpleCandlestickChart } from '@/components/charts/SimpleCandlestickChart';
+// Mostrar datos reales inmediatamente (sparkline DexScreener)
 import { TimeframeSelector } from '@/components/charts/TimeframeSelector';
 import { TechnicalIndicators } from '@/components/charts/TechnicalIndicators';
 import { ArrowLeft, ExternalLink, TrendingUp, TrendingDown, DollarSign, BarChart3, Activity, Star, Share2, Copy, CheckCircle, Users, Heart, Zap, Target, Globe, Clock, RefreshCw } from 'lucide-react';
@@ -286,13 +286,9 @@ export default function TokenDetailPage() {
                 </div>
               </div>
 
-              {/* Simple Candlestick Chart */}
+              {/* Real data chart (sparkline) mientras integramos velas OHLC */}
               <div className="h-64 sm:h-80 lg:h-96 mb-4 sm:mb-6">
-                <SimpleCandlestickChart 
-                  token={token} 
-                  timeframe={selectedTimeframe}
-                  height={400}
-                />
+                <RealTimePriceChart token={token} timeframe={selectedTimeframe} />
               </div>
 
               {/* Technical Indicators */}
